@@ -80,8 +80,9 @@ Issuer outage & prior low-risk scope, bounded grace & scope expansion, high impa
 \end{table}
 
 \subsection{Migration compatibility}
-We separate three compatibility levels and test each rather than asserting ``backward
-compatible.'' \emph{Protocol compatibility}: 2030.5 messages remain standard conformant.
+We separate three compatibility levels, and the protocol requires a passing interoperability test
+before any of them is claimed, rather than asserting ``backward compatible.'' None has yet been
+tested; Section~\ref{sec:prelim} reports interoperability as untested. \emph{Protocol compatibility}: 2030.5 messages remain standard conformant.
 \emph{Implementation compatibility}: unmodified client or server software can participate.
 \emph{Deployment compatibility}: legacy and upgraded devices coexist. Three tiers realize this:
 a bootstrap-only legacy tier, a gateway-attested proxy tier where an edge gateway holds the

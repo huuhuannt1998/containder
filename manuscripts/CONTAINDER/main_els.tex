@@ -19,6 +19,14 @@
 
 \journal{International Journal of Critical Infrastructure Protection}
 
+% The elsarticle `review' option sets a wide, double-spaced measure in which long
+% unbreakable identifiers (CONTAINDER, opModFixedVar, pkimodel) overrun the line.
+% Permit hyphenation of those tokens and relax the line-breaking tolerance; Elsevier
+% typesets the final article from source, so this affects the review PDF only.
+\hyphenation{CON-TAIN-DER cre-den-tial op-Mod-Fixed-W op-Mod-Fixed-Var
+  op-Mod-Volt-Var pki-model}
+\sloppy
+
 \begin{document}
 
 \begin{frontmatter}
@@ -44,7 +52,7 @@ reachability alone does not distinguish these designs, we measure impact along f
 consequence --- and give a worked example of two compromises with identical reach but divergent
 flexibility, persistence, and feeder outcome. We implement a credential service with real X.509
 and mutual TLS and a real OpenDSS feeder pipeline. On the IEEE~8500-node feeder, ten implemented
-security invariants pass, attested issuance costs about $0.2$\,ms, and a compromise under legacy
+security invariants pass, attested issuance costs about $0.23$\,ms, and a compromise under legacy
 authorization holds the feeder in violation for the full hour (integrated overvoltage $6956$
 p.u.-node-min) while CONTAINDER's scope and lifetime enforcement reduce this to $3.8$ with
 recovery at credential expiry. These are reduced-scale pilot results; the pre-registered

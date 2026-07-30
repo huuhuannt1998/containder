@@ -117,6 +117,11 @@ persist.
 Acceptance for either build is zero LaTeX errors, zero undefined references, and zero undefined
 citations.
 
+**Maintenance trap:** the abstract exists twice. `main.tex` reads `sections/00_abstract.tex`;
+`main_els.tex` carries an inline copy because `elsarticle` requires the abstract inside
+`\begin{frontmatter}`. Edit both, or the two builds silently disagree. They are in sync as of
+commit `a78264d` and after.
+
 The authorization model is deliberately parameterized (four ACL realism levels spanning
 single-device through whole-aggregator-fleet scope); a hardcoded permissive ACL would
 overstate what a stolen certificate can do. Vary `Policy.acl_realism_level` in ablation.

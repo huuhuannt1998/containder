@@ -16,9 +16,11 @@ one, and a persistence of hours against the analysis horizon.
 The authorization policy is parameterized, not fixed. A hardcoded permissive access model
 would overstate what a stolen certificate can command, so the engine exposes four ACL realism
 levels spanning single-device, site, feeder-segment, and whole-aggregator-fleet scope, and
-these are varied in the evaluation. On a synthetic 200-device fully-central fleet, the
-reachable-DER count grows from one to one to fifty to two hundred across the four levels, and
-commandable capacity grows in step. This decomposition operationalizes RQ1: most of the reach
+these are varied in the evaluation. On a synthetic 200-device fully-central fleet spread over four
+feeders, the reachable-DER count grows from one (single-device) to one (site) to fifty (feeder) to
+two hundred (fleet), and commandable capacity grows in step. The feeder-level figure is the
+fleet divided by the feeder count, so it moves with that generator parameter; the parameters are
+released with the artifact. This decomposition operationalizes RQ1: most of the reach
 gained by a compromise is attributable to authorization scope rather than to authentication
 alone. The retained-authority dimension is returned as a distribution over duration rather
 than a point estimate, reflecting the stochastic outcome of attestation-gated renewal, and it

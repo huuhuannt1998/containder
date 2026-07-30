@@ -2,7 +2,7 @@
 % provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M supports the separation claim.
 % provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE (SAND2019-1490 4.1) supports revocation-infeasibility.
 % provenance: dec_01KXT28WTZ92PJ7S8D3MME78D4 fixes the novelty framing (scope-bound attested ephemeral creds).
-% provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series 6956 / 3.8); jrn_01KXTX3PH43VR78AM1GZHC27T1 (invariants, 0.2 ms).
+% provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series 6956 / 3.8); jrn_01KXTX3PH43VR78AM1GZHC27T1 (invariants, 0.23 ms).
 \begin{abstract}
 IEEE~2030.5 binds a distributed energy resource's long-lived bootstrap identity to its
 operational authorization and forbids online certificate revocation. A stolen credential
@@ -15,7 +15,7 @@ reachability alone does not distinguish these designs, we measure impact along f
 consequence --- and give a worked example of two compromises with identical reach but divergent
 flexibility, persistence, and feeder outcome. We implement a credential service with real X.509
 and mutual TLS and a real OpenDSS feeder pipeline. On the IEEE~8500-node feeder, ten implemented
-security invariants pass, attested issuance costs about $0.2$\,ms, and a compromise under legacy
+security invariants pass, attested issuance costs about $0.23$\,ms, and a compromise under legacy
 authorization holds the feeder in violation for the full hour (integrated overvoltage $6956$
 p.u.-node-min) while CONTAINDER's scope and lifetime enforcement reduce this to $3.8$ with
 recovery at credential expiry. These are reduced-scale pilot results; the pre-registered
