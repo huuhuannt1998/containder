@@ -1,11 +1,13 @@
-\section{Evaluation Protocol (Pre-Registered)}
+\section{Evaluation Protocol (Pre-Registered)}\label{sec:protocol}
 % provenance: jrn_01KXTQR71C4YJ194114Y0JSQFF (v1 pre-registration); jrn_01KXTVC4CT850YTVE5EM3RJDGS (revision: mechanism baselines, mixed-effects, OSF).
 % provenance: mis_01KXT2FNB2JRTETEPAH14KK8B6 (M5 spec); dec_01KXT24BG2923V59HR33CCQC2Z (RQ2).
 
 \emph{No measured results are reported in this section.} We state the evaluation protocol, which
-is frozen and content-hashed before any run and deposited on a trusted timestamped repository, so
-that the study design cannot be adjusted after seeing outcomes and so that a private hash is not
-the only immutability evidence. Chronologically, the measured results in Section~\ref{sec:prelim}
+is frozen and content-hashed before any run and will be deposited on a trusted timestamped
+repository before the confirmatory sweep; at present the immutability evidence is the content
+hash recorded in \texttt{PREREGISTRATION.md}, together with the version-control commit under
+which that record was placed. The design therefore cannot be adjusted after seeing outcomes
+without leaving a visible trace. Chronologically, the measured results in Section~\ref{sec:prelim}
 are pilot experiments; the confirmatory scenario matrix and statistical plan were frozen and hashed
 after the pilots, and pilot observations are excluded from the confirmatory tests.
 
@@ -59,6 +61,10 @@ analysis. Effect sizes are the median paired difference, the ratio of geometric 
 rank-biserial correlation, and odds ratios, each with bootstrap confidence intervals, and Holm
 correction is applied within, not across, hypothesis families. A five-seed pilot and a
 simulation-based power analysis set the production seed count before final comparisons are viewed.
+These inferential procedures apply to the confirmatory sweep, not to the pilot in
+Section~\ref{sec:prelim}: the stored pilot data support medians and interquartile ranges over
+seeds, which is what that section reports, but they do not support the mixed-effects estimates,
+bootstrap intervals, or family-corrected $p$-values specified here, and none are claimed.
 
 \paragraph{Pre-registered hypotheses and honesty rule.}
 The primary hypothesis is a non-additive lifetime-by-scope interaction on voltage-violation area.

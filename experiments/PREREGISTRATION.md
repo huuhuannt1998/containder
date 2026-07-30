@@ -6,8 +6,18 @@
 
 Recompute with `python3 experiments/validate_matrix.py`. A private content hash proves
 immutability only if paired with an independently verifiable timestamp, so this record is also
-to be **deposited on a trusted timestamped repository (OSF or Zenodo)** before the sweep; the
-git commit hash of this file is recorded alongside once under version control.
+to be **deposited on a trusted timestamped repository (OSF or Zenodo)** before the sweep. That
+deposit has **not** been made; it is a PI decision and is pending.
+
+**Version-control anchor.** The repository was placed under git on 2026-07-30. The initial
+commit, which captures this pre-registration and `scenario_matrix.yaml` in the state hashed
+above, is:
+
+`b65cd3b1cd2a993092ef7616f8e8bdf03c0398e8`
+
+Until the external deposit is made, the immutability evidence for this pre-registration is the
+content hash above plus this commit hash. Neither is an independently verifiable timestamp, and
+the manuscript states this limitation rather than claiming a deposit that does not exist.
 
 ## Why this exists
 

@@ -41,10 +41,20 @@ editing, Visualization.
 
 ---
 
-## Remaining format tasks (revision stage only, not first-submission blockers)
+## Build status (updated 2026-07-30)
 
-1. Convert IEEEtran two-column -> elsarticle single-column (`\documentclass[review]{elsarticle}`
-   gives the double-spaced, line-numbered review format Elsevier expects).
-   Requires fetching elsarticle.cls + a model-num BST from CTAN (not installed locally).
-2. Move refs to an Elsevier numbered style (elsarticle-num) or keep numeric.
-3. Re-place figures for single-column width.
+The elsarticle conversion is **done**, not a remaining task. `main_els.tex` is the primary
+build and `main.tex` (IEEEtran) is kept only as a contingency.
+
+- `elsarticle.cls` is installed under `TEXMFHOME`; verify with `kpsewhich elsarticle.cls`.
+- Build: `latexmk -pdf -interaction=nonstopmode main_els.tex`.
+- Last clean build: 0 LaTeX errors, 0 undefined references, 0 undefined citations, 38 pages
+  in the `review` (double-spaced, line-numbered) format Elsevier expects. Page count is a
+  review-format artifact and is not the submission length criterion; IJCIP is word-count
+  governed.
+- References already use `elsarticle-num`.
+- The vendored `els_build/elsarticle.zip` is a fallback for machines without the `TEXMFHOME`
+  install and is not used by the recipe above.
+
+Full recipe, including the `refs.bib` DOI underscore escaping and the stale-`.bbl` trap, is in
+the repository `README.md` under "Building the manuscript".

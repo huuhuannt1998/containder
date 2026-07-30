@@ -8,7 +8,8 @@
 \usepackage{graphicx}
 \usepackage{url}
 
-% Custom macros for the four radii (single source of notation truth).
+% Custom macros for the four impact dimensions (single source of notation truth).
+% The BR_ prefix is retained for notational continuity; Section III uses "dimension", not "radius".
 \newcommand{\BRreach}{\mathrm{BR}_{\mathrm{reach}}}
 \newcommand{\BRflex}{\mathrm{BR}_{\mathrm{flex}}}
 \newcommand{\BRauth}{\mathrm{BR}_{\mathrm{auth}}}
@@ -32,22 +33,22 @@ IEEE~2030.5 DER Systems}
              city={Charlotte}, state={NC}, country={USA}}
 
 \begin{abstract}
-The IEEE~2030.5 standard governs communication with distributed energy resources (DERs), but its
-trust model binds a device's long-lived bootstrap identity to its operational authorization and
-forbids online certificate revocation, so a stolen credential retains control authority for a
-lifetime the standard permits to be indefinite. We argue that the harm of such a compromise is
-not captured by static reachability, and introduce a four-dimension model separating cyber reach,
-state-dependent commandable flexibility, retained authority, and feeder consequence; a worked
-counterexample gives two compromises with identical reach yet different flexibility, persistence,
-and feeder outcome. Guided by the model, CONTAINDER replaces the conflated device credential with
-attested, short-lived, scope-bound operational credentials, using non-renewal rather than
-revocation for containment, with incremental deployment through native and gateway-proxy tiers. We
-build a working credential service with real X.509 and mutual TLS and a real feeder power-flow
-pipeline, and report a preliminary evaluation on the IEEE~8500-node feeder: ten security invariants
-hold, per-command enforcement bounds authority at credential expiry, attested issuance costs about
-$0.2$\,ms, and narrowing authorization keeps a compromise's induced overvoltage within limits where
-a legacy credential drives it far outside. These reduced-scale results precede the full
-pre-registered evaluation.
+IEEE~2030.5 binds a distributed energy resource's long-lived bootstrap identity to its
+operational authorization and forbids online certificate revocation. A stolen credential
+therefore retains control authority indefinitely, and no online mechanism can withdraw it. We
+present CONTAINDER, which replaces the conflated device credential with attested, short-lived,
+scope-bound operational credentials and uses non-renewal rather than revocation as the
+containment mechanism, deployable incrementally through native and gateway-proxy tiers. Because
+reachability alone does not distinguish these designs, we measure impact along four dimensions
+--- cyber reach, state-dependent commandable flexibility, retained authority, and feeder
+consequence --- and give a worked example of two compromises with identical reach but divergent
+flexibility, persistence, and feeder outcome. We implement a credential service with real X.509
+and mutual TLS and a real OpenDSS feeder pipeline. On the IEEE~8500-node feeder, ten implemented
+security invariants pass, attested issuance costs about $0.2$\,ms, and a compromise under legacy
+authorization holds the feeder in violation for the full hour (integrated overvoltage $6956$
+p.u.-node-min) while CONTAINDER's scope and lifetime enforcement reduce this to $3.8$ with
+recovery at credential expiry. These are reduced-scale pilot results; the pre-registered
+confirmatory sweep is future work.
 \end{abstract}
 
 \begin{keyword}

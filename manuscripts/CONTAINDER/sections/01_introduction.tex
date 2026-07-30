@@ -21,7 +21,7 @@ credential is therefore valid until it expires, and its lifetime may be indefini
 A natural objection is that this is a solved problem: model the DER authorization surface as
 a privilege graph and measure blast radius as reachability, as a mature line of work does
 for enterprise networks~\cite{ou2005mulval,wang2008attackgraph,wang2014kzero}. We argue
-this reduction fails. What determines the damage of a DER compromise is not only which nodes
+this reduction is insufficient as ordinarily applied. What determines the damage of a DER compromise is not only which nodes
 an adversary can reach, but how much physical capacity those nodes command, how long the
 adversary retains that capacity, and what the feeder does in response under the grid state at
 the time. Reachability over a static privilege graph is a function of the attack locus and
@@ -31,31 +31,36 @@ exogenous physical state, and neither is topological.
 \subsection*{Contributions}
 % provenance: this list is the contribution map; each item cites its RKA anchor.
 \begin{itemize}
-\item A \emph{four-dimensional impact model} ($\BRreach$, $\BRflex$, $\BRauth$, $\BRphys$)
-with explicit domains, units, and computation procedures, separating cyber reach from
-state-dependent commandable flexibility, retained authority, and feeder-level consequence.
-% provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
-\item A set of \emph{separation propositions} showing that reachability-only measurement omits
-scope, time, and feeder state, with a worked counterexample of two compromises that share
-topological reach but diverge in flexibility, persistence, and feeder outcome.
-% provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M; ratified dec_01KXT4C1Z766YBPHE78X0Z35V3.
-\item A \emph{threat model} that separates bootstrap identity, operational credential, and
-authorization scope, and names the baseline standard's conflation of the first two as the
-driver of unbounded persistence.
-% provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
-\item \emph{CONTAINDER}, an incrementally deployable redesign using attested, short-lived,
-scope-bound operational credentials with non-renewal as the containment mechanism.
+\item \emph{CONTAINDER}, an incrementally deployable credential redesign for IEEE~2030.5 using
+attested, short-lived, scope-bound operational credentials, with non-renewal as containment and
+explicit session- and command-effect enforcement, deployable through native and gateway-proxy
+tiers.
 % provenance: dec_01KXT28WTZ92PJ7S8D3MME78D4 (novelty framing); dec_01KXT25BXRB50HY38SZ8P9ADFD (RQ4).
-\item An implemented cyber-side analysis engine that computes the four dimensions for a compromise
-locus under a parameterized authorization policy, a working credential service using real X.509
-and mutual TLS, and a preliminary real evaluation on the IEEE~8500-node feeder under a
-pre-registered protocol.
-% provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTQR71C4YJ194114Y0JSQFF (pre-registration).
+\item A \emph{working prototype} --- a credential service with real X.509 issuance, mutual TLS,
+and renewal, plus an OpenDSS feeder pipeline --- with ten implemented security invariants
+verified and containment timing measured.
+% provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTX3PH43VR78AM1GZHC27T1 (measured results).
+\item A \emph{pilot evaluation} on the IEEE~8500-node~\cite{arritt2010ieee8500} and IEEE~123-bus
+feeders showing that scope
+bounds the instantaneous envelope while attested short lifetimes bound its duration, and that
+neither alone suffices.
+% provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series); jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (baseline sweep).
+\item A \emph{four-dimension impact model} (cyber reach, state-dependent commandable flexibility,
+retained authority, feeder consequence) making explicit which quantities a DER-authorization
+defense must move, with a worked example showing why unweighted static reachability cannot rank
+containment policies.
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA; jrn_01KXT49DNW5ZK6CEFDJW7CCK5M; ratified dec_01KXT4C1Z766YBPHE78X0Z35V3.
 \end{itemize}
 
+The threat model underpinning all four separates bootstrap identity, operational credential, and
+authorization scope, and names the baseline standard's conflation of the first two as the driver
+of unbounded persistence.
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
+
 We state scope plainly. The formal model, the separation propositions, and the cyber-side engine
-are complete and tested. The credential service and the feeder pipeline are implemented, and we
-report a preliminary evaluation on the IEEE~8500-node feeder, confirmed on the IEEE~123-bus feeder:
+are implemented and covered by a regression suite, including the separating counterexample. The
+credential service and the feeder pipeline are implemented, and we
+report a pilot evaluation on the IEEE~8500-node feeder, confirmed on the IEEE~123-bus feeder:
 the results are measured but at reduced scale, two public feeders, one solver, up to ten seeds, on
 a workstation. The full pre-registered evaluation, with a cross-solver check, constrained hardware,
 and the full seed budget, is future work.

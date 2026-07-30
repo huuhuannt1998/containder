@@ -3,9 +3,9 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pkimodel"
+name = "containder"
 version = "0.1.0"
-description = "CONTAINDER cyber-side blast-radius analysis engine (M2): identity/delegation graph, parameterized authorization policy engine, credential-lifecycle simulator, and reach/capacity/persistence radii."
+description = "CONTAINDER artifact: cyber-side impact-dimension analysis engine (pkimodel), attested X.509/mTLS credential service (credsvc), and OpenDSS feeder pipeline (power)."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "BSD-3-Clause" }
@@ -16,7 +16,10 @@ yaml = ["pyyaml>=5.4"]
 test = ["pytest>=7"]
 
 [tool.setuptools]
-packages = ["pkimodel"]
+# All three runtime packages must be installable: the experiments under
+# experiments/ import pkimodel, credsvc, and power. Declaring only pkimodel
+# forced callers to set PYTHONPATH, which contradicted the artifact claim.
+packages = ["pkimodel", "credsvc", "power"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

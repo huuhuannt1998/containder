@@ -1,17 +1,36 @@
-# pkimodel — CONTAINDER cyber-side blast-radius engine (M2)
+# CONTAINDER — artifact repository
 
-`pkimodel` turns the CONTAINDER four-radius formalism (M1) into executable code. It computes
-the **cyber-side** blast radii for a compromise locus in an IEEE 2030.5 / CSIP DER
-authorization graph:
+Three installable packages plus the experiment drivers behind the manuscript:
+
+| Package | Role |
+|---|---|
+| `pkimodel` | cyber-side impact-dimension analysis engine (M2) |
+| `credsvc` | attested X.509 / mutual-TLS credential service |
+| `power` | OpenDSS feeder pipeline and test feeders |
+
+Install everything in one editable install; no `PYTHONPATH` is required:
+
+```
+python3 -m pip install -e .
+```
+
+## pkimodel — cyber-side impact-dimension engine (M2)
+
+`pkimodel` turns the CONTAINDER four-impact-dimension model (M1) into executable code. It
+computes the **cyber-side** dimensions for a compromise locus in an IEEE 2030.5 / CSIP DER
+authorization graph. The `BR_` prefix is retained in code and notation for continuity; the
+manuscript calls these *dimensions*, not *radii*, because the four quantities have different
+mathematical types.
 
 - **`BR_reach`** — DERs a compromised credential can *address* (topological reach).
-- **`BR_cap`** — aggregate commandable authority (kW, kVAr) under the credential's
-  function-set *scope*.
-- **`BR_time`** — retained-capability *duration distribution* under the credential lifecycle.
+- **`BR_flex`** — aggregate state-dependent commandable flexibility (kW, kVAr) under the
+  credential's function-set *scope* (exposed as `cap_kw` / `cap_kvar`).
+- **`BR_auth`** — retained authority: the retained-capability *duration distribution* under the
+  credential lifecycle (exposed as `persistence` / `br_auth_hours`).
 
-`BR_phys` (feeder-level physical consequence) is deliberately out of scope — it is owned by
-the M4 co-simulation pipeline; this engine produces the commandable-capacity input `BR_phys`
-consumes.
+`BR_phys` (feeder-level physical consequence) is deliberately out of scope for this package — it
+is owned by the M4 feeder pipeline under `power/`; this engine produces the commandable-capacity
+input `BR_phys` consumes.
 
 ## Why reach and scope are separate
 
@@ -59,6 +78,44 @@ modeled as a base mode — it is a CSIP-AUS (AS/NZS 4777.2) extension.
 ```
 python3 -m pytest -q
 ```
+
+## Building the manuscript
+
+The manuscript lives in `manuscripts/CONTAINDER/`. Two builds are maintained:
+
+| Target | Class | Status |
+|---|---|---|
+| `main_els.tex` -> `main_els.pdf` | `elsarticle` | **primary** (IJCIP, Elsevier) |
+| `main.tex` -> `main.pdf` | `IEEEtran` | contingency only |
+
+`elsarticle.cls` is installed system-wide under `TEXMFHOME`
+(`~/Library/texmf/tex/latex/elsarticle/`), so the primary build needs no special path:
+
+```
+cd manuscripts/CONTAINDER
+latexmk -pdf -interaction=nonstopmode main_els.tex     # primary
+latexmk -pdf -interaction=nonstopmode main.tex         # contingency
+```
+
+Confirm the class is visible before building; if this prints nothing, install it with
+`tlmgr --usermode install elsarticle` against a TeX Live 2025 repository:
+
+```
+kpsewhich elsarticle.cls
+```
+
+`manuscripts/CONTAINDER/els_build/elsarticle.zip` is a vendored copy kept only as a fallback for
+machines without the `TEXMFHOME` install. It is **not** used by the recipe above; unzip it into
+the manuscript directory only if `kpsewhich` comes back empty and `tlmgr` is unavailable.
+
+Two DOIs in `refs.bib` contain underscores and are escaped as `{\_}`
+(`10.1007/0-387-24230-9{\_}9`, `10.1007/978-3-540-70567-3{\_}22`). The escape survives BibTeX and
+is required: unescaped, the `elsarticle` build raises eight LaTeX errors. If you regenerate
+`refs.bib`, delete the stale `main_els.bbl` before rebuilding, or the errors will appear to
+persist.
+
+Acceptance for either build is zero LaTeX errors, zero undefined references, and zero undefined
+citations.
 
 The authorization model is deliberately parameterized (four ACL realism levels spanning
 single-device through whole-aggregator-fleet scope); a hardcoded permissive ACL would
