@@ -1,0 +1,99 @@
+\section{CONTAINDER Design}
+% provenance: dec_01KXT28WTZ92PJ7S8D3MME78D4 (novelty framing); dec_01KXT25BXRB50HY38SZ8P9ADFD (RQ4).
+% provenance: jrn_01KXTVC4CT850YTVE5EM3RJDGS (revision directive: fresh-key binding, session + command enforcement, safe mode).
+% provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE constrains renewal to avoid online-responder/secure-time dependencies.
+
+CONTAINDER separates the layers that IEEE~2030.5 conflates and enforces credential lifetime at
+the session and command layers, not only at issuance. The design is a containment chain:
+fresh attestation, a fresh hardware-bound key, a short scoped operational credential, a bounded
+session, and a bounded command effect, so that removing authority actually removes control. Each
+link targets a dimension of the model (Fig.~\ref{fig:chain}).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_chain.pdf}
+\caption{The CONTAINDER containment chain. Each link bounds a dimension: attestation gates
+issuance, fresh-key binding contains a copied key, scope and short lifetime bound $\BRflex$ and
+$T_{\mathrm{cred}}$, session and command enforcement bound $T_{\mathrm{sess}}$ and
+$T_{\mathrm{cmd}}$, and measured recovery bounds $\BRphys$.}
+\label{fig:chain}
+\end{figure*}
+
+\subsection{Components and trust layering}
+The device keeps a long-lived, hardware-rooted bootstrap identity~\cite{ieee8021ar2018} used only for
+enrollment and attestation, never accepted directly for DER control. An \emph{attester} produces
+fresh evidence bound to a freshly generated operational public key; a \emph{verifier} checks
+evidence against endorsement and reference values and returns an explicit result; a
+\emph{credential issuer} signs a short-lived operational certificate embedding role, site, scope,
+and expiry only for a valid attestation result; an \emph{authorization service} maps the
+operational identity to least-privilege function-set assignments; the \emph{2030.5 server or
+proxy} authenticates the operational certificate, enforces a maximum session age, and rechecks
+authorization per command or at a bounded interval; a \emph{session controller} and a
+\emph{command-lifecycle controller} bound authority beyond expiry; and a \emph{risk controller}
+selects deny, scope narrowing, or bounded emergency renewal. We use the Entity Attestation
+Token~\cite{rfc9711} under the RATS Attester/Verifier/Relying-Party model~\cite{rfc9334}, and
+define a concrete EAT profile rather than treating EAT as a complete attestation protocol.
+
+\subsection{Fresh-key binding}
+Attesting a device is not sufficient: a healthy device can pass attestation while an attacker
+retains a previously copied operational key. CONTAINDER therefore requires that every credential
+epoch use a newly generated operational key, generated in a TPM, TEE, or secure element where
+available and marked non-exportable, whose public-key digest is carried in the attestation
+evidence. The issuer signs only the attested public key, refuses renewal that presents only a
+prior certificate, rejects replayed evidence and reused nonces, and rotates the key even when the
+device stays healthy. This is what contains a copied key across the next epoch.
+
+\subsection{Session and command-effect enforcement}
+Certificate expiry does not end an open TLS session or an already-issued long-duration control.
+CONTAINDER closes sessions at credential expiry (or bounds session age to the credential TTL) and
+revalidates authorization per command, and it bounds adversary-issued controls through a maximum
+command duration, cancellation on containment, and safe-default restoration, with explicit
+handling of scheduled DERControls. The two quantities the prototype measures are
+\begin{align}
+\Delta_{\mathrm{expiry}} &= t_{\text{last adv.\ command}} - t_{\text{expiry}},\\
+\Delta_{\mathrm{effect}}  &= t_{\text{effect ends}} - t_{\text{expiry}},
+\end{align}
+each targeted to zero or a small declared bound. These are exactly the $T_{\mathrm{sess}}$ and
+$T_{\mathrm{cmd}}$ components of $\BRauth$.
+
+\subsection{Safe-mode policy}
+Failure behavior is explicit rather than fail-open. The risk controller chooses among the states
+in Table~\ref{tab:safemode}; no failure mode grants indefinite authority, and the safety of each
+degraded state is validated under feeder conditions rather than assumed.
+
+\begin{table}[t]
+\centering
+\caption{Safe-mode authorization states.}
+\label{tab:safemode}
+\small
+\begin{tabular}{@{}p{0.24\columnwidth}p{0.34\columnwidth}p{0.30\columnwidth}@{}}
+\toprule
+State & Allowed & Denied \\
+\midrule
+Healthy & normal scoped control & out-of-scope control \\
+Verification delayed & read telemetry, hold last safe schedule & new high-impact dispatch \\
+Attestation uncertain & read-only, bounded emergency control & arbitrary set-points \\
+Known compromise & read-only or total denial & all control \\
+Issuer outage & prior low-risk scope, bounded grace & scope expansion, high impact \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Migration compatibility}
+We separate three compatibility levels and test each rather than asserting ``backward
+compatible.'' \emph{Protocol compatibility}: 2030.5 messages remain standard conformant.
+\emph{Implementation compatibility}: unmodified client or server software can participate.
+\emph{Deployment compatibility}: legacy and upgraded devices coexist. Three tiers realize this:
+a bootstrap-only legacy tier, a gateway-attested proxy tier where an edge gateway holds the
+operational credential for downstream legacy devices, and a native device-attested tier. We claim
+only the compatibility level demonstrated by an interoperability test; if only the proxy tier
+interoperates with an unmodified endpoint, we say CONTAINDER supports incremental deployment
+through a credential-terminating gateway proxy, and no more.
+
+\subsection{Implementation status}
+% provenance: mis_01KXT2D8VVC1CDNT9WJ4CFGH9P (M3 spec).
+The design is realized as an issuance and renewal service using real X.509 certificates and mutual
+TLS, with a Python IEEE~2030.5-style client in place of the EPRI C client and structured event
+logging for every credential, session, and command transition. Its security invariants and
+workstation overhead are reported in Section~\ref{sec:prelim}; a native EPRI-client integration and
+constrained-hardware measurements remain future work.

@@ -1,0 +1,74 @@
+\section{Related Work}
+% provenance: jrn_01KXT4CF02R1VRTMK9M3XQ6SEC (Passos differentiation); dec_01KXT28WTZ92PJ7S8D3MME78D4 (novelty framing).
+% All citations verified against Crossref/OpenAlex/DBLP/IETF/publisher; no placeholders remain.
+We position CONTAINDER against ten strands (Table~\ref{tab:relatedcmp}).
+
+\emph{IEEE~2030.5 and CSIP security.} The 2018 and 2023 editions of IEEE~2030.5 mandate mutual TLS
+with X.509 device certificates~\cite{ieee20305-2018,ieee20305-2023}, constrained for
+interconnection by the Common Smart Inverter Profile~\cite{sunspec2018csip}. The closest prior
+work is the 2030.5 security tutorial of Passos et al.~\cite{passos2025tutorial}, a survey that
+proposes no redesign, quantifies no feeder consequence, and formalizes no impact metric; Qi et
+al.\ survey the broader DER and smart-inverter surface~\cite{qi2016cybersecurity}. The Sandia
+analysis supplies the revocation constraints we respect~\cite{obert2019recommendations}.
+
+\emph{DER and smart-inverter attacks.} High-wattage IoT botnets can move the
+grid~\cite{soltan2018blackiot,shekari2022madiot}; on the DER side, inverter attacks destabilize
+grid and market~\cite{hui2025destabilizing} and distribution voltage control is attackable under
+high PV~\cite{isozaki2016detection}, while the SUN:DOWN disclosure catalogs fleet-scale inverter
+vulnerabilities~\cite{forescout2025sundown}. We tie the attack surface to the credential lifecycle
+rather than assuming device compromise.
+
+\emph{Distribution-grid cyber-physical impact.} False-data-injection work quantifies compromise
+consequence~\cite{liu2009false,deng2017false,liang2017review}, grounded by the 2015 Ukraine
+incident~\cite{liang2017ukraine} and quantitative risk formulations~\cite{teixeira2015secure}; our
+feeder method is supporting, not novel.
+
+\emph{Short-lived certificates and PKI lifecycle.} ACME~\cite{rfc8555} and Let's
+Encrypt~\cite{aas2019letsencrypt} automate issuance, SCEP~\cite{rfc8894} is the incumbent device
+enrollment, and HTTPS-ecosystem measurement quantifies the lifecycle
+problem~\cite{durumeric2013analysis}; we adopt short lifetimes as one link of a chain.
+
+\emph{Hardware-bound identity.} Secure device identity~\cite{ieee8021ar2018}, firmware
+TPM~\cite{raj2016ftpm}, and hardware DICE~\cite{jager2020dice} root our bootstrap layer.
+
+\emph{Remote attestation.} We use the RATS architecture~\cite{rfc9334}, the Entity Attestation
+Token~\cite{rfc9711}, and BRSKI~\cite{rfc8995}, on established
+principles~\cite{coker2011principles}, adding fresh-key binding.
+
+\emph{Attack-graph and cyber-physical metrics.} Logic-based~\cite{ou2005mulval,ammann2002scalable,
+jajodia2005topological}, probabilistic and Bayesian~\cite{wang2008attackgraph,frigault2008measuring,
+poolsappasit2012dynamic}, and $k$-zero-day~\cite{wang2014kzero} metrics are static-snapshot and
+cyber-only; Section~IV shows what reachability-only reading omits, positioning our model as
+complementary.
+
+\emph{Co-simulation.} HELICS federates the cyber and grid
+models~\cite{hardy2024helics,palmintier2017helics} with GridLAB-D on the power
+side~\cite{chassin2008gridlabd}.
+
+\emph{DER authorization.} IEEE~1547~\cite{ieee1547-2018} defines the DER functions, DERMS perform
+feeder voltage management~\cite{rahman2021derms}, and role-based access
+control~\cite{sandhu1996rbac} abstracts the scoping we narrow and enforce.
+
+\emph{Revocation at scale.} Web-PKI revocation delivery is gap-ridden~\cite{liu2015endtoend},
+scalable revocation remains an open problem~\cite{larisch2017crlite,smith2020letsrevoke}, and even
+OCSP Must-Staple adoption is weak~\cite{chung2018ocsp}, which motivates containment by short-lived
+credentials rather than by revocation.
+
+\begin{table*}[t]
+\centering
+\caption{Positioning against representative prior work. y = yes, n = no, p = partial, -- = n/a.}
+\label{tab:relatedcmp}
+\footnotesize
+\begin{tabular}{@{}p{0.26\textwidth}ccccccc@{}}
+\toprule
+Work & 2030.5 & Scope & Time & Phys. & Attest. & Proto. & Feeder \\
+\midrule
+Attack-graph metrics~\cite{ou2005mulval,wang2008attackgraph,wang2014kzero} & n & p & n & n & n & -- & n \\
+2030.5 security survey~\cite{passos2025tutorial} & y & p & n & n & n & n & n \\
+Attestation building blocks~\cite{rfc9334,rfc9711,ieee8021ar2018} & n & p & p & p & y & p & n \\
+\textbf{CONTAINDER (this work)} & y & y & y & y & y & y$^{\ast}$ & y$^{\ast}$ \\
+\bottomrule
+\end{tabular}
+\\[2pt]
+{\footnotesize $^{\ast}$Prototype and preliminary feeder results are reported in Section~\ref{sec:prelim}; the full sweep follows the pre-registered protocol.}
+\end{table*}

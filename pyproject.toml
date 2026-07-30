@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pkimodel"
+version = "0.1.0"
+description = "CONTAINDER cyber-side blast-radius analysis engine (M2): identity/delegation graph, parameterized authorization policy engine, credential-lifecycle simulator, and reach/capacity/persistence radii."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "BSD-3-Clause" }
+dependencies = []
+
+[project.optional-dependencies]
+yaml = ["pyyaml>=5.4"]
+test = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["pkimodel"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

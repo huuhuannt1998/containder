@@ -1,0 +1,143 @@
+# CONTAINDER pre-registered experiment matrix (M5) --- v2 (IJCIP revision).
+# =====================================================================================
+# FROZEN before any production sweep. Supersedes v1. Editing after seeing results violates
+# pre-registration; post-hoc scenarios go in a separate file labeled post-hoc in the paper.
+# The SHA-256 of this file is recorded in PREREGISTRATION.md and the RKA graph, AND deposited
+# with a trusted timestamp (OSF/Zenodo) since a private hash alone does not prove immutability.
+# =====================================================================================
+version: 2
+
+preregistration:
+  frozen: true
+  primary_hypothesis: H1
+  timestamp_repository: osf_or_zenodo   # trusted timestamp in addition to the content hash
+  honesty_clause: >-
+    Deviations from the expected-pattern check are reported, not suppressed. A negative or
+    partial result is publishable; fabricating the expected pattern is not. Post-hoc scenarios
+    are labeled as such. Severe/nonconverging runs are never silently dropped.
+
+# --- Six credential-lifecycle baselines, with the mechanism columns the revision requires ---
+baselines:
+  B1: {name: legacy-identity-as-authority, lifetime: long, attestation: no,  scope: deployment_acl, fresh_key: no,    session_enforcement: no,   command_cleanup: no}
+  B2: {name: legacy-narrow-acl,            lifetime: long, attestation: no,  scope: narrow,         fresh_key: no,    session_enforcement: no,   command_cleanup: no}
+  B3: {name: ephemeral-only,               lifetime: short, attestation: no, scope: reference,       fresh_key: optional, session_enforcement: expiry, command_cleanup: optional}
+  B4: {name: attestation-only,             lifetime: long, attestation: yes, scope: reference,       fresh_key: enrollment_bound, session_enforcement: weak, command_cleanup: no}
+  B5: {name: full-containder,              lifetime: short, attestation: yes, scope: narrow,          fresh_key: per_epoch, session_enforcement: yes, command_cleanup: yes}
+  B6: {name: containder-safe-mode,         lifetime: short, attestation: yes, scope: narrow_degraded, fresh_key: per_epoch, session_enforcement: yes, command_cleanup: yes}
+# B3/B4 are load-bearing (isolate the two halves). B5 vs both proves the combination (H3).
+
+# --- Mechanism ablations: which link in the containment chain produces the reduction ---
+mechanism_ablations:
+  A1: B5 without fresh-key rotation
+  A2: B5 without session termination
+  A3: B5 without command cancellation
+  A4: B5 without authorization-scope narrowing
+  A5: B5 with stale/replayable attestation
+  A6: B5 with software-only key storage
+  A7: B5 with fail-open renewal
+  A8: B5 with fail-closed renewal
+
+# --- Factors ---
+factors:
+  credential_ttl:      [5min, 30min, 2h, 6h, 24h, long]
+  authorization_scope: [device, site, segment, fleet]
+  compromise_locus:    [device, gateway, aggregator, issuer]   # issuer = protection boundary, not defended
+  der_penetration:     [20, 50, 80, 100]
+  tech_mix:            [pv_heavy, storage_heavy, mixed]
+  attack_program:      [volt_var, volt_watt, export_limit, curtailment_spam]
+  attestation_trust:   [valid, known_bad, stale, replayed, bad_nonce, unknown, verifier_unavailable, endorsement_unavailable, key_unavailable]
+  renewal_policy:      [deny, full, degraded_scope, bounded_grace, fail_open, fail_closed]
+  operating_state:     [high_pv_low_load, high_load_low_pv, morning_ramp, evening_ramp, normal, soc_extreme]
+  attacker_model:      [oracle_worst_case, operationally_realistic]   # never report only the omniscient bound
+
+core_ablations:     [authorization_scope, compromise_locus, credential_ttl, attack_program]
+appendix_ablations: [der_penetration, attestation_trust, renewal_policy, tech_mix, operating_state]
+
+design:
+  primary_factorial:
+    name: persistence_x_scope
+    factor_a: credential_ttl
+    factor_b: authorization_scope
+    crossing: full
+    estimand: interaction_effect
+    metric: voltage_violation_area
+  ablation_mode: ofat
+  reference_cell: {baseline: B5, credential_ttl: 2h, authorization_scope: segment,
+                   compromise_locus: aggregator, der_penetration: 80, attack_program: volt_var,
+                   attestation_trust: valid, renewal_policy: degraded_scope, operating_state: evening_ramp}
+
+seed_budget:
+  seeds_per_family: 40           # provisional; FINAL count set by the power analysis (min 20)
+  seed_range: [1000, 1039]
+  feeder_days_per_season: 2
+  seasons: [winter, spring, summer, fall]
+  power_analysis: {pilot_seeds_per_core_cell: 5, method: simulation_based_mixed_model, min_seeds: 20, max_seeds: 40}
+
+feeders:
+  primary: ieee_8500
+  validation: pnnl_9500
+  solvers: {primary: opendss, cross_check: gridlabd, coordination: helics}
+  timeseries: {pv: nrel_nsrdb, load: nrel_end_use_load_profiles}
+  timestep: {primary_min: 5, sensitivity_min: 1}
+
+# --- Physical policy-comparison campaigns (runs, per the revision plan; ~10,240 total) ---
+physical_campaigns:
+  policy_comparison:   {feeders: 2, policies: 6, attack_families: 4, feeder_days: 8, seeds: 10, runs: 3840}
+  ttl_by_scope:        {feeders: 2, ttl_levels: 5, scopes: 4, attack_families: 2, feeder_days: 4, seeds: 10, runs: 3200}
+  compromise_locus:    {feeders: 2, loci: 4, attack_families: 4, feeder_days: 4, seeds: 10, runs: 1280}
+  attestation_renewal: {feeders: 2, attestation_states: 4, renewal_policies: 3, attack_families: 2, feeder_days: 4, seeds: 10, runs: 1920}
+  cross_solver_subset: all_clean_bases + one_severe_per_attack_family + representative_B1_B2_B5_B6 + 5pct_or_200_min
+
+# --- Metrics ---
+metrics:
+  cyber: [br_reach, br_flex_P_swing, br_flex_Q_swing, t_cred, t_sess, t_cmd, br_auth, br_exposure]
+  physical:
+    primary: voltage_violation_area          # node-minutes outside band, magnitude-weighted (J_V)
+    secondary: [max_pu_deviation, violating_node_count, protection_trip, regulator_tap_ops,
+                energy_not_served, unnecessary_curtailment, recovery_time, thermal_overload_duration]
+  containment: [delta_expiry, delta_effect, time_to_reject_new_session, time_to_terminate_session,
+                time_to_cancel_command, residual_reachable_ders, residual_flexibility, false_containment]
+  overhead: [issuance_latency, renewal_latency, verification_latency, control_path_latency,
+             cert_rotation_bytes, cpu, memory, throughput, tail_latency_p99]
+
+# --- Statistics ---
+statistics:
+  experimental_unit: paired_scenario_run     # NOT the per-timestep sample
+  pairing_holds_constant: [feeder, day, der_placement, attack_start, attacker_behavior, seed]
+  primary_model: mixed_effects
+  primary_formula: "log(1+VVA) ~ log(TTL) + Scope + log(TTL):Scope + (1|day) + (1|seed)"
+  primary_effect: interaction_coefficient    # tests H1
+  fallbacks: [robust_mixed_effects, aligned_rank_transform, permutation_test]
+  binary_outcomes: mixed_effects_logistic     # protection trip
+  count_outcomes: negative_binomial_mixed     # violating nodes if overdispersed
+  recovery_time: survival_analysis            # for runs not recovering within horizon
+  effect_sizes: [median_paired_difference, ratio_of_geometric_means, paired_rank_biserial, odds_ratio]
+  intervals: bootstrap_ci_for_all_effect_sizes
+  multiplicity: holm_within_family
+  families: [policy_B1_B6, attack_family, compromise_locus, availability_policy]
+  primary_interaction_not_corrected_with_exploratory: true
+  missing_runs: {nonconvergence: preregistered_handling, retries_max: 2, failure_is_outcome: true, never_drop_severe: true}
+
+hypotheses:
+  H1: {primary: true, statement: "Credential lifetime and authorization scope have a non-additive interaction on voltage-violation area."}
+  H2: {statement: "Full CONTAINDER reduces capacity-time exposure vs the legacy baseline."}
+  H3: {statement: "Full CONTAINDER reduces voltage-violation area vs BOTH ephemeral-only and attestation-only."}
+  H4: {statement: "Session termination + command cancellation materially reduce post-expiry residual authority."}
+  H5: {statement: "Aggregator compromise exceeds single-device in reach and flexibility, but scoped credentials shrink the gap."}
+  H6: {statement: "Safe-mode renewal keeps higher control availability than hard denial while staying below a physical-risk threshold."}
+  H7: {statement: "Fresh-key binding prevents reuse of a copied prior operational key after epoch rotation."}
+  H8: {statement: "Tail renewal latency stays below the configured renewal safety margin under target fleet load."}
+
+gate_three:
+  condition: H2_and_H3_hold_on_at_least_one_public_feeder
+  on_fail: raise_checkpoint_and_reframe
+
+expected_pattern_check:
+  - aggregator_compromise_dominates_single_device
+  - lifetime_matters_most_when_scope_broad
+  - full_design_bounds_physical_consequence_even_with_residual_commands
+  - short_ttl_alone_does_not_contain_copied_key_or_active_session_or_persistent_command
+
+freeze:
+  modules_frozen: [pkimodel, credsvc, power]
+  record_commit_hashes_before_sweep: true

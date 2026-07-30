@@ -1,0 +1,18 @@
+\section{Ethics and Responsible Disclosure}
+% provenance: mis_01KXT2D8VVC1CDNT9WJ4CFGH9P scope boundary (synthetic keys only; no production testing; no vendor-bound exploit tooling).
+
+This work studies the consequences of credential compromise in order to bound them, and it
+carries a corresponding responsibility. All experiments use synthetic and lab-generated
+certificates. We use no real vendor keys or secrets, we test against no production DER fleet
+or any internet-reachable device, and we build no exploit tooling bound to a specific vendor
+product. The malicious dispatch programs exist only inside the feeder co-simulation and are
+never emitted to hardware.
+
+The physical-consequence results describe what a compromised but protocol-conformant
+credential can already do under the deployed standard; they do not introduce a new
+vulnerability so much as measure an existing exposure that the standard's prohibition on
+revocation leaves unmitigated. Where results identify a concrete deployment weakness, we will
+follow coordinated disclosure with the relevant standards body and affected implementers
+before public release, and we will time any artifact release accordingly. The redesign and
+its migration path are offered as the constructive counterpart to the measurement: the point
+of quantifying the blast radius is to shrink it.

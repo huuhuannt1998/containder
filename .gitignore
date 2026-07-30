@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# LaTeX build intermediates
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.spl
+*.nav
+*.snm
+*.vrb
+
+# NOTE: experiments/results/*.json are DELIBERATELY tracked.
+# They are the paper's evidence base and were once lost to an
+# overwrite with no history to restore from. Do not ignore them.

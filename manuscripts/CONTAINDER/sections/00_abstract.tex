@@ -1,0 +1,27 @@
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA defines the four radii + threat model.
+% provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M supports the separation claim.
+% provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE (SAND2019-1490 4.1) supports revocation-infeasibility.
+% provenance: dec_01KXT28WTZ92PJ7S8D3MME78D4 fixes the novelty framing (scope-bound attested ephemeral creds).
+\begin{abstract}
+The IEEE~2030.5 standard governs communication with distributed energy resources (DERs), but its
+trust model binds a device's long-lived bootstrap identity to its operational authorization and
+forbids online certificate revocation, so a stolen credential retains control authority for a
+lifetime the standard permits to be indefinite. We argue that the harm of such a compromise is
+not captured by static reachability, and introduce a four-dimension model separating cyber reach,
+state-dependent commandable flexibility, retained authority, and feeder consequence; a worked
+counterexample gives two compromises with identical reach yet different flexibility, persistence,
+and feeder outcome. Guided by the model, CONTAINDER replaces the conflated device credential with
+attested, short-lived, scope-bound operational credentials, using non-renewal rather than
+revocation for containment, with incremental deployment through native and gateway-proxy tiers. We build a working credential
+service with real X.509 and mutual TLS and a real feeder power-flow pipeline, and report a
+preliminary evaluation on the IEEE~8500-node feeder: ten security invariants hold, per-command
+enforcement bounds authority at credential expiry, attested issuance costs about $0.2$\,ms, and
+narrowing authorization keeps a compromise's induced overvoltage within limits where a legacy
+credential drives it far outside. These reduced-scale results precede the full pre-registered
+evaluation.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Critical infrastructure protection, distributed energy resources, IEEE~2030.5, remote attestation,
+authorization, cyber-physical security.
+\end{IEEEkeywords}

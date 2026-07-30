@@ -1,0 +1,31 @@
+\section{Feeder Co-Simulation Methodology}
+% provenance: mis_01KXT2DXXY862RPX7YATTRBDWB (M4 spec); dec_01KXT27V1Y4ZR6ZRAST3H94WC7 (testbed decision).
+% provenance: dec_01KXT4C6ZPYD1Z92DH6CN1KKM3 (BR_phys unit = ANSI C84.1 excursion + trip flag).
+
+The physical consequence radius is measured by a feeder co-simulation that translates an
+authorized-control reach from the analysis engine into a malicious dispatch program and runs
+it on a public distribution feeder. We take the IEEE 8500-node feeder as the primary
+benchmark and the PNNL 9500-node system as an advanced validation tier. Time-series inputs
+come from public solar and load datasets. This part of the work is methodologically routine
+relative to the false-data-injection literature on distribution systems, so we build it to be
+unimpeachable rather than novel.
+
+Two choices harden it against the standard objections to simulation studies. First, we cross-
+check OpenDSS against an independent GridLAB-D solver on the base case and on at least one
+attack case, following the precedent of the PNNL 9500 report, and we report any divergence
+rather than suppressing it. Second, credential state gates dispatch inside the co-simulation
+through a HELICS federation, so that a denied or narrowed credential actually prevents a
+command in simulation rather than being applied after the fact. The attack families are
+volt-var curve distortion, volt-watt curve distortion, export-limit distortion, and
+curtailment spam. The metrics are the count of nodes violating the ANSI~C84.1 bands, maximum
+voltage deviation, the area under the violation curve over time, regulator tap operations,
+unnecessary curtailment, energy not served, and recovery time to steady limits, with the
+per-unit voltage excursion as the primary continuous measure and a protection-trip flag as
+the discrete outcome.
+
+We do not tune feeder parameters to amplify impact; we report what the standard models
+produce. The clean base case, the four attack families, the eight metrics, and the
+cross-solver agreement are the acceptance criteria for this component. As with the credential
+service, a first benchmark run on the IEEE~8500-node feeder appears in the preliminary evaluation;
+the full sweep on both feeders, with the GridLAB-D cross-check and seasonal operating states,
+follows the pre-registered protocol chosen in advance.

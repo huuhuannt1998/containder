@@ -1,0 +1,97 @@
+\section{Why Reachability-Only Measurement Is Insufficient}
+% provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M (separation + counterexample).
+% provenance: jrn_01KXTVC4CT850YTVE5EM3RJDGS (PI directive: moderate the claim; propositions).
+% provenance: jrn_01KXT3PV68YXCN68ZT7JYCCQB3 (metric mapping); dec_01KXT4C1Z766YBPHE78X0Z35V3.
+
+We do not claim that no graph model can represent time or physical impact; temporal,
+probabilistic, and attributed cyber-physical attack-graph models exist and can encode some of
+these quantities. Our claim is narrower and, we argue, more defensible:
+
+\begin{quote}
+Static, unweighted reachability is insufficient to compare DER credential-containment policies,
+because it omits authorization scope, temporal validity, active-session and command persistence,
+state-dependent device flexibility, and feeder state.
+\end{quote}
+
+Formally, call a measurement \emph{reachability-only} if it is a function $M$ of the unchanged
+reachable-node set $\Reach(x)$ alone. Since $M(\Reach(x))$ is single-valued in $\Reach(x)$, any
+two configurations that share $\Reach(x)$ but differ in an impact dimension refute the adequacy
+of every reachability-only $M$. We give three such separations. Each is accompanied by a
+constructive counterexample that ships as a regression test in the released analysis engine, so
+the claims are checkable rather than rhetorical.
+
+\paragraph{Proposition 1 (scope separation).}
+There exist policies $\pi_1,\pi_2$ and a compromise $x$ with $\Reach(x,\pi_1)=\Reach(x,\pi_2)$ but
+$\BRflex(\pi_1)\neq\BRflex(\pi_2)$. \emph{Construction:} hold the reachable DER set fixed and vary
+only the scope map $A$, granting control function sets under $\pi_2$ and read-only status under
+$\pi_1$ at the same nodes. The feasible command sets, and hence the flexibility intervals, differ.
+\emph{Interpretation:} scope, not reach, sets how large a lever the adversary holds.
+
+\paragraph{Proposition 2 (temporal separation).}
+There exist credential and session policies with equal initial reach but different
+retained-authority trajectories, hence different $\BRauth$ and $\BRexp$. \emph{Construction:} an
+ephemeral attestation-gated credential loses acceptance at the next un-attested renewal, while a
+long-lived unrevoked credential retains it; identical reach, different
+$\int \BRflex\,\mathbf{1}[\text{effective}]\,dt$. A static snapshot has no time coordinate to
+express this. \emph{Interpretation:} persistence is a property of the graph's trajectory over
+time, not of a single snapshot.
+
+\paragraph{Proposition 3 (physical-state separation).}
+There exist feeder states $u_1,u_2$ with identical cyber authorization but different physical
+outcomes, hence $\BRphys(u_1)\neq\BRphys(u_2)$ at fixed $x$ and $\pi$. \emph{Construction:}
+the same authorized curtailment relieves an overvoltage at one operating state and drives a
+reverse-power protection trip at another. No privilege graph contains $u$ or $F$.
+\emph{Interpretation:} realized consequence depends on feeder physics and operating conditions
+that are outside any authorization model.
+
+Table~\ref{tab:mapping} summarizes, for each dimension, the closest classical metric and what a
+reachability-only reading omits. The three classical metrics are static-snapshot and cyber-only.
+
+\begin{table}[t]
+\centering
+\caption{Impact dimensions versus reachability-only metrics.}
+\label{tab:mapping}
+\small
+\begin{tabular}{@{}p{0.11\columnwidth}p{0.33\columnwidth}p{0.44\columnwidth}@{}}
+\toprule
+Dimension & Closest metric & What reachability-only omits \\
+\midrule
+$\BRreach$ & logical reachability~\cite{ou2005mulval} & (overlap; the cyber-reach dimension) \\
+$\BRflex$ & weighted reachability~\cite{wang2008attackgraph} & scope and device/grid state at fixed reach \\
+$\BRauth$ & $k$-zero-day safety~\cite{wang2014kzero} & credential, session, and command time \\
+$\BRphys$ & impact metric on reach & exogenous state $u$ and feeder physics $F$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Worked counterexample.}
+Two compromises reach an identical DER set $D$: one 20\,MW battery and ten rooftop PV under a
+common aggregator. Their reachable sets are identical, as is every topological reach metric. They
+differ only in policy and grid state (Table~\ref{tab:counterexample}). Extending a classical graph
+to distinguish them requires resource-by-scope product nodes, a time index, and attached $u$ and
+$F$; that extension is precisely the policy-and-state model of Section~III, so it agrees with our
+claim rather than refuting it, and such extended models are complementary to, not the same as,
+reachability-only measurement.
+
+\begin{table}[t]
+\centering
+\caption{Two compromises with identical topological reach.}
+\label{tab:counterexample}
+\small
+\begin{tabular}{@{}p{0.29\columnwidth}p{0.29\columnwidth}p{0.29\columnwidth}@{}}
+\toprule
+ & $\alpha$ (attested, ephemeral) & $\beta$ (legacy, long-lived) \\
+\midrule
+Reachable set & $D$ (identical) & $D$ (identical) \\
+Scope $A_\pi$ & volt-var on PV; read-only battery & full DERControl incl.\ battery \\
+Lifetime & 6\,h, attestation-gated & indefinite; no revocation \\
+$\BRflex$ & tens of kVAr & tens of MW \\
+$\BRexp$ & bounded (hours) & up to the cert lifetime \\
+$\BRphys$ at a vulnerable $u$ & negligible & protection trip / excursion \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We use the propositions to motivate the model, not to dominate the paper: the contribution is the
+containment system and its measured evaluation, and the separations say which quantities that
+evaluation must move.

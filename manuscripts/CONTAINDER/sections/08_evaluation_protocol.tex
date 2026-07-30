@@ -1,0 +1,72 @@
+\section{Evaluation Protocol (Pre-Registered)}
+% provenance: jrn_01KXTQR71C4YJ194114Y0JSQFF (v1 pre-registration); jrn_01KXTVC4CT850YTVE5EM3RJDGS (revision: mechanism baselines, mixed-effects, OSF).
+% provenance: mis_01KXT2FNB2JRTETEPAH14KK8B6 (M5 spec); dec_01KXT24BG2923V59HR33CCQC2Z (RQ2).
+
+\emph{No measured results are reported in this section.} We state the evaluation protocol, which
+is frozen and content-hashed before any run and deposited on a trusted timestamped repository, so
+that the study design cannot be adjusted after seeing outcomes and so that a private hash is not
+the only immutability evidence. Chronologically, the measured results in Section~\ref{sec:prelim}
+are pilot experiments; the confirmatory scenario matrix and statistical plan were frozen and hashed
+after the pilots, and pilot observations are excluded from the confirmatory tests.
+
+\paragraph{Baselines and mechanism ablations.}
+Six credential-lifecycle designs are compared: legacy identity-as-authority (B1), legacy with a
+narrow access list (B2), ephemeral-only (B3), attestation-only (B4), full CONTAINDER (B5), and
+safe-mode renewal (B6). Each baseline is specified by explicit fresh-key, session-enforcement, and
+command-cleanup attributes, because the central claim is that short lifetime alone does not
+contain a copied key, an active session, or a persistent command. Eight mechanism ablations
+(A1--A8) each remove one link of the containment chain, so the measured reduction is attributed
+to a mechanism rather than to shorter certificates. Table~\ref{tab:baselines} gives the baseline
+mechanism attributes.
+
+\begin{table*}[t]
+\centering
+\caption{Credential-lifecycle baselines. FK = fresh key per epoch; Sess = session enforcement; Cmd = command-effect cleanup.}
+\label{tab:baselines}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llccllcc@{}}
+\toprule
+ID & Design & Lifetime & Attestation & Scope & FK & Sess & Cmd \\
+\midrule
+B1 & legacy identity-as-authority & long & no & deployment ACL & no & no & no \\
+B2 & legacy + narrow ACL & long & no & narrow & no & no & no \\
+B3 & ephemeral-only & short & no & reference & opt. & expiry & opt. \\
+B4 & attestation-only & long & yes & reference & enroll & weak & no \\
+B5 & full CONTAINDER & short & yes & narrow & per-epoch & yes & yes \\
+B6 & CONTAINDER safe-mode & short & yes & narrow/degraded & per-epoch & yes & yes \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\paragraph{Factors and design.}
+The factors are credential time to live, authorization scope, compromise locus (with the issuer
+treated as a trust boundary, not a defended case), DER penetration and technology mix, attack
+program, attestation-trust state, renewal policy, and operating state. Every attack runs under
+both a worst-case optimizing attacker and an operationally realistic telemetry-limited attacker,
+so no result is only an omniscient upper bound. The primary comparison is the fully-crossed
+lifetime-by-scope factorial, whose interaction term is the compositional claim.
+
+\paragraph{Statistics.}
+The experimental unit is the complete paired scenario run, not the per-timestep sample. The
+primary voltage-violation area is analyzed with a mixed-effects model,
+$\log(1+Y)=\beta_0+\beta_1\log(\mathrm{TTL})+\beta_2\,\mathrm{Scope}+\beta_3\log(\mathrm{TTL})\times\mathrm{Scope}+b_{\mathrm{day}}+b_{\mathrm{seed}}+\epsilon$,
+with the interaction coefficient testing the primary hypothesis and robust, aligned-rank, or
+permutation fallbacks where assumptions fail. Protection trips use mixed-effects logistic
+regression, violating-node counts a negative-binomial mixed model, and recovery time survival
+analysis. Effect sizes are the median paired difference, the ratio of geometric means, the paired
+rank-biserial correlation, and odds ratios, each with bootstrap confidence intervals, and Holm
+correction is applied within, not across, hypothesis families. A five-seed pilot and a
+simulation-based power analysis set the production seed count before final comparisons are viewed.
+
+\paragraph{Pre-registered hypotheses and honesty rule.}
+The primary hypothesis is a non-additive lifetime-by-scope interaction on voltage-violation area.
+Secondary hypotheses cover capacity-time exposure reduction, the advantage of the full design over
+both the ephemeral-only and attestation-only ablations, the reduction of post-expiry residual
+authority by session and command enforcement, locus dominance, the safe-mode availability
+tradeoff, fresh-key containment of a copied key, and the renewal-latency safety margin. The full
+design must reduce capacity-time exposure and voltage-violation area on at least one public feeder,
+which is the study's go/no-go gate. The expected-pattern statement records what we anticipate; any
+deviation, including a weak physical effect on a robust feeder, is reported rather than engineered
+away, and severe or nonconverging runs are never silently dropped.

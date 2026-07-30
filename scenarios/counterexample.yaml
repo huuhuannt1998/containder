@@ -1,0 +1,73 @@
+# M1 counterexample (human-readable mirror of counterexample.json).
+#
+# Two compromises with IDENTICAL topological reach (both address the full fleet under
+# agg1 = one 20 MW BESS + ten rooftop PV), but:
+#   * divergent CAPACITY   -- alpha: volt-var on PV, read-only on the BESS;
+#                             beta:  full DERControl incl. the BESS;
+#   * divergent PERSISTENCE -- alpha: 6 h attestation-gated operational cert;
+#                             beta:  indefinite legacy device cert, revocation forbidden.
+# The engine must rank these differently despite identical reach.
+description: >-
+  M1 counterexample: identical topological reach, divergent capacity and persistence.
+
+nodes:
+  - {id: agg1, type: aggregator, aggregator: agg1}
+  - {id: dev_bess, type: device, feeder: f1, site: s_bess, aggregator: agg1}
+  - {id: dev_pv0, type: device, feeder: f1, site: s_pv0, aggregator: agg1}
+  - {id: dev_pv1, type: device, feeder: f1, site: s_pv1, aggregator: agg1}
+  - {id: dev_pv2, type: device, feeder: f1, site: s_pv2, aggregator: agg1}
+  - {id: dev_pv3, type: device, feeder: f1, site: s_pv3, aggregator: agg1}
+  - {id: dev_pv4, type: device, feeder: f1, site: s_pv4, aggregator: agg1}
+  - {id: dev_pv5, type: device, feeder: f1, site: s_pv5, aggregator: agg1}
+  - {id: dev_pv6, type: device, feeder: f1, site: s_pv6, aggregator: agg1}
+  - {id: dev_pv7, type: device, feeder: f1, site: s_pv7, aggregator: agg1}
+  - {id: dev_pv8, type: device, feeder: f1, site: s_pv8, aggregator: agg1}
+  - {id: dev_pv9, type: device, feeder: f1, site: s_pv9, aggregator: agg1}
+
+ders:
+  - {id: der_bess, type: bess, host_node: dev_bess, nameplate_kw: 20000, nameplate_kvar: 8000, max_charge_kw: 20000, max_discharge_kw: 20000}
+  - {id: der_pv0, type: pv, host_node: dev_pv0, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv1, type: pv, host_node: dev_pv1, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv2, type: pv, host_node: dev_pv2, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv3, type: pv, host_node: dev_pv3, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv4, type: pv, host_node: dev_pv4, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv5, type: pv, host_node: dev_pv5, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv6, type: pv, host_node: dev_pv6, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv7, type: pv, host_node: dev_pv7, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv8, type: pv, host_node: dev_pv8, nameplate_kw: 5, nameplate_kvar: 2}
+  - {id: der_pv9, type: pv, host_node: dev_pv9, nameplate_kw: 5, nameplate_kvar: 2}
+
+edges:
+  - {src: agg1, dst: dev_bess, type: delegation}
+  - {src: agg1, dst: dev_pv0, type: delegation}
+  - {src: agg1, dst: dev_pv1, type: delegation}
+  - {src: agg1, dst: dev_pv2, type: delegation}
+  - {src: agg1, dst: dev_pv3, type: delegation}
+  - {src: agg1, dst: dev_pv4, type: delegation}
+  - {src: agg1, dst: dev_pv5, type: delegation}
+  - {src: agg1, dst: dev_pv6, type: delegation}
+  - {src: agg1, dst: dev_pv7, type: delegation}
+  - {src: agg1, dst: dev_pv8, type: delegation}
+  - {src: agg1, dst: dev_pv9, type: delegation}
+
+credentials:
+  - id: cred_alpha
+    cred_type: operational
+    bound_node: agg1
+    ttl_seconds: 21600          # 6 hours
+    attestation_gated: true
+    scope:
+      der_bess: [derStatusRead]  # reaches the BESS but read-only
+      "*": [opModVoltVar]        # volt-var only on the PV
+  - id: cred_beta
+    cred_type: legacy_longlived
+    bound_node: agg1
+    ttl_seconds: null            # indefinite
+    attestation_gated: false
+    scope:
+      "*": [opModMaxLimW, opModFixedW, opModVoltWatt, opModVoltVar, opModConnect]
+
+policy:
+  acl_realism_level: fleet
+  attestation_detect_prob: 0.5
+  revocation_enabled: false

@@ -1,0 +1,61 @@
+\section{Introduction}
+
+% provenance: dec_01KXT240A70R8N104BPN5G07CJ (RQ1) motivates the reach/scope question.
+Distributed energy resources now participate in grid operations at a scale that makes their
+control interface a systemic concern. IEEE~2030.5 (Smart Energy Profile~2.0), profiled for
+distribution use by the Common Smart Inverter Profile (CSIP), is the application protocol
+through which utilities and aggregators dispatch inverter-based resources. An adversary who
+obtains a credentialed identity in this ecosystem does not merely read data; it can command
+real and reactive power on physical hardware connected to the grid.
+
+% provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE (SAND2019-1490 4.1) supports the two facts in this paragraph.
+Two properties of the IEEE~2030.5 trust model make this worse than a conventional
+credential-theft problem. First, the device's bootstrap identity and its operational
+authorization are the same long-lived certificate: there is no separate, short-lived
+operational credential to lose. Second, the standard forbids certificate revocation; it
+directs that certificate authorities not maintain revocation lists or run status responders,
+and that clients and servers not check them~\cite{obert2019recommendations}. A stolen
+credential is therefore valid until it expires, and its lifetime may be indefinite.
+
+% provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M (separation) + jrn_01KXT3PV68YXCN68ZT7JYCCQB3 (mapping table).
+A natural objection is that this is a solved problem: model the DER authorization surface as
+a privilege graph and measure blast radius as reachability, as a mature line of work does
+for enterprise networks~\cite{ou2005mulval,wang2008attackgraph,wang2014kzero}. We argue
+this reduction fails. What determines the damage of a DER compromise is not only which nodes
+an adversary can reach, but how much physical capacity those nodes command, how long the
+adversary retains that capacity, and what the feeder does in response under the grid state at
+the time. Reachability over a static privilege graph is a function of the attack locus and
+the graph alone; the quantities that matter are functions of the defensive policy and of
+exogenous physical state, and neither is topological.
+
+\subsection*{Contributions}
+% provenance: this list is the contribution map; each item cites its RKA anchor.
+\begin{itemize}
+\item A \emph{four-dimensional impact model} ($\BRreach$, $\BRflex$, $\BRauth$, $\BRphys$)
+with explicit domains, units, and computation procedures, separating cyber reach from
+state-dependent commandable flexibility, retained authority, and feeder-level consequence.
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
+\item A set of \emph{separation propositions} showing that reachability-only measurement omits
+scope, time, and feeder state, with a worked counterexample of two compromises that share
+topological reach but diverge in flexibility, persistence, and feeder outcome.
+% provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M; ratified dec_01KXT4C1Z766YBPHE78X0Z35V3.
+\item A \emph{threat model} that separates bootstrap identity, operational credential, and
+authorization scope, and names the baseline standard's conflation of the first two as the
+driver of unbounded persistence.
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
+\item \emph{CONTAINDER}, an incrementally deployable redesign using attested, short-lived,
+scope-bound operational credentials with non-renewal as the containment mechanism.
+% provenance: dec_01KXT28WTZ92PJ7S8D3MME78D4 (novelty framing); dec_01KXT25BXRB50HY38SZ8P9ADFD (RQ4).
+\item An implemented cyber-side analysis engine that computes the four dimensions for a compromise
+locus under a parameterized authorization policy, a working credential service using real X.509
+and mutual TLS, and a preliminary real evaluation on the IEEE~8500-node feeder under a
+pre-registered protocol.
+% provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTQR71C4YJ194114Y0JSQFF (pre-registration).
+\end{itemize}
+
+We state scope plainly. The formal model, the separation propositions, and the cyber-side engine
+are complete and tested. The credential service and the feeder pipeline are implemented, and we
+report a preliminary evaluation on the IEEE~8500-node feeder, confirmed on the IEEE~123-bus feeder:
+the results are measured but at reduced scale, two public feeders, one solver, up to ten seeds, on
+a workstation. The full pre-registered evaluation, with a cross-solver check, constrained hardware,
+and the full seed budget, is future work.

@@ -1,0 +1,24 @@
+{
+  "jv_by_scope": {
+    "full|light_load": 126.6025,
+    "reference|light_load": 24.0543,
+    "narrow|light_load": 0.0,
+    "full|normal": 6.6205,
+    "reference|normal": 0.0,
+    "narrow|normal": 0.1278,
+    "full|heavy_load": 0.0,
+    "reference|heavy_load": 0.0,
+    "narrow|heavy_load": 0.0
+  },
+  "br_auth_hours": {
+    "fail_open": 17520.0,
+    "no_session": 13.22,
+    "containder": 12.22,
+    "legacy_long": 17524.0,
+    "ephemeral": 10.0,
+    "attest_long": 346.3,
+    "no_command": 16.23
+  },
+  "n_seeds": 10,
+  "note": "Exposure = median induced overvoltage area (OpenDSS 8500, real) x modeled retained authority (pkimodel). Single solver; per-state oracle = max within scope for the export attack family; GridLAB-D and constrained HW remain."
+}

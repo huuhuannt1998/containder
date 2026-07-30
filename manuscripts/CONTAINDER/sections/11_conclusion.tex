@@ -1,0 +1,31 @@
+\section{Limitations and Conclusion}
+% provenance: OUTLINE.md status column; jrn_01KXT4NN8Z8EG0SZYGB65H2T5J (venue) ; chk T1.1 open item.
+
+\paragraph{Limitations.}
+We state the boundaries of the present work plainly. The formal model, the separation result,
+and the cyber-side analysis engine are complete and tested. The attested-credential service
+and the feeder pipeline are implemented; a preliminary reduced-scale evaluation reports real
+measured results (security invariants, containment timing, workstation overhead, availability, and
+feeder consequence on the IEEE~8500-node feeder), but the full pre-registered sweep on two public
+feeders, with a cross-solver check and constrained hardware, has not yet executed and is what
+would support quantitative claims. The authorization graphs used
+by the engine are synthetic, because real utility authorization graphs are not public; we
+mitigate this with a released, parameterized generator and by treating access-model
+permissiveness as an ablated variable rather than a fixed assumption. The exact clause-level
+delta between the 2018 and 2023 revisions of the standard's certificate-management text
+remains an open item pending access to the revised standard, and our claims about revocation
+rest on the primary Sandia analysis rather than on that delta.
+
+\paragraph{Conclusion.}
+Credential compromise in IEEE~2030.5 is not well described by how many nodes an adversary can
+reach. It is described by how much physical capacity those nodes command, how long the
+adversary keeps it, and what the feeder does in response. We formalized these as four impact dimensions,
+showed that reachability-only measurement omits scope, time, and feeder state, and built a
+redesign that shrinks them using attested, short-lived, scope-bound
+operational credentials with non-renewal as containment. A preliminary end-to-end evaluation is
+consistent with the design: the security invariants hold, per-command enforcement contains
+authority at expiry, and narrowing scope keeps the overvoltage a compromise induces on the
+IEEE~8500-node feeder within limits where a legacy credential drives it far outside, with the full
+evaluation still to come. The model is the lever: it says which
+quantities a DER-authorization defense must move, and it rejects the measures that only move
+reach.

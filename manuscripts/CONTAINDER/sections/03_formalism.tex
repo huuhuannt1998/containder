@@ -1,0 +1,101 @@
+\section{The Four-Dimensional Authorization-Compromise Impact Model}
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA (original radius definitions).
+% provenance: jrn_01KXTVC4CT850YTVE5EM3RJDGS (PI revision directive: state-dependent flexibility, 3-part persistence, optimization BR_phys).
+% provenance: dec_01KXT4C6ZPYD1Z92DH6CN1KKM3 fixes the primary physical metric.
+
+We model the impact of an authorization compromise along four dimensions rather than a single
+scalar radius, because the four quantities have different mathematical types: a set, a
+state-dependent power region, a set of durations, and a feeder-physics functional. We keep the
+$\mathrm{BR}$ notation for continuity but describe each as a dimension.
+
+\paragraph{Substrate.}
+A static privilege graph $G=(V,E)$ has principals and resources as nodes and access relations
+as edges; it is a snapshot with no time axis and no physical state. A compromise $x \subseteq V$
+is a set of compromised credentials. A protection policy $\pi=(L,\mathrm{Att},A)$ encodes a
+credential-lifetime function $L$, an attestation-gated renewal predicate $\mathrm{Att}$, and an
+authorization scope map $A$. The device and grid operating state at time $t$ is $u_t \in U$, and
+$F$ is the feeder power-flow and protection model; neither $u_t$ nor $F$ appears in $G$.
+
+\paragraph{Cyber reach ($\BRreach$).}
+The set of principals, resources, or DER endpoints to which the compromised authority can submit
+an authenticated request, $\Reach(x,\pi)$, the least fixed point of the $\pi$-enabled access
+relation from $x$. We report reachable principals, reachable DERs, reachable sites, the fraction
+of fleet, and the authorization paths by compromise locus. Reach is a cyber quantity: reaching a
+server is not the same as controlling a physical resource, and we keep the two separate.
+
+\paragraph{Commandable flexibility ($\BRflex$).}
+Capacity is state dependent, so we define it through a feasible command set rather than
+nameplate. For DER $d$ at time $t$,
+\begin{equation}
+\mathcal{C}_d\big(t; u_t, A_\pi(d)\big)
+\end{equation}
+is the set of set-points an adversary holding scope $A_\pi(d)$ can command given the device and
+grid state $u_t$: present set-point, state of charge, irradiance, inverter apparent-power and
+ramp limits, and availability. The aggregate reachable flexibility over the reachable DERs is the
+achievable active- and reactive-power intervals $[\Delta P^{-},\Delta P^{+}]$ and
+$[\Delta Q^{-},\Delta Q^{+}]$. A conservative scalar for tables is
+\begin{equation}
+\BRflex(t) = w_P\big(\Delta P^{+}-\Delta P^{-}\big) + w_Q\big(\Delta Q^{+}-\Delta Q^{-}\big),
+\end{equation}
+with weights $w_P,w_Q$ stated wherever the scalar is used; the implementation retains the full
+vector and region. Read-only or empty scope yields the singleton current set-point, hence zero
+flexibility.
+
+\paragraph{Retained authority ($\BRauth$) and exposure ($\BRexp$).}
+Certificate lifetime alone understates persistence, so we separate three components:
+$T_{\mathrm{cred}}$, the time until the stolen operational credential is no longer accepted for a
+new session; $T_{\mathrm{sess}}$, the time until sessions authenticated with it can no longer
+issue commands; and $T_{\mathrm{cmd}}$, the time until queued, scheduled, or latched controls
+cease to affect the DER. Effective retained authority is
+\begin{equation}
+\BRauth = \max\big(T_{\mathrm{cred}}, T_{\mathrm{sess}}, T_{\mathrm{cmd}}\big),
+\end{equation}
+and the more informative capacity-time exposure is
+\begin{equation}
+\BRexp = \int_{t_0}^{t_{\mathrm{end}}} \BRflex(t)\,
+  \mathbf{1}[\text{adversarial authority effective at } t]\, dt,
+\end{equation}
+in kW$\cdot$h or kVAr$\cdot$h. This distinction matters: certificate expiry does not by itself end
+an open session or an already-issued long-duration control, so a design that shortens
+$T_{\mathrm{cred}}$ without enforcing $T_{\mathrm{sess}}$ and $T_{\mathrm{cmd}}$ does not bound
+exposure.
+
+\paragraph{Physical consequence ($\BRphys$).}
+Physical consequence is the worst outcome an adversary can drive within its authority over a
+horizon $H$. For an attacker action trajectory $a_{0:H}\in\mathcal{A}(x,\pi,u_{0:H})$ constrained
+to authorized functions and device limits,
+\begin{equation}
+\BRphys = \max_{a_{0:H}\in\mathcal{A}} J\big(F,u_{0:H},a_{0:H}\big),
+\end{equation}
+where $J$ is a declared impact objective. Our primary objective is the voltage-violation area,
+the node-time outside the allowed band weighted by magnitude: for node $n$ with voltage $V_n(t)$
+and bounds $V_{\min},V_{\max}$,
+\begin{equation}
+J_V = \sum_{n,t}\Big[\max(0,V_n(t)-V_{\max}) + \max(0,V_{\min}-V_n(t))\Big]\Delta t.
+\end{equation}
+Secondary metrics are maximum per-unit deviation, violating-node count, protection trips,
+regulator tap operations, energy not served, unnecessary curtailment, and recovery time. We
+report both a worst-case optimizing attacker and an operationally realistic attacker that uses
+only telemetry available through the compromised authority, so the paper does not report only an
+omniscient upper bound.
+
+Table~\ref{tab:dimensions} summarizes the four dimensions, their mathematical types, units, and
+computation. The distinct types are the reason we present them as dimensions rather than forcing a
+single scalar radius.
+
+\begin{table}[t]
+\centering
+\caption{The four impact dimensions.}
+\label{tab:dimensions}
+\small
+\begin{tabular}{@{}p{0.12\columnwidth}p{0.16\columnwidth}p{0.18\columnwidth}p{0.38\columnwidth}@{}}
+\toprule
+Dim. & Type & Unit & Computation \\
+\midrule
+$\BRreach$ & set & count & fixed point of $\pi$-enabled access from $x$ \\
+$\BRflex$ & interval & kW, kVAr & $\sum_d \mathcal{C}_d(t;u_t,A_\pi(d))$ over reachable DERs \\
+$\BRauth$ & duration & s & $\max(T_{\mathrm{cred}},T_{\mathrm{sess}},T_{\mathrm{cmd}})$ \\
+$\BRphys$ & scalar & node-min, p.u. & $\max_a J_V(F,u,a)$ over the feeder model \\
+\bottomrule
+\end{tabular}
+\end{table}
