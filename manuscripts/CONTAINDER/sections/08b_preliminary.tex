@@ -10,7 +10,7 @@ PNNL 9500 system, a single solver (OpenDSS, no GridLAB-D cross-check), load-stat
 than a full seasonal time series, one PV penetration level, a fixed rather than per-state-optimized
 attacker, and a Python IEEE~2030.5-style client in place of the EPRI C client. These results
 establish that the mechanism and the measurement work; the pre-registered full-scale sweep is not
-replaced by them. Table~\ref{tab:implstatus} states the status of each component.
+replaced by them. The cyber-side engine, credential service, OpenDSS feeder pipeline, and availability fault injection are implemented and measured; native EPRI-client traffic, constrained-hardware attestation, the GridLAB-D cross-check, the HELICS federation, interoperability tests, and the full pre-registered sweep are not.
 
 Throughout, the primary physical endpoint is the \emph{induced overvoltage area}
 $\Delta J_V$: the attack-case value of the one-sided overvoltage term of $J_V$, summed over all
@@ -21,28 +21,6 @@ therefore yields $\Delta J_V$ in per-unit nodes (p.u.-node), and the time-series
 reports the same quantity integrated over a one-minute time step, in per-unit node-minutes
 (p.u.-node-min). We label each table and figure with the unit it carries.
 
-\begin{table}[t]
-\centering
-\caption{Implementation and evaluation status.}
-\label{tab:implstatus}
-\small
-\begin{tabular}{@{}p{0.62\columnwidth}p{0.28\columnwidth}@{}}
-\toprule
-Component & Status \\
-\midrule
-Cyber-side analysis engine & implemented, measured \\
-Credential service (issuance, fresh key, session/command enforcement) & implemented, measured \\
-Feeder co-simulation (OpenDSS, two feeders) & implemented, measured \\
-Availability fault injection & implemented, measured \\
-Native EPRI-client 2030.5 traffic & planned \\
-Constrained-hardware / TEE attestation & planned \\
-GridLAB-D cross-solver check & planned \\
-HELICS federation for dispatch gating & planned \\
-Interoperability tests & planned \\
-Full pre-registered sweep & planned \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \paragraph{Functional invariants and containment (C1, C2).}
 The credential service uses real X.509 / ECDSA certificates and an EAT-style attestation token.
@@ -87,28 +65,21 @@ I10 & Active session/command bounded past expiry & pass \\
 \end{table}
 
 \paragraph{Overhead (C3).}
-On the workstation tier, over 500 iterations, the median software-path
-latencies (no hardware root of trust, no network transport) are
-$0.03$\,ms for key generation, $0.06$\,ms for attestation construction, $0.23$\,ms for a full
-attested issuance, and $2.2$\,ms for a real mutual-TLS handshake, with p99 tails within a few
-milliseconds. On the separate renewal harness the issuer sustains about $4900$ renewals per second
-single-threaded. Renewal is
-therefore inexpensive on this platform. The measured operations are standard EC~P-256 primitives
-dominated by a single ECDSA signature and verification, so per-issuance cost on a constrained
-inverter controller can be estimated from its public-key throughput; a hardware-backed measurement
-is declared future work rather than claimed here. These figures are workstation software-path
-timings and should not be read as deployment latencies.
+On the workstation tier, over 500 iterations, median software-path latencies are $0.03$\,ms for
+key generation, $0.06$\,ms for attestation construction, $0.23$\,ms for a full attested issuance,
+and $2.3$\,ms for a real mutual-TLS handshake, and the issuer sustains about $4900$ renewals per
+second single-threaded. Renewal is therefore inexpensive here. These are standard EC~P-256
+primitives dominated by one ECDSA signature and verification, so constrained-controller cost can
+be estimated from public-key throughput; a hardware-backed measurement is future work. These are
+software-path timings, not deployment latencies.
 
 \paragraph{Availability (C6).}
-Renewal is a full attested issuance, so its cost is the issuance cost above; the renewal safety
-margin $T_{\mathrm{TTL}} - (T_{\mathrm{renew,p99}} + T_{\mathrm{net}})$ stays positive at every
-tested lifetime down to five minutes, and a $100{,}000$-device fleet re-mints in about $20$\,s
-single-threaded, so short lifetimes are latency-feasible. The availability risk is instead a
-verifier or issuer outage longer than the credential lifetime. Injecting verifier outages into the
-running service (renewal fails during the outage), fail-closed denial retains $0.77$ of legitimate
-control availability over the outage window, a bounded grace period $0.83$, and degraded-scope safe
-mode $1.0$; control recovers as soon as the verifier returns. The injection is in-process; a
-networked or hardware outage, clock skew, and renewal storms remain for the full study.
+The renewal safety margin $T_{\mathrm{TTL}} - (T_{\mathrm{renew,p99}} + T_{\mathrm{net}})$ stays
+positive at every tested lifetime down to five minutes and a $100{,}000$-device fleet re-mints in
+about $20$\,s, so short lifetimes are latency-feasible. The risk is instead a verifier outage
+longer than the lifetime. Injecting verifier outages, fail-closed denial retains $0.77$ of
+legitimate control availability, a bounded grace period $0.83$, and degraded-scope safe mode
+$1.0$. The injection is in-process; networked outages, clock skew, and renewal storms remain.
 
 \paragraph{Time-series containment and mechanism decomposition (C5).}
 % provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (real 8500 time-series).
@@ -272,37 +243,24 @@ contains overvoltage driven by active or reactive authority.}
 \label{fig:families}
 \end{figure}
 
-\paragraph{Penetration and robustness.}
-Induced overvoltage grows with PV penetration under a legacy full-authorization compromise, from
-$8$ at $20\%$ to $254$ at $100\%$ (five seeds), while the CONTAINDER narrowed scope holds it near
-zero at every tested
-level (Fig.~\ref{fig:penetration}). The same containment holds across attack families
-(Fig.~\ref{fig:families}). It also holds on a second public feeder:
-on the IEEE~123-bus system (three seeds) a legacy full-authorization compromise induces overvoltage
-under high PV
-penetration (induced area up to $2.2$) that CONTAINDER holds at zero, though the stiffer regulated
-$4.16$\,kV feeder requires higher penetration than the 8500 to breach the band, consistent with the
-feeder-dependence of Proposition~3.
-
-\paragraph{Attack families.}
-% provenance: jrn_01KXWJDXAC3N56E0477DDH5MMD (real 8500 attack-family sweep).
-The containment holds across attack families, not only the export attack (five seeds, light
-load). A legacy full-authorization compromise induces overvoltage areas of $122$ (export-limit),
-$97$ (volt-var, reactive injection alone), and $57$ (volt-watt, active injection) that the
-CONTAINDER narrowed scope reduces to zero in every case; for a curtailment-spam attack, narrowing
-cuts the per-node voltage variability from $0.012$ to $0.004$\,p.u., a factor of three.
-Overvoltage is reachable through active or reactive authority, and narrowing scope reduces both to
-zero at the tested penetrations on this feeder.
-
-\paragraph{Least privilege preserves legitimate utility (C5).}
-A scope that removed all control would contain the attack trivially, by disabling the device.
-CONTAINDER's operational scope is bounded volt-var support, not read-only. Under it a legitimate
-reactive voltage-support command is authorized while an active-power export command is denied; the
-attacker's only remaining lever is bounded reactive, which induces overvoltage $0.04$ against $126$
-under full authorization (three seeds, light load), whereas a read-only scope authorizes neither
-the legitimate nor the
-malicious command. The narrow scope therefore retains the most common legitimate DER function while
-bounding the attack, which distinguishes least privilege from denial of service.
+\paragraph{Results measured under the superseded scope configuration.}
+Three further sweeps were run before the scope-envelope result above, using the earlier
+$0.6$\,kvar ``narrow'' envelope and the zero-DER counterfactual. We report them, and we mark
+plainly what they do and do not now support. Under a legacy full-authorization compromise,
+induced overvoltage grows with PV penetration from $8$ at $20\%$ to $254$ at $100\%$ (five seeds,
+Fig.~\ref{fig:penetration}); it is reachable through active or reactive authority alike, with
+areas of $122$ (export-limit), $97$ (volt-var), and $57$ (volt-watt) across attack families (five
+seeds, Fig.~\ref{fig:families}); and it appears on a second public feeder, the IEEE~123-bus
+system, at up to $2.2$ under high penetration (three seeds), though that stiffer regulated
+$4.16$\,kV feeder needs more penetration to breach the band. \textbf{These legacy-baseline
+measurements stand.} What does \emph{not} stand is the accompanying claim, made in an earlier
+version, that the narrowed scope held induced overvoltage at or near zero in every one of these
+cells, and that it therefore ``retains the most common legitimate DER function while bounding the
+attack''. That envelope is $11.4\%$ of the IEEE~1547 Category~B reactive range and does not
+deliver volt-var, and the near-zero readings were taken against a counterfactual feeder carrying
+no DER. Table~\ref{tab:scope} supersedes them. We have not re-run the penetration, attack-family,
+or IEEE~123 sweeps at the conformant envelope, so the conformant-scope result is established at
+one penetration level, on one feeder, in the two operating states of Table~\ref{tab:scope}.
 
 \paragraph{Modeled retained authority, and what it is \emph{not} evidence for (H2).}
 % provenance: jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (real 8500 full baseline + ablation sweep).

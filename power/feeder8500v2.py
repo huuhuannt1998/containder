@@ -193,9 +193,39 @@ def set_load_mult(lm: float) -> None:
     dss.Command(f"Set LoadMult={lm}")
 
 
-def solve() -> bool:
-    dss.Solution.Solve()
-    return bool(dss.Solution.Converged())
+#: Count of solves that exhausted the control-iteration budget, recorded rather than dropped.
+NONCONVERGED = {"n": 0, "n_retried": 0}
+
+
+def solve(max_retries: int = 2) -> bool:
+    """Solve, handling control-iteration exhaustion as a recorded outcome rather than a crash.
+
+    With 600 volt-var inverters the InvControl loop can fail to settle, most often at higher load
+    multipliers where regulator and inverter control interact. OpenDSS raises on
+    ``Max Control Iterations Exceeded``. The pre-registered protocol requires a retry cap of two,
+    treating failure as an outcome and never dropping severe runs, so we retry with a progressively
+    larger control budget and, if it still will not settle, keep the last iterate and flag it.
+
+    Returns True if the solution converged, False if it was retained as a non-converged outcome.
+    """
+    budget = 500
+    for attempt in range(max_retries + 1):
+        try:
+            dss.Solution.Solve()
+            if budget != 500:
+                # Restore the default budget so one hard step does not slow every later step
+                # in the same arm; a raised budget otherwise persists for the whole session.
+                dss.Command("Set maxcontroliter=500")
+            return bool(dss.Solution.Converged())
+        except Exception:
+            if attempt == max_retries:
+                NONCONVERGED["n"] += 1
+                dss.Command("Set maxcontroliter=500")
+                return False
+            budget *= 3
+            NONCONVERGED["n_retried"] += 1
+            dss.Command(f"Set maxcontroliter={budget}")
+    return False
 
 
 # --------------------------------------------------------------------------- metrics --------

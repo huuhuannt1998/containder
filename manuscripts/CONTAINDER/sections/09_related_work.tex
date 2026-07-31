@@ -56,23 +56,20 @@ credentials rather than by revocation.
 
 \emph{Workload identity: the closest existing system.} SPIFFE and its SPIRE
 runtime~\cite{spiffe-spec,spiffe-cncf} implement almost exactly the chain we describe. SPIRE
-attests both the node and the workload, issues short-lived, scope-bound X.509 SVIDs bound to the
-attested identity, refuses renewal when attestation fails, and relies on expiry rather than
-revocation; recent work extends it to IoT fleets~\cite{bakoyiannis2025spiffe} and to delegated and
-nested tokens~\cite{cochak2024lsvid}. We must therefore answer directly whether CONTAINDER is
-workload identity with a DER label. Three differences are load-bearing, and only the third is
-incidental. First, SPIFFE has no notion of a \emph{physical effect that outlives the credential}.
-A revoked workload identity stops a process from opening new connections; it does not retract a
-volt-var curve already written into an inverter, or a schedule already accepted for tomorrow. Our
-$T_{\mathrm{sess}}$ and $T_{\mathrm{cmd}}$ enforcement exists because actuation persists in a way
-computation does not, and Section~\ref{sec:prelim} measures exactly the harm that persistence
-causes. Second, the scope dimension is bound to a domain-specific authorization object,
-\texttt{FunctionSetAssignments}, whose \emph{conformant} settings are dictated by
-IEEE~1547-2018~\cite{ieee1547-2018} and CSIP~\cite{sunspec2018csip} rather than chosen freely; our
-central negative result is that this externally fixed envelope is too wide to contain, which has
-no analogue in a setting where the deployer picks the scope. Third, the field constraints differ:
-intermittent backhaul and the absence of trustworthy time on inverters, discussed in
-Section~\ref{sec:design}, are not constraints a datacenter workload faces.
+attests node and workload, issues short-lived scope-bound X.509 SVIDs keyed to the attested
+identity, refuses renewal when attestation fails, and relies on expiry rather than revocation;
+recent work extends it to IoT fleets~\cite{bakoyiannis2025spiffe} and nested
+tokens~\cite{cochak2024lsvid}. We must therefore answer whether CONTAINDER is workload identity
+with a DER label. Two differences are load-bearing. First, SPIFFE has no notion of a
+\emph{physical effect that outlives the credential}: revoking a workload identity stops a process
+opening new connections, but does not retract a volt-var curve already written into an inverter or
+a schedule already accepted for tomorrow. Our $T_{\mathrm{sess}}$ and $T_{\mathrm{cmd}}$
+enforcement exists because actuation persists in a way computation does not. Second, scope binds
+to \texttt{FunctionSetAssignments}, whose conformant settings are dictated by
+IEEE~1547-2018~\cite{ieee1547-2018} and CSIP~\cite{sunspec2018csip} rather than chosen freely ---
+and our central negative result is that this externally fixed envelope is too wide to contain,
+which has no analogue where the deployer picks the scope. The field constraints of
+Section~\ref{sec:design} differ too.
 
 \emph{The Web PKI has already adopted non-renewal.} Our mechanism is not speculative, and we
 should not present it as though it were. The CA/Browser Forum defined a Short-lived Subscriber
@@ -87,22 +84,19 @@ What we claim is the mapping onto DER authorization: which scope object to bind,
 conformant scope envelope costs, and that session and command-effect enforcement are separately
 necessary because grid actuation persists.
 
-\emph{DER cybersecurity guidance and competing key-management standards.} IEEE~1547.3-2023 is the
-cybersecurity guide for interconnected DER~\cite{ieee1547.3-2023} and is the natural home for the
-recommendations here; NISTIR~7628~\cite{nistir7628r1} and IEC~62443~\cite{iec62443-3-3,
-iec62443-4-2} give the enclosing smart-grid and industrial-control frameworks; NREL's DER
-certification line~\cite{nrel80581,saleem2022dercert} and its standards gap
+\emph{DER guidance and competing key management.} IEEE~1547.3-2023 is the cybersecurity guide for
+interconnected DER~\cite{ieee1547.3-2023} and the natural home for these recommendations;
+NISTIR~7628~\cite{nistir7628r1} and IEC~62443~\cite{iec62443-3-3,iec62443-4-2} give the enclosing
+frameworks; NREL's DER certification line~\cite{nrel80581,saleem2022dercert} and gap
 analysis~\cite{magill2026dergap} document the certification landscape. IEC~62351 is the sharpest
-comparison: Part~8 specifies role-based access control for power systems~\cite{iec62351-8} and
-Part~9 specifies key management \emph{including} enrollment and revocation for power-system
-equipment~\cite{iec62351-9}. Part~9 is thus a directly competing answer to our motivating problem,
-and the honest question is why the 2030.5/CSIP profile does not simply adopt it. The answer is not
-technical superiority on our side. It is that 62351-9's revocation machinery assumes the
-connectivity and the responsible-reporting party that the Sandia
-analysis~\cite{obert2019recommendations} found absent in the DER setting, and that CSIP
-interconnection deployments are certified against the 2030.5 profile, not against 62351. Where an
-operator does have that connectivity, 62351-9 is a reasonable alternative to our mechanism, and we
-say so rather than claim the field.
+comparison: Part~8 gives role-based access control~\cite{iec62351-8} and Part~9 specifies key
+management \emph{including} enrollment and revocation for power-system
+equipment~\cite{iec62351-9}. Part~9 is a directly competing answer, and the honest question is why
+2030.5/CSIP does not adopt it. Not technical superiority on our side: 62351-9's revocation
+machinery assumes the connectivity and responsible-reporting party the Sandia
+analysis~\cite{obert2019recommendations} found absent, and CSIP deployments certify against the
+2030.5 profile. Where an operator has that connectivity, 62351-9 is a reasonable alternative, and
+we say so rather than claim the field.
 
 \begin{table*}[t]
 \centering

@@ -84,6 +84,7 @@ def run_arm(seed: int, lm: float, scope: str, lifecycle: str) -> dict:
     """One fully isolated policy arm: fresh compile, fresh PV fleet, fresh controls."""
     kw, kvar = SCOPES[scope]
     series, taps_series, trips = [], [], []
+    nonconv = 0
     with f.Session(seed=seed, n_pv=N_PV, load_mult=lm) as s:
         prev_taps = f.tap_positions()
         tap_ops = 0
@@ -92,7 +93,9 @@ def run_arm(seed: int, lm: float, scope: str, lifecycle: str) -> dict:
                 f.dispatch(s.names, kw, kvar)
             else:
                 f.dispatch_legitimate(s.names)
-            f.solve()
+            conv = f.solve()
+            if not conv:
+                nonconv += 1
             cur = f.tap_positions()
             tap_ops += f.count_tap_operations(prev_taps, cur)
             prev_taps = cur
@@ -106,7 +109,8 @@ def run_arm(seed: int, lm: float, scope: str, lifecycle: str) -> dict:
         if excess[t] <= 0.05 and all(e <= 0.05 for e in excess[t:min(t + 3, H)]):
             recovery = t - T_ATTACK
             break
-    return {"integral": round(sum(excess), 3),
+    return {"nonconverged_steps": nonconv,
+            "integral": round(sum(excess), 3),
             "integral_raw": round(sum(series), 3),
             "baseline_area": round(base, 4),
             "peak": round(max(series), 3),
@@ -202,6 +206,10 @@ def main():
                       "n_pv": N_PV, "scopes": {k: list(v) for k, v in SCOPES.items()},
                       "q_1547_kvar": f.Q_1547_KVAR, "states": STATES},
            "runs": {f"{st}|{s}|{p}": v for (st, s, p), v in runs.items()},
+           "nonconvergence": {"solves_flagged": f.NONCONVERGED["n"],
+                              "solves_retried": f.NONCONVERGED["n_retried"],
+                              "policy": "retry cap 2 with 4x control budget each retry; "
+                                        "unsettled solves retained and flagged, never dropped"},
            "note": "Every (state, seed, policy) arm is an independent compile of the IEEE 8500 "
                    "feeder with a fresh PV fleet and fresh regulator/capacitor state, fixing the "
                    "warm-start leak in run_timeseries.py. Integral is of excess overvoltage area "
