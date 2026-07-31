@@ -176,8 +176,9 @@ def main():
            "runs": runs,
            "nonconvergence": {"solves_flagged": f.NONCONVERGED["n"],
                               "solves_retried": f.NONCONVERGED["n_retried"],
-                              "policy": "retry cap 2 with 4x control budget each retry; "
-                                        "unsettled solves retained and flagged, never dropped"},
+                              "policy": "retry cap 2, control-iteration budget tripled on "
+                                        "each retry (500 -> 1500 -> 4500); unsettled solves "
+                                        "retained and flagged, never dropped"},
            "note": "Integrated induced overvoltage area versus credential lifetime, at three "
                    "authorization envelopes named by their commanded (P kW, Q kvar). Every "
                    "(state, scope, ttl, seed) arm is an independent feeder compile with a fresh "

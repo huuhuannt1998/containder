@@ -116,6 +116,43 @@ def main():
         "SHA-256 over the full n=20 output series of each labelled arm in timeseries2.json; "
         "classes with more than one member are distinct labels for a single arm")
 
+    # ---- operating-state context: penetration and the legitimate base case's own violation ----
+    # The manuscript's central results are measured at a deliberately extreme hosting condition,
+    # in which the *unattacked* feeder is already outside the ANSI band. Reporting dJ_V without
+    # that context invites a reader to hear "returns to baseline" as "returns to compliance".
+    sc_rows = load("scope_envelope.json")["rows"]
+    P_PV, N = 12.0, 600
+    LOAD_MW = 10.8
+    state_ctx = {}
+    for st, lm in (("light_load", 0.30), ("normal", 1.00)):
+        b = [r["base_J_V"] for r in sc_rows if r["state"] == st]
+        zero = [r for r in sc_rows if r["state"] == st and r["axis"] == "active"
+                and r["sigma"] == 0.0]
+        state_ctx[st] = {
+            "pv_capacity_mw": round(N * P_PV / 1000, 3),
+            "load_mw": round(lm * LOAD_MW, 3),
+            "pv_penetration_pct": round(100 * (N * P_PV / 1000) / (lm * LOAD_MW)),
+            "legitimate_base_JV_median": round(statistics.median(b), 2),
+            "legitimate_base_JV_min": round(min(b), 2),
+            "legitimate_base_JV_max": round(max(b), 2),
+            "pv_commanded_to_zero_JV_median": round(
+                statistics.median([r["J_V"] for r in zero]), 3) if zero else None,
+            "pv_commanded_to_zero_n_over_median": (
+                statistics.median([r["n_over"] for r in zero]) if zero else None)}
+    out["operating_state_context"] = state_ctx
+    out["_sources"]["operating_state_context"] = (
+        "scope_envelope.json base_J_V and the sigma=0 active-axis arm; capacity/load from "
+        "feeder8500v2.P_PV_KW x 600 units against the 8500 feeder's 10.8 MW at the load multiplier")
+
+    # ---- solver retry ladder (documented so the manuscript's 500/1500/4500 traces) ------------
+    out["solver_retry_budget_ladder"] = [500, 1500, 4500]
+    out["_sources"]["solver_retry_budget_ladder"] = (
+        "feeder8500v2.solve(): budget starts at 500 and is multiplied by 3 on each of at most "
+        "two retries")
+    out["seed_range"] = {"first": 1000, "last_20_seed": 1019, "last_5_seed": 1004,
+                         "last_10_seed": 1009, "last_3_seed": 1002}
+    out["_sources"]["seed_range"] = "range(1000, 1000+n_seeds) in every runner"
+
     # ---- scope-envelope sweep: medians per envelope -------------------------------------------
     sc = load("scope_envelope.json")
     by = {}

@@ -23,19 +23,32 @@ unnecessary curtailment, energy not served, and recovery time to steady limits, 
 per-unit voltage excursion as the primary continuous measure and a protection-trip flag as
 the discrete outcome.
 
-\paragraph{Four modelling choices, three of them corrections.}
-\emph{DER model.} The fleet is OpenDSS \texttt{PVSystem} objects with an inverter rating and an
-\texttt{InvControl} volt-var controller on the IEEE~1547-2018 Category~B default
-characteristic~\cite{ieee1547-2018}. An earlier version used \texttt{Generator} objects at fixed
-$P,Q$, which have no inverter and no curve, so a ``volt-var curve distortion'' attack was really a
-static setpoint delta and the attack-family names overstated what was simulated. Curve distortion
-is now literal: the adversary rewrites the characteristic.
+\paragraph{Two feeder models, and which results use which.}
+Results in this paper come from two OpenDSS harnesses, and we say plainly which produced what
+rather than describe only the better one.
 
-\emph{Counterfactual.} The base case dispatches PV at its \emph{legitimate scheduled output} under
-that curve. An earlier version set every unit to $P{=}Q{=}0$, so the counterfactual feeder had no
-DER at all and $\Delta J_V$ conflated ``connect this much generation'' with ``a credential was
-stolen''. All $\Delta J_V$ here are against legitimate operation, and we report the legitimate base
-case's own violation area so penetration-driven stress is visible separately.
+\emph{The corrected model} (\texttt{power/feeder8500v2.py}) builds the fleet from
+\texttt{PVSystem} objects with an inverter rating and an \texttt{InvControl} volt-var controller
+on the IEEE~1547-2018 Category~B default characteristic~\cite{ieee1547-2018}, and takes as its
+counterfactual the PV dispatched at its \emph{legitimate scheduled output} under that curve. The
+scope-envelope sweep, the volt-var-curve sweep, the time series and the lifetime sweep use it.
+
+\emph{The superseded model} (\texttt{power/feeder8500.py}) used \texttt{Generator} objects at
+fixed $P,Q$ --- no inverter, no curve --- against a counterfactual with every unit at
+$P{=}Q{=}0$, so its $\Delta J_V$ conflates ``connect this much generation'' with ``a credential
+was stolen'', and a ``volt-var curve distortion'' attack under it was really a static setpoint
+delta. The PV-penetration, attack-family, IEEE~123 and retained-authority sweeps were run under
+it and are reported in Section~\ref{sec:prelim} with that provenance attached. \textbf{$\Delta
+J_V$ is therefore not on a common footing across every table}, and each table states which
+counterfactual its numbers use.
+
+\emph{How the adversary acts on the reactive axis.} Two distinct models appear, and the
+distinction turns out to matter (Section~\ref{sec:prelim}). Under \emph{setpoint override} the
+autonomous controller is switched off and a fixed reactive setpoint is written, which is how a
+\texttt{opModFixedVar} command supersedes an active volt-var curve. Under \emph{curve
+modification} the controller stays enabled and the adversary rewrites the characteristic within
+whatever band its authorization allows. The two express different authorizations, and an envelope
+bound means something different in each.
 
 \emph{Control mode.} We solve with \texttt{controlmode=static}, which does \emph{not} disable the
 feeder's controls, and we release the diagnostic that shows it

@@ -26362,7 +26362,7 @@
   "nonconvergence": {
     "solves_flagged": 24,
     "solves_retried": 48,
-    "policy": "retry cap 2 with 4x control budget each retry; unsettled solves retained and flagged, never dropped"
+    "policy": "retry cap 2, control-iteration budget tripled on each retry (500 -> 1500 -> 4500); unsettled solves retained and flagged, never dropped"
   },
   "note": "Every (state, seed, policy) arm is an independent compile of the IEEE 8500 feeder with a fresh PV fleet and fresh regulator/capacitor state, fixing the warm-start leak in run_timeseries.py. Integral is of excess overvoltage area above each arm's own pre-attack baseline, in p.u.-node-minutes. Base case is legitimate PV under an IEEE 1547-2018 Cat B volt-var curve."
 }

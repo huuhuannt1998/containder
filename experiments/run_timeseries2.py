@@ -208,8 +208,9 @@ def main():
            "runs": {f"{st}|{s}|{p}": v for (st, s, p), v in runs.items()},
            "nonconvergence": {"solves_flagged": f.NONCONVERGED["n"],
                               "solves_retried": f.NONCONVERGED["n_retried"],
-                              "policy": "retry cap 2 with 4x control budget each retry; "
-                                        "unsettled solves retained and flagged, never dropped"},
+                              "policy": "retry cap 2, control-iteration budget tripled on "
+                                        "each retry (500 -> 1500 -> 4500); unsettled solves "
+                                        "retained and flagged, never dropped"},
            "note": "Every (state, seed, policy) arm is an independent compile of the IEEE 8500 "
                    "feeder with a fresh PV fleet and fresh regulator/capacitor state, fixing the "
                    "warm-start leak in run_timeseries.py. Integral is of excess overvoltage area "

@@ -4,6 +4,9 @@
     "attack_loudness_light_load_B1": "feeder8500.json rows",
     "timeseries_derived": "timeseries2.json runs + agg",
     "arm_identity_classes": "SHA-256 over the full n=20 output series of each labelled arm in timeseries2.json; classes with more than one member are distinct labels for a single arm",
+    "operating_state_context": "scope_envelope.json base_J_V and the sigma=0 active-axis arm; capacity/load from feeder8500v2.P_PV_KW x 600 units against the 8500 feeder's 10.8 MW at the load multiplier",
+    "solver_retry_budget_ladder": "feeder8500v2.solve(): budget starts at 500 and is multiplied by 3 on each of at most two retries",
+    "seed_range": "range(1000, 1000+n_seeds) in every runner",
     "scope_envelope_derived": "scope_envelope.json rows"
   },
   "attack_loudness_light_load_B1": {
@@ -135,6 +138,40 @@
         "A4_full_lifecycle"
       ]
     ]
+  },
+  "operating_state_context": {
+    "light_load": {
+      "pv_capacity_mw": 7.2,
+      "load_mw": 3.24,
+      "pv_penetration_pct": 222,
+      "legitimate_base_JV_median": 57.71,
+      "legitimate_base_JV_min": 56.53,
+      "legitimate_base_JV_max": 65.74,
+      "pv_commanded_to_zero_JV_median": 1.691,
+      "pv_commanded_to_zero_n_over_median": 748
+    },
+    "normal": {
+      "pv_capacity_mw": 7.2,
+      "load_mw": 10.8,
+      "pv_penetration_pct": 67,
+      "legitimate_base_JV_median": 0.36,
+      "legitimate_base_JV_min": 0.18,
+      "legitimate_base_JV_max": 1.35,
+      "pv_commanded_to_zero_JV_median": 0.284,
+      "pv_commanded_to_zero_n_over_median": 132
+    }
+  },
+  "solver_retry_budget_ladder": [
+    500,
+    1500,
+    4500
+  ],
+  "seed_range": {
+    "first": 1000,
+    "last_20_seed": 1019,
+    "last_5_seed": 1004,
+    "last_10_seed": 1009,
+    "last_3_seed": 1002
   },
   "scope_envelope_derived": {
     "active|light_load|0.0": {
