@@ -28,6 +28,42 @@ unnecessary curtailment, energy not served, and recovery time to steady limits, 
 per-unit voltage excursion as the primary continuous measure and a protection-trip flag as
 the discrete outcome.
 
+\paragraph{Modelling choices that earlier versions of this work got wrong.}
+Three are worth stating explicitly, because each changes what the reported numbers mean.
+
+\emph{The DER model.} The fleet is represented by OpenDSS \texttt{PVSystem} objects with an
+inverter apparent-power rating and an \texttt{InvControl} volt-var controller following the
+IEEE~1547-2018 Category~B default characteristic~\cite{ieee1547-2018}. An earlier version used
+\texttt{Generator} objects at fixed $P$ and $Q$, which have no inverter model and no curve. Under
+that model a ``volt-var curve distortion'' attack was in fact a static setpoint delta, and the
+attack-family names overstated what was simulated. With a real controller present, curve
+distortion is now what its name says: the adversary rewrites the characteristic, and the feeder
+response follows from the controller acting on the distorted curve.
+
+\emph{The counterfactual.} The base case dispatches PV at its \emph{legitimate scheduled output}
+under that volt-var curve. An earlier version set every unit to $P{=}Q{=}0$, so the counterfactual
+feeder had no DER at all and the reported $\Delta J_V$ conflated ``connect this much generation''
+with ``a credential was stolen'' --- a condition an interconnection screening study would flag
+with no adversary present. All $\Delta J_V$ values reported here are measured against legitimate
+operation. We also report the legitimate base case's own violation area, so the reader can see how
+much of the feeder's stress is attributable to penetration rather than to attack.
+
+\emph{Control mode.} We solve with OpenDSS \texttt{controlmode=static} and we retain it
+deliberately. This mode does \emph{not} disable the feeder's controls: on the IEEE~8500 base case
+at light load it executes 10 regulator tap changes and 6 capacitor switching operations over 15
+control iterations, and a full-scope attack drives 12 further tap changes. Controls are disabled
+only by \texttt{controlmode=off}, under which the same attack produces violation area $998.0$ and
+a maximum of $1.3145$\,p.u.\ rather than $126.4$ and $1.1281$\,p.u. The feeder's regulators and
+capacitor banks are therefore acting against the disturbance in every result we report, and the
+harm we measure is harm that survives the mitigation a real feeder would apply. We report tap
+operations alongside every voltage metric so this is visible rather than asserted.
+
+\emph{Protection.} A protection model is now present, so the trip outcome named above can actually
+occur. We screen every node against the IEEE~1547-2018 Category~II overvoltage trip thresholds
+(OV2 at $1.20$\,p.u.\ with $0.16$\,s clearing, OV1 at $1.10$\,p.u.\ with $2.0$\,s clearing) and
+flag reverse power at the substation. Earlier versions declared a trip metric with no protection
+model behind it, so the flag could never fire; any claim resting on it was unsupported.
+
 We do not tune feeder parameters to amplify impact; we report what the standard models
 produce. The clean base case, the four attack families, the eight metrics, and the
 cross-solver agreement are the acceptance criteria for this component. As with the credential
