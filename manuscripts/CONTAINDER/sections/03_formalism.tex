@@ -95,7 +95,9 @@ Dim. & Type & Unit & Computation \\
 $\BRreach$ & set & count & fixed point of $\pi$-enabled access from $x$ \\
 $\BRflex$ & interval & kW, kVAr & $\sum_d \mathcal{C}_d(t;u_t,A_\pi(d))$ over reachable DERs \\
 $\BRauth$ & duration & s & $\max(T_{\mathrm{cred}},T_{\mathrm{sess}},T_{\mathrm{cmd}})$ \\
-$\BRphys$ & scalar & p.u.-node-min & $\max_a J_V(F,u,a)$ over the feeder model \\
+$\BRphys$ & scalar & \emph{snapshot} p.u.-node; \emph{integrated} p.u.-node-min &
+$\max_a J_V(F,u,a)$ at one operating point (snapshot), or $\int \max_a J_V\,dt$ accumulated over
+the horizon (integrated) \\
 \bottomrule
 \end{tabular}
 \end{table}
