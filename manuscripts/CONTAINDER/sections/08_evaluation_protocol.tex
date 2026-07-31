@@ -2,14 +2,26 @@
 % provenance: jrn_01KXTQR71C4YJ194114Y0JSQFF (v1 pre-registration); jrn_01KXTVC4CT850YTVE5EM3RJDGS (revision: mechanism baselines, mixed-effects, OSF).
 % provenance: mis_01KXT2FNB2JRTETEPAH14KK8B6 (M5 spec); dec_01KXT24BG2923V59HR33CCQC2Z (RQ2).
 
-\emph{No measured results are reported in this section.} We state the evaluation protocol, which
-is frozen and content-hashed before any run and will be deposited on a trusted timestamped
-repository before the confirmatory sweep; at present the immutability evidence is the content
-hash recorded in \texttt{PREREGISTRATION.md}, together with the version-control commit under
-which that record was placed. The design therefore cannot be adjusted after seeing outcomes
-without leaving a visible trace. Chronologically, the measured results in Section~\ref{sec:prelim}
-are pilot experiments; the confirmatory scenario matrix and statistical plan were frozen and hashed
-after the pilots, and pilot observations are excluded from the confirmatory tests.
+\emph{No measured results are reported in this section.} We state the evaluation protocol for the
+confirmatory sweep, and we state precisely what our immutability evidence for it is worth, because
+a pre-registration that overstates its own guarantee is worse than none.
+
+The scenario matrix and statistical plan are recorded in \texttt{PREREGISTRATION.md} with a
+SHA-256 content hash recomputable by \texttt{validate\_matrix.py}. \textbf{That hash is not a
+timestamp.} It was computed by the same party who could have edited the file, so it shows only
+that the matrix has not changed since the hash was written; it cannot show \emph{when} the matrix
+was fixed relative to seeing any outcome. The repository's version-control anchor does not repair
+this: the initial commit capturing the pre-registration is dated 2026-07-30, which
+\textbf{postdates every pilot result reported in Section~\ref{sec:prelim}}. We therefore make no
+claim that the design could not have been adjusted after seeing pilot outcomes. It could have
+been, and no artifact in this repository proves otherwise.
+
+Two consequences follow, and we adopt both. First, the measured results in
+Section~\ref{sec:prelim} are reported as \textbf{exploratory}, not confirmatory, and are excluded
+from the confirmatory tests. Second, the pre-registration is being deposited on a trusted
+timestamped repository \BLOCKER{PI: OSF/Zenodo DOI for pre-registration}, whose independently
+issued timestamp will support the immutability claim \emph{from the deposit date forward} --- that
+is, for the confirmatory sweep specified below, and not retroactively for the pilots.
 
 \paragraph{Baselines and mechanism ablations.}
 Six credential-lifecycle designs are compared: legacy identity-as-authority (B1), legacy with a

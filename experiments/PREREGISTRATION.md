@@ -1,29 +1,48 @@
 # CONTAINDER --- Experiment Pre-Registration (M5), v2 (IJCIP revision)
 
-**Status:** FROZEN 2026-07-18, before any production sweep. Supersedes v1.
+**Status:** Authored 2026-07-18. Supersedes v1. **There is no immutability evidence for this
+document that predates 2026-07-30**; see "What this pre-registration does and does not prove"
+below, which is the governing statement and overrides any stronger wording elsewhere.
+
 **Pre-registration anchor (SHA-256 of `scenario_matrix.yaml`):**
 `e95b174ca7ce43dab774afeef7c386d22e3900c68d9eedb8eefdcf6810e76262`
 
-Recompute with `python3 experiments/validate_matrix.py`. A private content hash proves
-immutability only if paired with an independently verifiable timestamp, so this record is also
-to be **deposited on a trusted timestamped repository (OSF or Zenodo)** before the sweep. That
-deposit has **not** been made; it is a PI decision and is pending.
+Recompute with `python3 experiments/validate_matrix.py`.
 
-**Version-control anchor.** The repository was placed under git on 2026-07-30. The initial
-commit, which captures this pre-registration and `scenario_matrix.yaml` in the state hashed
-above, is:
+## What this pre-registration does and does not prove
 
-`b65cd3b1cd2a993092ef7616f8e8bdf03c0398e8`
+Stated plainly, because the previous wording overclaimed.
 
-Until the external deposit is made, the immutability evidence for this pre-registration is the
-content hash above plus this commit hash. Neither is an independently verifiable timestamp, and
-the manuscript states this limitation rather than claiming a deposit that does not exist.
+**The version-control anchor postdates the pilot results.** The repository was placed under git
+on **2026-07-30**. The initial commit capturing this document and `scenario_matrix.yaml` in the
+state hashed above is `b65cd3b1cd2a993092ef7616f8e8bdf03c0398e8`, dated **2026-07-30 06:03:31
+-0400**. Every pilot result reported in the manuscript's evaluation section was produced *before*
+that commit (the result files carry modification times from 2026-07-18 to 2026-07-30). The
+document header claims an authoring date of 2026-07-18, but **no artifact in this repository
+independently corroborates that date.**
+
+**Therefore:** the SHA-256 above is a *content* hash, not a *timestamp*. It was computed by the
+same party who could have edited the file, so it establishes only that the matrix has not changed
+since the hash was recorded --- it cannot establish *when* the matrix was fixed relative to seeing
+outcomes. Any claim that the design "cannot be adjusted after seeing outcomes without leaving a
+visible trace" is **false as applied to the pilot results** and must not appear in the manuscript.
+
+**What would fix this,** and what the manuscript stages as a blocking pre-submission action: a
+deposit of this document on OSF or Zenodo, whose independently issued timestamp and DOI convert
+the claim into a verifiable one. That deposit is a PI action and **has not been made.** Once it
+is, the DOI supersedes this section, and the guarantee applies from the deposit date forward ---
+that is, to the confirmatory sweep, and *not* retroactively to the pilots.
+
+**Consequently the pilot results in the manuscript are reported as exploratory, not
+confirmatory,** and the manuscript says so.
 
 ## Why this exists
 
 Writing the scenario matrix after seeing results is the most common way this genre of paper
-loses credibility. The matrix is frozen and hashed before the first run. Post-hoc scenarios go
-in a separate file and are labeled post-hoc in the paper.
+loses credibility. This matrix is hashed and fixed for the **confirmatory** sweep, which has not
+yet run. It was **not** fixed before the pilot runs, whose results the manuscript therefore
+labels exploratory. Post-hoc scenarios go in a separate file and are labeled post-hoc in the
+paper.
 
 ## Primary hypothesis
 
@@ -82,4 +101,8 @@ This document and the frozen matrix are the pre-registration deliverable. The pr
 microbenchmarks, availability, and scalability) requires the M3 attested-credential service on
 real IEEE 2030.5 traffic and the M4 co-simulation, which need a testbed not present in the
 authoring session. No sweep results exist yet; the manuscript marks all results sections pending
-until this sweep runs, and reports no numbers before then.
+until this sweep runs. An earlier version of this document stated that the manuscript "reports
+no numbers before then". That is not what the manuscript does: it reports pilot measurements in
+its evaluation section, clearly labelled as exploratory pilot results and excluded from the
+confirmatory tests. This document is corrected here to match the manuscript rather than to
+contradict it.
