@@ -526,3 +526,201 @@
   author = {Wang, Lingyu and Jajodia, Sushil and Singhal, Anoop and Noel, Steven},
   title = {k-Zero Day Safety: Measuring the Security Risk of Networks against Unknown Attacks},
   booktitle = {ESORICS 2010}, series = {Lecture Notes in Computer Science}, volume = {6345}, pages = {573--587}, year = {2010}, publisher = {Springer}}
+
+% ===================================================================================
+% Added in the IJCIP major revision. Every entry below was verified against CrossRef,
+% DBLP, OSTI, the IEC webstore, the IEEE Standards Association, or the issuing body's
+% own published record, by DOI or exact title -- never by author-name search.
+% ===================================================================================
+
+% --- Workload identity: the closest existing system to CONTAINDER's containment chain ---
+@misc{spiffe-spec,
+  title        = {The {SPIFFE} Specification: Secure Production Identity Framework for Everyone},
+  howpublished = {\url{https://github.com/spiffe/spiffe}},
+  note         = {Specification set: SPIFFE ID and Verifiable Identity Document, SPIFFE
+                  Workload API, SPIFFE Workload Endpoint, X.509-SVID, JWT-SVID},
+  url          = {https://github.com/spiffe/spiffe}
+}
+
+@misc{spiffe-cncf,
+  title        = {{SPIFFE}: Secure Production Identity Framework for Everyone},
+  howpublished = {Cloud Native Computing Foundation graduated project},
+  year         = {2022},
+  note         = {Accepted to CNCF 2018-03-29; incubating 2020-06-22; graduated 2022-08-23},
+  url          = {https://www.cncf.io/projects/spiffe/}
+}
+
+@inproceedings{bakoyiannis2025spiffe,
+  author    = {Dimitrios Bakoyiannis and George Kornaros and Othon Tomoutzoglou and
+               Miltos D. Grammatikakis and Marcello Coppola},
+  title     = {Trusting {IoT} Devices at Scale in the Computing Continuum Through
+               {SPIFFE/SPIRE} Certificates},
+  booktitle = {ApplePies},
+  pages     = {279--285},
+  year      = {2025},
+  doi       = {10.1007/978-3-032-17174-0_40}
+}
+
+@inproceedings{cochak2024lsvid,
+  author    = {Henrique Zanela Cochak and Charles Christian Miers and
+               Pedro H. Barcha Correia and Marco A. Marques and Marcos A. Simplicio Jr.},
+  title     = {Lightweight {SPIFFE} Verifiable Identity Document ({LSVID}): A Nested Token
+               Approach for Enhanced Security and Flexibility in {SPIFFE}},
+  booktitle = {CloudCom},
+  pages     = {9--16},
+  year      = {2024},
+  doi       = {10.1109/CLOUDCOM62794.2024.00015}
+}
+
+% --- Web PKI: the industry's actual resolution of the revocation problem ---
+@misc{cabf-sc081v3,
+  author       = {{CA/Browser Forum}},
+  title        = {Ballot {SC081v3}: Introduce Schedule of Reducing Validity and
+                  Data Reuse Periods},
+  year         = {2025},
+  month        = apr,
+  note         = {Approved; voting period 2025-04-04 to 2025-04-11},
+  url          = {https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/}
+}
+
+@misc{cabf-sc063v4,
+  author = {{CA/Browser Forum}},
+  title  = {Ballot {SC063v4}: Make {OCSP} Optional, Require {CRLs}, and Incentivize Automation},
+  year   = {2023},
+  month  = jul,
+  note   = {Passed; voting period 2023-07-06 to 2023-07-13; introduced the Short-lived
+            Subscriber Certificate into Baseline Requirements v2.0.0},
+  url    = {https://cabforum.org/2023/07/14/ballot-sc063v4-make-ocsp-optional-require-crls-and-incentivize-automation/}
+}
+
+@misc{cabf-br,
+  author  = {{CA/Browser Forum}},
+  title   = {Baseline Requirements for the Issuance and Management of Publicly-Trusted
+             {TLS} Server Certificates},
+  edition = {Version 2.2.8},
+  year    = {2026},
+  note    = {Short-lived Subscriber Certificate defined in Section 1.6.1; validity periods
+             in Section 6.3.2; 47-day maximum effective 2029-03-15},
+  url     = {https://cabforum.org/working-groups/server/baseline-requirements/requirements/}
+}
+
+% --- DER and power-system security standards ---
+@techreport{ieee1547.3-2023,
+  author      = {{IEEE}},
+  title       = {{IEEE} Guide for Cybersecurity of Distributed Energy Resources
+                 Interconnected with Electric Power Systems},
+  institution = {Institute of Electrical and Electronics Engineers},
+  number      = {IEEE Std 1547.3-2023},
+  year        = {2023},
+  month       = dec,
+  doi         = {10.1109/IEEESTD.2023.10352402},
+  isbn        = {979-8-8557-0285-9},
+  note        = {IEEE Xplore document 10352402}
+}
+
+@techreport{iec62351-8,
+  author      = {{IEC}},
+  title       = {Power systems management and associated information exchange -- Data and
+                 communications security -- Part 8: Role-based access control for power
+                 system management},
+  institution = {International Electrotechnical Commission},
+  number      = {IEC 62351-8:2020},
+  edition     = {1.0},
+  year        = {2020},
+  month       = apr,
+  url         = {https://webstore.iec.ch/en/publication/61822}
+}
+
+@techreport{iec62351-9,
+  author      = {{IEC}},
+  title       = {Power systems management and associated information exchange -- Data and
+                 communications security -- Part 9: Cyber security key management for
+                 power system equipment},
+  institution = {International Electrotechnical Commission},
+  number      = {IEC 62351-9:2023},
+  edition     = {2.0},
+  year        = {2023},
+  month       = jun,
+  note        = {Second edition; cancels and replaces IEC 62351-9:2017},
+  url         = {https://webstore.iec.ch/en/publication/66864}
+}
+
+@techreport{nistir7628r1,
+  author      = {{The Smart Grid Interoperability Panel--Smart Grid Cybersecurity Committee}},
+  title       = {Guidelines for Smart Grid Cybersecurity},
+  institution = {National Institute of Standards and Technology},
+  number      = {NISTIR 7628 Revision 1},
+  address     = {Gaithersburg, MD},
+  year        = {2014},
+  month       = sep,
+  doi         = {10.6028/NIST.IR.7628r1}
+}
+
+@techreport{iec62443-3-3,
+  author      = {{IEC}},
+  title       = {Industrial communication networks -- Network and system security --
+                 Part 3-3: System security requirements and security levels},
+  institution = {International Electrotechnical Commission},
+  number      = {IEC 62443-3-3:2013},
+  edition     = {1.0},
+  year        = {2013},
+  month       = aug,
+  url         = {https://webstore.iec.ch/en/publication/7033}
+}
+
+@techreport{iec62443-4-2,
+  author      = {{IEC}},
+  title       = {Security for industrial automation and control systems -- Part 4-2:
+                 Technical security requirements for {IACS} components},
+  institution = {International Electrotechnical Commission},
+  number      = {IEC 62443-4-2:2019},
+  edition     = {1.0},
+  year        = {2019},
+  month       = feb,
+  url         = {https://webstore.iec.ch/en/publication/34421}
+}
+
+@techreport{nrel80581,
+  author      = {William Hupp and Danish Saleem and Jordan T. Peterson and Kenneth Boyce},
+  title       = {Cybersecurity Certification Recommendations for Interconnected Grid Edge
+                 Devices and Inverter Based Resources},
+  institution = {National Renewable Energy Laboratory},
+  number      = {NREL/TP-5R00-80581},
+  address     = {Golden, CO},
+  year        = {2021},
+  month       = nov,
+  doi         = {10.2172/1832209}
+}
+
+@techreport{saleem2022dercert,
+  author      = {Danish Saleem and Michael Slowinske},
+  title       = {Cybersecurity Certification Standard for Distributed Energy and
+                 Inverter Based Resources},
+  institution = {National Renewable Energy Laboratory},
+  number      = {NREL/PR-5R00-81827},
+  address     = {Golden, CO},
+  year        = {2022},
+  month       = jan,
+  note        = {Conference presentation; OSTI 1842981},
+  url         = {https://www.osti.gov/biblio/1842981}
+}
+
+@techreport{magill2026dergap,
+  author      = {Charles MaGill and Danish Saleem and Jordan Waggoner and Jenna deCastro},
+  title       = {{DER} Cybersecurity Standards: Assessment and Gap Analysis},
+  number      = {NLR/TP-5T00-93100},
+  institution = {National Laboratory of the Rockies},
+  address     = {Golden, CO},
+  year        = {2026},
+  doi         = {10.2172/3015061}
+}
+
+% --- Released artifact (data availability) ---
+@misc{dataset_containder,
+  author       = {Huan Bui},
+  title        = {{[dataset]} {CONTAINDER}: analysis engine, attested credential service,
+                  {OpenDSS} feeder pipeline, pre-registration, and result files},
+  year         = {2026},
+  howpublished = {Zenodo},
+  note         = {DOI pending deposit}
+}
