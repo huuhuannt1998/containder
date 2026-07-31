@@ -40,22 +40,33 @@ tiers.
 and renewal, plus an OpenDSS feeder pipeline --- with ten implemented security invariants
 verified and containment timing measured.
 % provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTX3PH43VR78AM1GZHC27T1 (measured results).
-\item A \emph{pilot evaluation} on the IEEE~8500-node~\cite{arritt2010ieee8500} and IEEE~123-bus
-feeders showing that scope
-bounds the instantaneous envelope while attested short lifetimes bound its duration, and that
-neither alone suffices.
+\item A \emph{negative result that constrains the design space}: on the IEEE~8500-node
+feeder~\cite{arritt2010ieee8500}, an authorization scope narrow enough to contain a compromise is
+too narrow to deliver the volt-var service IEEE~1547-2018 mandates and CSIP programs procure. An
+adversary confined to the \emph{conformant} volt-var envelope still drives the feeder past an
+IEEE~1547 overvoltage trip threshold. Scope narrowing alone therefore does not contain, and the
+apparent adequacy of a narrow access list in our earlier configuration was an artifact of an
+envelope too small to deliver the service at all.
 % provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series); jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (baseline sweep).
-\item A \emph{four-dimension impact model} (cyber reach, state-dependent commandable flexibility,
-retained authority, feeder consequence) making explicit which quantities a DER-authorization
-defense must move, with a worked example showing why unweighted static reachability cannot rank
-containment policies.
-% provenance: jrn_01KXT490ZD4444AWMRG5296GJA; jrn_01KXT49DNW5ZK6CEFDJW7CCK5M; ratified dec_01KXT4C1Z766YBPHE78X0Z35V3.
+\item A \emph{pilot evaluation} with paired per-seed contrasts showing that, at that conformant
+scope, bounding the \emph{duration} of retained authority is what bounds integrated harm, and
+quantifying the containment latency this buys: expected retention is the credential lifetime
+divided by the per-cycle attestation detection probability, not the lifetime itself.
 \end{itemize}
 
 The threat model underpinning all four separates bootstrap identity, operational credential, and
 authorization scope, and names the baseline standard's conflation of the first two as the driver
 of unbounded persistence.
 % provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
+
+We deliberately do \emph{not} claim the four-dimension accounting of
+Section~\ref{sec:formalism} as a contribution. Adding resource-by-scope product nodes, a time
+index, and attached state and policy to a classical attack graph yields that accounting, as
+Section~\ref{sec:separation} shows; the separation propositions that follow are true by
+construction, since a reachability-only measure cannot depend on variables that are not among its
+arguments. We keep the notation because the paper needs a vocabulary for "how much, for how long,
+under which grid conditions", and we keep the worked example because it is a useful illustration.
+Neither is offered as a theoretical advance. The load-bearing claims of this paper are empirical.
 
 We state scope plainly. The formal model, the separation propositions, and the cyber-side engine
 are implemented and covered by a regression suite, including the separating counterexample. The
