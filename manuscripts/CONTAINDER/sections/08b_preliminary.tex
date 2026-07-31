@@ -340,12 +340,55 @@ B6 safe-mode & narrow (non-conformant) & $12.22$\,h & $\approx 0$ \\
 \end{tabular}
 \end{table}
 
+\paragraph{Seed inventory.}
+Table~\ref{tab:seeds} is the complete inventory of every measured run behind this section, so that
+no experiment's scale has to be inferred from prose.
+
+\begin{table}[t]
+\centering
+\caption{Complete inventory of measured runs. Seeds are paired across policy arms within an
+experiment. ``Arms'' counts the policy or envelope conditions evaluated at each seed.}
+\label{tab:seeds}
+\small
+\begin{tabular}{@{}p{0.42\columnwidth}ccc@{}}
+\toprule
+Experiment & Seeds & Arms & States \\
+\midrule
+IEEE 8500 snapshot sweep & 10 & 2 & 3 \\
+IEEE 8500 time series (corrected) & 20 & 9 & 2 \\
+Scope-envelope sweep & 5 & 21 & 2 \\
+PV penetration sweep & 5 & 1 & 1 \\
+Attack-family sweep & 5 & 4 & 1 \\
+Legitimate-utility run & 3 & 3 & 1 \\
+IEEE 123 confirmatory run & 3 & 2 & 1 \\
+Credential-service invariants (C1) & 1 & 10 & --- \\
+Overhead microbenchmarks (C3) & 500 iterations & 4 & --- \\
+Availability fault injection (C6) & 3 policies & 3 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Limitations.}
 These results are pilot results and we do not generalize them. Physical results come from two
-public feeders (a ten-seed IEEE~8500 sweep, a three-seed IEEE~8500 time-series, and a three-seed
-confirmatory IEEE~123 run) and a single OpenDSS solver, with no GridLAB-D cross-check and a fixed
-export attacker; the IEEE~9500-node system was obtained but did not converge in our OpenDSS build
-and is deferred to an appendix tier per the study's pre-registered contingency. Retained-authority
+public feeders and a single OpenDSS solver, with no GridLAB-D cross-check and a fixed
+export attacker; Table~\ref{tab:seeds} gives the full seed inventory.
+
+\emph{The IEEE~9500 failure mode, stated.} The PNNL~9500-node system was obtained but did not
+converge in our build, and we name the mode rather than leaving it an unexplained absence. The
+failure is in the \emph{base case}, with no attack applied and no PV of ours placed: running the
+model's own shipped driver unaltered --- which sets the voltage bases, calls \texttt{calcv}, and
+solves at \texttt{maxiter=1000 maxcontroliter=100} --- returns \texttt{Converged = False} with an
+empty error description, and every bus per-unit magnitude reads zero, i.e.\ the solution collapses
+rather than merely missing tolerance. It reproduces at $1000$ iterations, under both the normal
+and Newton algorithms, and with feeder controls both enabled (\texttt{controlmode=static}) and
+disabled (\texttt{controlmode=off}), so it is neither a control-loop oscillation nor an
+iteration-budget shortfall. Our build is DSS C-API $0.14.5$ / DSS-Python $0.15.7$ /
+OpenDSSDirect.py $0.9.4$ on macOS arm64. \textbf{We did not resolve it and we do not attribute
+it}: we cannot exclude a platform or build defect on our side rather than a defect in the model,
+and we did not have a second OpenDSS build available to discriminate. It is deferred to an
+appendix tier per the pre-registered contingency. The consequence for this paper is that the
+cross-feeder generality of these results rests on the IEEE~123 confirmatory run alone, which is
+weak, and we do not claim more. Retained-authority
 figures, and the exposure proxy built on them, are model outputs under assumed attestation and
 lifetime parameters, not measured field values. Overhead is workstation-only: there is no
 constrained-hardware or TEE measurement. The availability result injects verifier outages
