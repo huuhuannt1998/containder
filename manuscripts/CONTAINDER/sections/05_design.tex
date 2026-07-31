@@ -91,6 +91,58 @@ only the compatibility level demonstrated by an interoperability test; if only t
 interoperates with an unmodified endpoint, we say CONTAINDER supports incremental deployment
 through a credential-terminating gateway proxy, and no more.
 
+\subsection{What non-renewal inherits from the constraints it cites}
+% Reviewer M11: the mechanism inherits at least two of the three deficiencies it cites against OCSP.
+
+Section~\ref{sec:threat} adopts the Sandia analysis's reasons why online revocation fails for DER:
+no guaranteed connectivity, no trustworthy time on inverters, and no party responsible for
+reporting compromise. Our mechanism does not escape those constraints merely by changing which
+protocol carries the decision. It inherits two of the three outright, and we would rather state
+that than let a reader discover it.
+
+\emph{Secure time.} Expiry is a judgment about time, so an endpoint that cannot trust its clock
+cannot enforce a short lifetime --- the very deficiency cited against OCSP. An adversary who skews
+or freezes a device clock extends a ``short-lived'' credential indefinitely. This is a potential
+break of the core mechanism, not a peripheral limitation, and our design response is that
+\textbf{expiry must never be enforced by the endpoint alone}. Three properties make the mechanism
+independent of DER-side time: the issuer refuses renewal server-side, where a trustworthy clock
+exists; each renewal is bound to a fresh key and a verifier-supplied nonce, so replaying an old
+attestation cannot extend authority however the clock reads; and session and command-effect limits
+are expressed as monotonic counters and elapsed-tick budgets rather than wall-clock deadlines.
+Under these, a skewed clock costs availability, not containment. We have not measured clock skew,
+and Section~\ref{sec:prelim} lists it as untested.
+
+\emph{Connectivity.} A twelve-hour lifetime means a DER that loses backhaul for twelve hours loses
+control authority, and rural DER backhaul outages of that length are routine. Our availability
+figures come from in-process verifier fault injection, not from networked or hardware outages, and
+renewal storms are untested. An aggregator that drops a fifth of its fleet's controllability
+during a verifier outage has created a reliability hazard while closing a security one. The
+safe-mode policy of Section~\ref{sec:design} exists for exactly this reason: on renewal failure a
+device degrades to an autonomous, locally safe volt-var profile rather than to no authority at
+all. Whether that trade is acceptable is an operator's decision, not ours to assert.
+
+\emph{Who reports compromise.} Attestation detects only what it can measure. Firmware integrity is
+measurable; \textbf{a stolen operational key on a device whose firmware is intact passes
+attestation}. Per-epoch fresh-key binding is the answer, because a copied key stops working once
+the epoch turns --- but the containment latency is then not the lifetime. With per-cycle detection
+probability $p$ and lifetime $T$, expected retained authority is $T/p$: at $T{=}6$\,h and
+$p{=}0.5$ the copied key survives about twelve hours, and it is only at $p{=}1$ that retention
+equals the lifetime. \textbf{We therefore report $T/p$, not $T$, as the containment-latency figure
+of merit.} The comparison an operator needs is against the alternative: a narrow access list on a
+long-lived credential contains a copied key only when someone notices and edits the list, which
+has no bounded latency at all. Bounded-but-nontrivial beats unbounded; it does not beat instant,
+and we do not claim it does.
+
+\emph{Which tier is actually deployable.} We have presented three tiers evenhandedly, and that is
+misleading. Only one is plausibly deployable within the next standards cycle. The native tier
+needs attestation on constrained inverter hardware and a trustworthy clock on the endpoint; the
+legacy tier changes nothing. \textbf{The gateway-attested proxy tier resolves all three
+inheritances at once}: the gateway, not the inverter, holds the operational credential and the
+clock; attestation runs on hardware that can support it; downstream devices stay unmodified; and
+the gateway can buffer through short backhaul outages. It is also the only tier that requires no
+change to the endpoints an operator has already certified. We regard it as the deployment path and
+the other two as endpoints of a spectrum.
+
 \subsection{Implementation status}
 % provenance: mis_01KXT2D8VVC1CDNT9WJ4CFGH9P (M3 spec).
 The design is realized as an issuance and renewal service using real X.509 certificates and mutual
