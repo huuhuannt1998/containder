@@ -31,18 +31,25 @@ def main():
                     "experiments/derive_reported_stats.py. No new measurement is performed here.",
            "_sources": {}}
 
-    # ---- IEEE 8500 snapshot sweep: how loud the attack is (Sec. VIII, 'this attack is loud') ---
-    f8500 = load("feeder8500.json")
-    rows = [r for r in f8500["rows"] if r["state"] == "light_load" and r["policy"] == "B1_full"]
-    nov = [r["n_over"] for r in rows]
-    vmx = [r["vmax"] for r in rows]
-    out["attack_loudness_light_load_B1"] = {
-        "n_seeds": len(rows),
-        "n_over_median": statistics.median(nov),
-        "n_over_min": min(nov), "n_over_max": max(nov),
-        "n_over_median_pct_of_8531": round(100 * statistics.median(nov) / 8531, 1),
-        "vmax_median": round(statistics.median(vmx), 4), "vmax_max": round(max(vmx), 4)}
-    out["_sources"]["attack_loudness_light_load_B1"] = "feeder8500.json rows"
+    # ---- how loud the attack is, from the CORRECTED harness -----------------------------------
+    # The manuscript previously took these from feeder8500.json, which is the superseded
+    # Generator-based harness with a zero-DER counterfactual. That file now lives in
+    # superseded/ and these figures are recomputed from the scope-envelope sweep instead.
+    sc = load("scope_envelope.json")
+    conf = [r for r in sc["rows"] if r["axis"] == "reactive" and r["state"] == "light_load"
+            and r["kvar"] == 5.28]
+    out["attack_loudness_light_load_conformant"] = {
+        "n_seeds": len(conf),
+        "n_over_median": statistics.median(r["n_over"] for r in conf),
+        "n_over_min": min(r["n_over"] for r in conf),
+        "n_over_max": max(r["n_over"] for r in conf),
+        "n_over_median_pct_of_8531": round(
+            100 * statistics.median(r["n_over"] for r in conf) / 8531),
+        "vmax_median": round(statistics.median(r["vmax"] for r in conf), 4),
+        "vmax_max": round(max(r["vmax"] for r in conf), 4),
+        "dJV_median": round(statistics.median(r["dJ_V"] for r in conf), 2)}
+    out["_sources"]["attack_loudness_light_load_conformant"] = (
+        "scope_envelope.json, reactive axis at the conformant 5.28 kvar envelope, light load")
 
     # ---- corrected time series: accrual rate, ratio ceiling, recovery, tap cost ---------------
     ts = load("timeseries2.json")
@@ -169,6 +176,24 @@ def main():
             "vmax_max": round(max(r["vmax"] for r in rs), 4), "n": len(rs)}
     out["scope_envelope_derived"] = scope_out
     out["_sources"]["scope_envelope_derived"] = "scope_envelope.json rows"
+
+    # ---- bounded-curve vs setpoint-override authorization --------------------------------------
+    if (RES / "curve_envelope.json").exists():
+        ce = load("curve_envelope.json")
+        out["curve_envelope_bands"] = ce["bands"]
+        out["curve_envelope_light_load"] = {
+            q: {"curve_dJV": ce["agg"][f"light_load|curve|{q}"]["dJV_median"],
+                "curve_induced_trip": ce["agg"][f"light_load|curve|{q}"]["induced_trip_frac"],
+                "override_dJV": ce["agg"][f"light_load|override|{q}"]["dJV_median"],
+                "override_induced_trip": ce["agg"][f"light_load|override|{q}"]["induced_trip_frac"]}
+            for q in ce["params"]["q_high_v_grid"]}
+        out["legitimate_base_light_load"] = {
+            "JV_median": ce["agg"]["light_load|curve|0.0"]["base_JV_median"],
+            "n_over_median": ce["agg"]["light_load|curve|0.0"]["base_n_over_median"],
+            "n_over_pct_of_8531": round(
+                100 * ce["agg"]["light_load|curve|0.0"]["base_n_over_median"] / 8531),
+            "trip_frac": ce["agg"]["light_load|curve|0.0"]["base_trip_frac"]}
+        out["_sources"]["curve_envelope_bands"] = "curve_envelope.json bands + agg"
 
     # ---- lifetime dose-response, if the sweep has been run ------------------------------------
     if (RES / "ttl_sweep.json").exists():

@@ -15,18 +15,23 @@ revocation rest on the Sandia analysis rather than a clause-level reading of the
 \paragraph{Conclusion.}
 Credential compromise in IEEE~2030.5 is not well described by how many nodes an adversary reaches.
 It is described by how much physical capacity those nodes command, how long the adversary keeps
-it, and what the feeder does in response. Our central empirical finding is a negative one, and it
-constrains the design space more than a favourable result would have. \textbf{On the IEEE~8500-node
-feeder there is no authorization scope that both contains a credential compromise and delivers the
-volt-var service IEEE~1547 requires.} An adversary confined to the conformant reactive envelope
-still drives the feeder past an overvoltage trip threshold in every seed, and an adversary that
-merely suppresses volt-var --- needing no injection authority at all --- does so too. Least
-privilege, applied to this function set on this feeder, is not sufficient.
+it, and what the feeder does in response. Our central empirical finding is about \emph{which} authorization
+primitive an operator should grant, not about how tightly to bound it. \textbf{On the
+IEEE~8500-node feeder, bounding the magnitude of a fixed reactive setpoint does not contain a
+credential compromise, while bounding the volt-var characteristic does.} An adversary that merely
+overrides the curve --- needing no injection authority at all, and staying inside any magnitude
+bound including zero --- drives the feeder past an overvoltage trip threshold in every seed,
+because the suppression is granted by the override rather than by the quantity commanded. An
+adversary confined instead to moving the characteristic within a band containing at least about
+three quarters of the conformant Category~B absorption trips no seed. Least privilege works here,
+but only when it is applied to the curve rather than to a number.
 
-What follows is not that the mechanism is useless but that its useful part is temporal. Once scope
-cannot bound the instantaneous envelope, bounding the \emph{duration} of retained authority is
-what remains, and that is what attested short-lived credentials with session and command-effect
-enforcement provide. The price is stated rather than hidden: containment latency is the credential
+Two things follow. The concrete one is a recommendation to the standard's users: authorize
+\texttt{opModVoltVar} curve parameters within a band and withhold \texttt{opModFixedVar}. The
+second is that scope discipline remains insufficient on its own at the envelopes deployments
+actually grant today, so bounding the \emph{duration} of retained authority still matters, and
+that is what attested short-lived credentials with session and command-effect enforcement
+provide. The price is stated rather than hidden: containment latency is the credential
 lifetime divided by the per-cycle attestation detection probability, not the lifetime itself, and a
 gateway-proxy tier is the only one of our three deployment tiers that resolves the secure-time and
 constrained-hardware constraints the mechanism inherits from the problem it addresses. These are

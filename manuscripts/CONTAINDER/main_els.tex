@@ -60,12 +60,16 @@ consequence --- and give a worked example of two compromises with identical reac
 flexibility, persistence, and feeder outcome. We implement a credential service with real X.509
 and mutual TLS and a real OpenDSS feeder pipeline. On the IEEE~8500-node feeder, ten implemented
 security invariants pass and attested issuance costs about $0.23$\,ms. Our central physical
-finding is negative and constrains the design space: sweeping the authorized envelope
-continuously, \emph{no} reactive scope both contains a compromise and delivers the volt-var
-service IEEE~1547-2018 requires. At the full Category~B envelope the induced overvoltage area is
-$87.9$ p.u.-node with every seed tripping the overvoltage screen, and even at zero authorized
-reactive injection it is $31.2$ with every seed tripping, because suppressing the absorption the
-feeder relies on is itself an attack. Scope having failed, lifetime is the remaining control:
+finding is that whether authorization narrowing contains a compromise depends on \emph{which}
+object is bounded, not on how tightly. Bounding the magnitude of a fixed reactive setpoint --- the
+\texttt{opModFixedVar} primitive --- does not contain: at zero authorized injection the induced
+overvoltage area still rises by $31.2$ p.u.-node with every seed tripping the IEEE~1547 overvoltage
+screen, because overriding the volt-var curve at all suppresses the absorption the feeder relies
+on, and no magnitude bound reaches that. Bounding the volt-var \emph{characteristic} instead, with
+the controller left enabled, does contain: no seed trips while the DER retains about three quarters
+of the conformant Category~B absorption. The design consequence is specific --- authorize curve
+parameters within a band and withhold fixed-setpoint control. Scope alone is still not sufficient
+at the envelope operators actually grant, so lifetime is the second control:
 across twenty paired seeds a compromise at the conformant envelope holds the feeder in violation
 for the whole horizon under a long-lived credential, whereas under CONTAINDER the feeder returns
 to its pre-attack baseline within one minute of expiry in $17$ of $20$ seeds under light load ---

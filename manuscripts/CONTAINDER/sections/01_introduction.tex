@@ -40,13 +40,14 @@ tiers.
 and renewal, plus an OpenDSS feeder pipeline --- with ten implemented security invariants
 verified and containment timing measured.
 % provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTX3PH43VR78AM1GZHC27T1 (measured results).
-\item A \emph{negative result that constrains the design space}: on the IEEE~8500-node
-feeder~\cite{arritt2010ieee8500}, an authorization scope narrow enough to contain a compromise is
-too narrow to deliver the volt-var service IEEE~1547-2018 mandates and CSIP programs procure. An
-adversary confined to the \emph{conformant} volt-var envelope still drives the feeder past an
-IEEE~1547 overvoltage trip threshold. Scope narrowing alone therefore does not contain, and the
-apparent adequacy of a narrow access list in our earlier configuration was an artifact of an
-envelope too small to deliver the service at all.
+\item A \emph{result about which authorization primitive to grant}: on the IEEE~8500-node
+feeder~\cite{arritt2010ieee8500}, bounding the magnitude of a fixed reactive setpoint does not
+contain a compromise --- at zero authorized injection the feeder still breaches, because
+overriding the volt-var curve suppresses absorption the feeder depends on --- while bounding the
+volt-var characteristic itself does contain, provided the DER keeps roughly three quarters of the
+conformant Category~B absorption. Narrowing therefore works on one IEEE~2030.5 primitive and not
+on the other, and the apparent adequacy of a narrow access list in our earlier configuration was
+an artifact of an envelope too small to deliver the service at all.
 % provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series); jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (baseline sweep).
 \item A \emph{pilot evaluation} with paired per-seed contrasts over twenty seeds showing that, at
 that conformant scope, bounding the \emph{duration} of retained authority is the only remaining

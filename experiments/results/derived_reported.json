@@ -1,22 +1,25 @@
 {
   "_note": "Derived statistics quoted in the manuscript, recomputed from the primary result files in this directory. Regenerate with experiments/derive_reported_stats.py. No new measurement is performed here.",
   "_sources": {
-    "attack_loudness_light_load_B1": "feeder8500.json rows",
+    "attack_loudness_light_load_conformant": "scope_envelope.json, reactive axis at the conformant 5.28 kvar envelope, light load",
     "timeseries_derived": "timeseries2.json runs + agg",
     "arm_identity_classes": "SHA-256 over the full n=20 output series of each labelled arm in timeseries2.json; classes with more than one member are distinct labels for a single arm",
     "operating_state_context": "scope_envelope.json base_J_V and the sigma=0 active-axis arm; capacity/load from feeder8500v2.P_PV_KW x 600 units against the 8500 feeder's 10.8 MW at the load multiplier",
     "solver_retry_budget_ladder": "feeder8500v2.solve(): budget starts at 500 and is multiplied by 3 on each of at most two retries",
     "seed_range": "range(1000, 1000+n_seeds) in every runner",
-    "scope_envelope_derived": "scope_envelope.json rows"
+    "scope_envelope_derived": "scope_envelope.json rows",
+    "curve_envelope_bands": "curve_envelope.json bands + agg",
+    "ttl_sweep_fits": "ttl_sweep.json fits (OLS integral ~ ttl)"
   },
-  "attack_loudness_light_load_B1": {
-    "n_seeds": 10,
-    "n_over_median": 6662.5,
-    "n_over_min": 6184,
-    "n_over_max": 7104,
-    "n_over_median_pct_of_8531": 78.1,
-    "vmax_median": 1.1243,
-    "vmax_max": 1.1353
+  "attack_loudness_light_load_conformant": {
+    "n_seeds": 5,
+    "n_over_median": 6958,
+    "n_over_min": 6489,
+    "n_over_max": 7139,
+    "n_over_median_pct_of_8531": 82,
+    "vmax_median": 1.1383,
+    "vmax_max": 1.1424,
+    "dJV_median": 87.86
   },
   "timeseries_derived": {
     "exposure_window_min": 55,
@@ -509,6 +512,181 @@
       "trip_frac": 0.0,
       "vmax_max": 1.0933,
       "n": 5
+    }
+  },
+  "curve_envelope_bands": {
+    "light_load|curve": {
+      "contained_q_high_values": [
+        -0.44
+      ],
+      "contains_beyond_conformant_point": []
+    },
+    "light_load|override": {
+      "contained_q_high_values": [
+        -0.44,
+        -0.33
+      ],
+      "contains_beyond_conformant_point": [
+        -0.33
+      ]
+    },
+    "normal|curve": {
+      "contained_q_high_values": [],
+      "contains_beyond_conformant_point": []
+    },
+    "normal|override": {
+      "contained_q_high_values": [
+        -0.44
+      ],
+      "contains_beyond_conformant_point": []
+    }
+  },
+  "curve_envelope_light_load": {
+    "-0.44": {
+      "curve_dJV": -3.745,
+      "curve_induced_trip": 0.0,
+      "override_dJV": -20.447,
+      "override_induced_trip": 0.0
+    },
+    "-0.33": {
+      "curve_dJV": 4.661,
+      "curve_induced_trip": 0.0,
+      "override_dJV": -13.801,
+      "override_induced_trip": 0.0
+    },
+    "-0.22": {
+      "curve_dJV": 13.089,
+      "curve_induced_trip": 0.2,
+      "override_dJV": -6.81,
+      "override_induced_trip": 0.6
+    },
+    "-0.11": {
+      "curve_dJV": 20.387,
+      "curve_induced_trip": 1.0,
+      "override_dJV": 10.813,
+      "override_induced_trip": 0.2
+    },
+    "0.0": {
+      "curve_dJV": 31.409,
+      "curve_induced_trip": 1.0,
+      "override_dJV": 31.195,
+      "override_induced_trip": 1.0
+    },
+    "0.11": {
+      "curve_dJV": 22.998,
+      "curve_induced_trip": 0.6,
+      "override_dJV": 27.992,
+      "override_induced_trip": 1.0
+    },
+    "0.22": {
+      "curve_dJV": 29.819,
+      "curve_induced_trip": 1.0,
+      "override_dJV": 54.497,
+      "override_induced_trip": 1.0
+    },
+    "0.33": {
+      "curve_dJV": 31.964,
+      "curve_induced_trip": 1.0,
+      "override_dJV": 71.635,
+      "override_induced_trip": 1.0
+    },
+    "0.44": {
+      "curve_dJV": 38.756,
+      "curve_induced_trip": 1.0,
+      "override_dJV": 87.855,
+      "override_induced_trip": 1.0
+    }
+  },
+  "legitimate_base_light_load": {
+    "JV_median": 57.707,
+    "n_over_median": 5293,
+    "n_over_pct_of_8531": 62,
+    "trip_frac": 0.0
+  },
+  "ttl_sweep_fits": {
+    "light_load|q44_conformant": {
+      "slope_per_min": 100.4413,
+      "intercept": 87.6227,
+      "r2": 0.964845,
+      "ttl_grid": [
+        5,
+        10,
+        15,
+        25,
+        40,
+        55
+      ],
+      "n_per_ttl": 20
+    },
+    "light_load|q30_partial": {
+      "slope_per_min": 70.0332,
+      "intercept": 57.6802,
+      "r2": 0.959519,
+      "ttl_grid": [
+        5,
+        10,
+        15,
+        25,
+        40,
+        55
+      ],
+      "n_per_ttl": 20
+    },
+    "light_load|q5_inert": {
+      "slope_per_min": -1.6995,
+      "intercept": 105.7448,
+      "r2": 0.080943,
+      "ttl_grid": [
+        5,
+        10,
+        15,
+        25,
+        40,
+        55
+      ],
+      "n_per_ttl": 20
+    },
+    "normal|q44_conformant": {
+      "slope_per_min": 10.6271,
+      "intercept": 30.0648,
+      "r2": 0.709931,
+      "ttl_grid": [
+        5,
+        10,
+        15,
+        25,
+        40,
+        55
+      ],
+      "n_per_ttl": 20
+    },
+    "normal|q30_partial": {
+      "slope_per_min": 9.389,
+      "intercept": 34.2452,
+      "r2": 0.57278,
+      "ttl_grid": [
+        5,
+        10,
+        15,
+        25,
+        40,
+        55
+      ],
+      "n_per_ttl": 20
+    },
+    "normal|q5_inert": {
+      "slope_per_min": -1.0889,
+      "intercept": 62.7183,
+      "r2": 0.519045,
+      "ttl_grid": [
+        5,
+        10,
+        15,
+        25,
+        40,
+        55
+      ],
+      "n_per_ttl": 20
     }
   }
 }

@@ -46,6 +46,7 @@ WITHDRAWN = {
     "3196":   "A4 integral, superseded by timeseries2.json",
     "1700":   "'multiplies exposure roughly 1700x', withdrawn as a quotient of assumed lifetimes",
     "1752.4": "17524/10, the arithmetic behind the withdrawn 1700x figure",
+    "17524":  "assumed 2-year lifetime in hours; numerator of the withdrawn 1700x quotient",
     "1750":   "restatement of the same withdrawn quotient",
 }
 
