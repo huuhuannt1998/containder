@@ -188,9 +188,39 @@ at the tested envelope it did not retain the function, and at the conformant env
 bound the attack.
 
 Consequence is strongly state dependent. Under normal load the same sweep produces $\Delta J_V
-\le 12.0$ on the active axis and $\le 6.3$ on the reactive axis, with no trips at any envelope.
+\le 12.0$ on the active axis and $\le 11.4$ on the reactive axis, with no trips at any envelope.
 Light load with high PV is the binding state, as the physical-state dependence of
 Section~\ref{sec:separation} anticipates.
+
+\paragraph{Why $\Delta J_V$ is negative at small envelopes.}
+The negative entries on the active axis are not noise and not reactive ``support''. Against a
+legitimate counterfactual in which PV generates at its full scheduled output, an adversary
+restricted to $\sigma < 0.7$ of nameplate is \emph{curtailing} relative to that schedule: it
+injects less active power than legitimate operation would, so the voltage rise along the feeder
+falls and the one-sided overvoltage area shrinks. A restrictive active-power scope therefore turns
+the compromise into an unwanted-curtailment problem --- an availability and revenue harm our
+voltage endpoint does not price --- rather than an overvoltage problem. An earlier version of this
+work attributed such negative values to a narrowed reactive envelope ``marginally supporting''
+voltage, which is backwards: voltage support raises voltage and would \emph{increase} a one-sided
+overvoltage area. The correct mechanisms are curtailment relative to schedule on the active axis
+and reactive \emph{absorption} on the reactive axis.
+
+\paragraph{This attack is loud, and that matters.}
+At the full-scope light-load condition, $6710$ of $8531$ energized nodes ($79\%$) sit above
+$1.05$\,p.u.\ with a maximum of $1.128$\,p.u. That is not a stealthy manipulation; it is a
+feeder-wide excursion that AMI voltage reporting, regulator operation counts, and customer
+complaints would surface within a single metering interval. Two conclusions follow. First, it
+weakens any narrative in which such a compromise quietly persists for the two-year lifetime of a
+certificate: an adversary behaving this way is found quickly, and the operative containment
+latency becomes the utility's detection-and-response time rather than the credential lifetime.
+Second, and more usefully, it identifies the attacker our evaluation does \emph{not} cover. An
+adversary who holds voltages just inside the ANSI band, or who acts only during the minutes of
+peak PV, would extract far more value from long persistence precisely because nothing alarms ---
+and that is exactly the case in which credential lifetime, rather than detection, is the binding
+constraint. Our pre-registered protocol specifies an operationally realistic telemetry-limited
+attacker alongside the oracle worst case; the stealth-constrained variant is the more important of
+the two for this paper's thesis, and it is not yet run. We regard this as the most significant gap
+in the present evaluation.
 
 \begin{table}[t]
 \centering
