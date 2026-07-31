@@ -274,45 +274,68 @@ the legitimate nor the
 malicious command. The narrow scope therefore retains the most common legitimate DER function while
 bounding the attack, which distinguishes least privilege from denial of service.
 
-\paragraph{Secondary summary: exposure across all six baselines (H1).}
+\paragraph{Modeled retained authority, and what it is \emph{not} evidence for (H2).}
 % provenance: jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (real 8500 full baseline + ablation sweep).
-As a secondary summary across all six baselines, we report a proxy that multiplies the measured
-physical envelope by the modeled retained authority,
-$\Delta J_V \times \BRauth$ (Table~\ref{tab:exposure}); this is a physical-impact-times-duration
-quantity, not the flexibility-time $\BRexp$ integral of the model, and the time-series above is the
-direct measurement it approximates. At full authorization scope, lengthening persistence from the
-ephemeral B3 (retained authority $\approx 10$\,h) to the legacy B1 ($\approx 2$\,years) multiplies
-light-load exposure roughly $1700\times$, from $1.3\times10^3$ to $2.2\times10^6$; that ratio is
-set almost entirely by the modeled lifetime term, not by a measurement. At narrow scope
-the same change is inert: B2 and B5 are both near zero. The effect of persistence therefore
-depends on scope, consistent with the pre-registered persistence-by-scope hypothesis; because
-exposure is a product of a measured and a modeled factor, this pilot pattern does not by
-itself establish the pre-registered mixed-effects test over the full sweep. The full design B5 has
-lower exposure than both the ephemeral-only B3 and
-the attestation-only B4 ($8.3\times10^3$), so neither half alone suffices. Mechanism ablations
-attribute the reduction: removing scope narrowing restores physical exposure (from near zero to
-$1.5\times10^3$), while fail-open renewal inflates retained authority from $12$\,h to
-$1.75\times10^4$\,h. Scope narrowing bounds the physical envelope; attestation-gated renewal with
-session and command enforcement bounds how long it persists, the temporal containment the C2
-copied-key and session-theft results measure.
+An earlier version of this work summarised the baselines with a proxy $E_{\mathrm{phys}} = \Delta
+J_V \times \BRauth$ and reported that moving from ephemeral to legacy persistence ``multiplies
+light-load exposure roughly $1700\times$''. \textbf{We withdraw that figure.} The two cells share
+the same authorization scope and therefore the same measured $\Delta J_V$ of $126.60$, so that
+factor cancels exactly and the ratio reduces to $17524/10 = 1752.4$, a quotient of two assumed
+lifetimes. It contains no measurement whatsoever, and presenting it as an evaluation result was
+wrong. The only defensible statement is the tautology that a credential assumed to last two years
+is assumed to be held about $1750$ times longer than one assumed to last ten hours. The direct,
+measured replacement for that claim is the time-series contrast above.
+
+We also rename the quantity. It is $E_{\mathrm{phys}}$, a physical-consequence-times-duration
+product in p.u.-node-hours, and it is \emph{not} the flexibility-time $\BRexp$ of
+Section~\ref{sec:formalism}, which carries kW$\cdot$h and kVAr$\cdot$h. The two were previously
+distinguished in prose while sharing a name. This paragraph belongs to hypothesis H2
+(capacity-time exposure); an earlier version labelled it H1, which the pre-registration reserves
+for the lifetime-by-scope interaction on voltage-violation area.
+
+Two entries in Table~\ref{tab:exposure} contradict the narrative that earlier version drew from
+it, and we now say so directly.
+
+First, \textbf{B5's retained authority ($12.22$\,h) is longer than B3's ($10.0$\,h)}. On that
+dimension the full design is strictly worse than ephemeral-only. The cause is not an error: B3's
+credential simply expires and is never renewed, whereas B5's is attestation-gated and \emph{does}
+renew, surviving a $\mathrm{Geometric}(p)$ number of cycles until attestation catches the
+compromise. With $T{=}6$\,h and $p{=}0.5$ the expectation is $T/p = 12$\,h, which is what the model
+returns (and at $p{=}1$ it returns exactly $6$\,h). Renewal is what makes CONTAINDER deployable ---
+an un-renewed credential strands the legitimate device too --- and its price is that containment
+latency is governed by detection probability, not by lifetime. This is the $T/p$ figure of merit
+of Section~\ref{sec:design}, and it means B5's advantage over B3 comes from scope, not from time.
+
+Second, \textbf{B2 and B5 both sit at $\approx 0$ in this table, and we no longer read that as
+support for the design.} It is the arithmetic consequence of a ``narrow'' scope whose measured
+$\Delta J_V$ was $0.0$ exactly: any lifetime multiplied by zero is zero. Once scope is set at the
+conformant envelope of Table~\ref{tab:scope}, the physical factor is not zero and the tie
+disappears. \textbf{We therefore withdraw the sentence ``neither half alone suffices'' as it was
+argued from this table}, since the comparison it invoked --- B5 against B3 and B4 --- excluded the
+one baseline that tied B5. The claim is re-established, on different and measured grounds, by the
+time-series contrast at conformant scope reported above: there, scope alone does not contain,
+which is what makes duration enforcement necessary.
 
 \begin{table}[t]
 \centering
-\caption{Secondary exposure proxy $\Delta J_V\times\BRauth$ by baseline, in p.u.-node-hours (light
-load, IEEE 8500, $n{=}10$ seeds; $\Delta J_V$ measured, $\BRauth$ modeled from lifetime parameters,
-not measured). The time-series (Fig.~\ref{fig:timeseries}) is the direct measurement.}
+\caption{Modeled retained authority $\BRauth$ and the exposure product $E_{\mathrm{phys}} = \Delta
+J_V\times\BRauth$ in p.u.-node-hours (light load, IEEE 8500, $n{=}10$ seeds). $\Delta J_V$ is
+measured; $\BRauth$ is a \emph{model output} under assumed lifetime and detection parameters, not a
+measurement, so every product in the last column inherits that assumption. The $\approx 0$ entries
+reflect a non-conformant narrow envelope whose measured $\Delta J_V$ was zero; see
+Table~\ref{tab:scope}.}
 \label{tab:exposure}
 \small
 \begin{tabular}{@{}llcc@{}}
 \toprule
-Baseline & Scope & $\BRauth$ & Exposure \\
+Baseline & Scope & $\BRauth$ (modeled) & $E_{\mathrm{phys}}$ \\
 \midrule
 B1 legacy full & full & $\sim$2\,yr & $2.2\times10^6$ \\
-B2 ACL-narrow & narrow & $\sim$2\,yr & $\approx 0$ \\
-B3 ephemeral-only & full & $\sim$10\,h & $1.3\times10^3$ \\
+B2 ACL-narrow & narrow (non-conformant) & $\sim$2\,yr & $\approx 0$ \\
+B3 ephemeral-only & full & $10.0$\,h & $1.3\times10^3$ \\
 B4 attestation-only & reference & $\sim$14\,d & $8.3\times10^3$ \\
-B5 full CONTAINDER & narrow & $\sim$12\,h & $\approx 0$ \\
-B6 safe-mode & narrow & $\sim$12\,h & $\approx 0$ \\
+B5 full CONTAINDER & narrow (non-conformant) & $12.22$\,h & $\approx 0$ \\
+B6 safe-mode & narrow (non-conformant) & $12.22$\,h & $\approx 0$ \\
 \bottomrule
 \end{tabular}
 \end{table}
