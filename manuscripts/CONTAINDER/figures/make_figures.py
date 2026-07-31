@@ -117,21 +117,33 @@ def fig_timeseries():
         hi = [max(x[i] for x in S) for i in range(H)]
         return med, lo, hi
 
-    fig, ax = plt.subplots(figsize=(3.4, 2.4))
+    # Colour encodes the AUTHORIZED ENVELOPE, line style encodes CREDENTIAL LIFETIME. The two
+    # arms sharing an envelope are bit-identical until expiry, which is the point of the figure,
+    # so they must share a colour; encoding them as two different colours (as an earlier version
+    # did, with B1 and B2 both #0072B2) hid the overlap and duplicated a colour across envelopes.
+    # Arms are labelled by their commanded kvar because the artifact's "full"/"narrow" labels are
+    # inverted: "full" commands 3.6 kvar, "narrow ACL" commands 5.28 kvar.
+    fig, ax = plt.subplots(figsize=(3.4, 2.5))
     for pol, style, col, lab in [
-            ("B1_legacy_full", "-", DARK, "legacy full (B1)"),
-            ("B2_acl_narrow_1547", ":", "#0072B2", "legacy + narrow ACL (B2)"),
-            ("A4_full_lifecycle", "--", "#D55E00", "broad scope + lifecycle (A4)"),
-            ("B5_containder_1547", "-.", LIGHT, "CONTAINDER (B5)")]:
+            ("B2_acl_narrow_1547", "-", LIGHT, "5.28 kvar, long-lived (B2)"),
+            ("B5_containder_1547", "--", "#8C5000", "5.28 kvar, bounded (B5)"),
+            ("B1_legacy_full", "-", DARK, "3.60 kvar, long-lived (B1)"),
+            ("A4_full_lifecycle", "--", "#00355A", "3.60 kvar, bounded (A4)")]:
         med, lo, hi = band(pol)
-        ax.plot(t, med, style, color=col, lw=1.4, label=lab)
-        ax.fill_between(t, lo, hi, color=col, alpha=0.15, lw=0)
+        ax.plot(t, med, style, color=col, lw=1.3, label=lab)
+        ax.fill_between(t, lo, hi, color=col, alpha=0.13, lw=0)
     ax.axvline(ta + ttl, color="black", ls=":", lw=0.8)
-    ax.text(ta + ttl - 1, ax.get_ylim()[1] * 0.55, "credential expiry", fontsize=6, rotation=90,
+    top = ax.get_ylim()[1]
+    ax.text(ta + ttl - 1.2, top * 0.60, "credential expiry", fontsize=6, rotation=90,
             va="center", ha="right")
+    ax.annotate("bounded and long-lived arms\ncoincide exactly until expiry",
+                xy=(17, 0.60 * top), xytext=(6.5, 0.17 * top), fontsize=5.5,
+                ha="left", va="center", color="#333333",
+                arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333",
+                                shrinkA=0, shrinkB=2))
     ax.set_xlabel("time (min)")
     ax.set_ylabel("overvoltage area (p.u.-node)")
-    ax.legend(loc="upper right", fontsize=5.5)
+    ax.legend(loc="upper right", fontsize=5.2, ncol=1, handlelength=2.6)
     ax.grid(True, lw=0.3, alpha=0.5)
     fig.savefig(HERE / "fig_timeseries.pdf")
     plt.close(fig)
