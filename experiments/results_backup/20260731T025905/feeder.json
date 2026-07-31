@@ -1,0 +1,101 @@
+{
+  "rows": [
+    {
+      "state": "light_load_high_pv",
+      "policy": "clean_base",
+      "J_V": 0.0,
+      "max_dev_pu": 0.0023,
+      "n_violating": 0,
+      "converged": true
+    },
+    {
+      "state": "light_load_high_pv",
+      "policy": "B1_legacy_full",
+      "J_V": 0.21787,
+      "max_dev_pu": 0.1037,
+      "n_violating": 6,
+      "converged": true
+    },
+    {
+      "state": "light_load_high_pv",
+      "policy": "B3_ephemeral",
+      "J_V": 0.21787,
+      "max_dev_pu": 0.1037,
+      "n_violating": 6,
+      "converged": true
+    },
+    {
+      "state": "light_load_high_pv",
+      "policy": "B5_containder",
+      "J_V": 0.0,
+      "max_dev_pu": 0.0047,
+      "n_violating": 0,
+      "converged": true
+    },
+    {
+      "state": "normal",
+      "policy": "clean_base",
+      "J_V": 0.0,
+      "max_dev_pu": 0.0158,
+      "n_violating": 0,
+      "converged": true
+    },
+    {
+      "state": "normal",
+      "policy": "B1_legacy_full",
+      "J_V": 0.15066,
+      "max_dev_pu": 0.0917,
+      "n_violating": 6,
+      "converged": true
+    },
+    {
+      "state": "normal",
+      "policy": "B3_ephemeral",
+      "J_V": 0.15068,
+      "max_dev_pu": 0.0917,
+      "n_violating": 6,
+      "converged": true
+    },
+    {
+      "state": "normal",
+      "policy": "B5_containder",
+      "J_V": 0.0,
+      "max_dev_pu": 0.0088,
+      "n_violating": 0,
+      "converged": true
+    },
+    {
+      "state": "heavy_load",
+      "policy": "clean_base",
+      "J_V": 0.0,
+      "max_dev_pu": 0.0272,
+      "n_violating": 0,
+      "converged": true
+    },
+    {
+      "state": "heavy_load",
+      "policy": "B1_legacy_full",
+      "J_V": 0.09819,
+      "max_dev_pu": 0.0824,
+      "n_violating": 6,
+      "converged": true
+    },
+    {
+      "state": "heavy_load",
+      "policy": "B3_ephemeral",
+      "J_V": 0.09824,
+      "max_dev_pu": 0.0824,
+      "n_violating": 6,
+      "converged": true
+    },
+    {
+      "state": "heavy_load",
+      "policy": "B5_containder",
+      "J_V": 0.0,
+      "max_dev_pu": 0.0199,
+      "n_violating": 0,
+      "converged": true
+    }
+  ],
+  "note": "Small illustrative feeder, OpenDSS single solver; IEEE 8500 / PNNL 9500 and GridLAB-D cross-check remain for the full evaluation."
+}

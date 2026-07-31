@@ -1,0 +1,23 @@
+{
+  "overvoltage_families": {
+    "export_limit": {
+      "full": 122.463,
+      "narrow": 0.0
+    },
+    "volt_var": {
+      "full": 97.092,
+      "narrow": 0.0
+    },
+    "volt_watt": {
+      "full": 56.904,
+      "narrow": 0.0
+    }
+  },
+  "curtailment_spam": {
+    "full": 0.01242,
+    "narrow": 0.00403
+  },
+  "n_seeds": 5,
+  "state": "light_load",
+  "note": "Real IEEE 8500, OpenDSS single solver. Overvoltage families use induced overvoltage area; curtailment-spam uses per-node voltage std across a toggled dispatch. GridLAB-D cross-check and constrained hardware remain."
+}

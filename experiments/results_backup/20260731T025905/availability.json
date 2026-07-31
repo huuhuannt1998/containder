@@ -1,0 +1,43 @@
+{
+  "renewal_measured": {
+    "throughput_per_s": 4932.3,
+    "renew_median_ms": 0.185,
+    "renew_p99_ms": 0.714
+  },
+  "renewal_margin_s": {
+    "300": 299.0,
+    "3600": 3599.0,
+    "21600": 21599.0,
+    "86400": 86399.0
+  },
+  "fleet_renewal_time_s": {
+    "1000": 0.2,
+    "10000": 2.03,
+    "100000": 20.27
+  },
+  "ttl_s": 3600,
+  "grace_s": 1800,
+  "control_success_modeled": {
+    "1800": {
+      "deny": 1.0,
+      "grace": 1.0,
+      "safe_mode": 1.0
+    },
+    "3600": {
+      "deny": 1.0,
+      "grace": 1.0,
+      "safe_mode": 1.0
+    },
+    "7200": {
+      "deny": 0.5,
+      "grace": 0.75,
+      "safe_mode": 1.0
+    },
+    "14400": {
+      "deny": 0.25,
+      "grace": 0.375,
+      "safe_mode": 1.0
+    }
+  },
+  "note": "Renewal latency/throughput measured on the credential service (single thread, workstation). Control-success under outage is modeled from TTL, grace, and outage duration for three renewal policies."
+}
