@@ -54,24 +54,21 @@ quantifying the containment latency this buys: expected retention is the credent
 divided by the per-cycle attestation detection probability, not the lifetime itself.
 \end{itemize}
 
-The threat model underpinning all four separates bootstrap identity, operational credential, and
-authorization scope, and names the baseline standard's conflation of the first two as the driver
-of unbounded persistence.
+The threat model separates bootstrap identity, operational credential, and authorization scope,
+and names the standard's conflation of the first two as the driver of unbounded persistence.
 % provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
 
 We deliberately do \emph{not} claim the four-dimension accounting of
 Section~\ref{sec:formalism} as a contribution. Adding resource-by-scope product nodes, a time
-index, and attached state and policy to a classical attack graph yields that accounting, as
-Section~\ref{sec:separation} shows; the separation propositions that follow are true by
-construction, since a reachability-only measure cannot depend on variables that are not among its
-arguments. We keep the notation because the paper needs a vocabulary for "how much, for how long,
-under which grid conditions", and we keep the worked example because it is a useful illustration.
-Neither is offered as a theoretical advance. The load-bearing claims of this paper are empirical.
+index, and attached state and policy to a classical attack graph yields it, and the separation
+propositions it supports are true by construction, since a reachability-only measure cannot depend
+on variables that are not among its arguments. We keep the notation because the paper needs a
+vocabulary for how much, for how long, and under which grid conditions. It is not a theoretical
+advance, and the load-bearing claims here are empirical.
 
-We state scope plainly. The formal model, the separation propositions, and the cyber-side engine
-are implemented and covered by a regression suite, including the separating counterexample. The
-credential service and the feeder pipeline are implemented, and we
-report a pilot evaluation on the IEEE~8500-node feeder, confirmed on the IEEE~123-bus feeder:
-the results are measured but at reduced scale, two public feeders, one solver, up to ten seeds, on
-a workstation. The full pre-registered evaluation, with a cross-solver check, constrained hardware,
-and the full seed budget, is future work.
+We state scope plainly. The engine, credential service, and feeder pipeline are implemented and
+covered by a regression suite. The evaluation is a pilot: two public feeders, one solver, one
+workstation, and --- at the conformant scope envelope where the central result lies --- one
+penetration level and two operating states. The pre-registered confirmatory sweep, with a
+cross-solver check, constrained hardware, a stealth-constrained attacker, and the full seed
+budget, is future work.

@@ -1,30 +1,33 @@
 \section{Limitations and Conclusion}
-% provenance: OUTLINE.md status column; jrn_01KXT4NN8Z8EG0SZYGB65H2T5J (venue) ; chk T1.1 open item.
+% provenance: OUTLINE.md status column; jrn_01KXT4NN8Z8EG0SZYGB65H2T5J (venue); chk T1.1 open item.
 
 \paragraph{Limitations.}
-The boundaries of the evaluation are stated once, next to the results they bound, at the end of
-Section~\ref{sec:prelim}: two public feeders and a single solver, modeled rather than measured
-retained authority, workstation-only overhead, in-process availability injection, untested
-interoperability, and the open clause-level delta between the 2018 and 2023 editions of the
-standard. Two further boundaries are proper to the model rather than to the measurements. The
-authorization graphs used
-by the engine are synthetic, because real utility authorization graphs are not public; we
-mitigate this with a released, parameterized generator and by treating access-model
-permissiveness as an ablated variable rather than a fixed assumption. And our claims about
-revocation rest on the primary Sandia analysis rather than on a clause-level reading of the
-revised standard.
+The boundaries of the evaluation are stated next to the results they bound, at the end of
+Section~\ref{sec:prelim}: two public feeders and a single solver, one PV penetration level at the
+conformant scope envelope, modeled rather than measured retained authority, workstation-only
+overhead, in-process availability injection, untested interoperability, an unmeasured
+stealth-constrained attacker, and no access to the 2023 edition of the standard. Two further
+boundaries belong to the model. The authorization graphs used by the engine are synthetic, because
+real utility authorization graphs are not public; we mitigate this with a released parameterized
+generator and by ablating access-model permissiveness rather than fixing it. And our claims about
+revocation rest on the Sandia analysis rather than a clause-level reading of the edition in force.
 
 \paragraph{Conclusion.}
-Credential compromise in IEEE~2030.5 is not well described by how many nodes an adversary can
-reach. It is described by how much physical capacity those nodes command, how long the
-adversary keeps it, and what the feeder does in response. We formalized these as four impact dimensions,
-showed that reachability-only measurement omits scope, time, and feeder state, and built a
-redesign that shrinks them using attested, short-lived, scope-bound
-operational credentials with non-renewal as containment. A pilot end-to-end evaluation is
-consistent with the design: the ten implemented security invariants pass, per-command enforcement
-contains
-authority at expiry, and at the light- and normal-load states where a legacy credential drives the
-feeder outside the ANSI band, narrowing scope keeps the overvoltage a compromise induces on the
-IEEE~8500-node feeder within it, with the full evaluation still to come. The model is the lever: it says which
-quantities a DER-authorization defense must move, and it rejects the measures that only move
-reach.
+Credential compromise in IEEE~2030.5 is not well described by how many nodes an adversary reaches.
+It is described by how much physical capacity those nodes command, how long the adversary keeps
+it, and what the feeder does in response. Our central empirical finding is a negative one, and it
+constrains the design space more than a favourable result would have. \textbf{On the IEEE~8500-node
+feeder there is no authorization scope that both contains a credential compromise and delivers the
+volt-var service IEEE~1547 requires.} An adversary confined to the conformant reactive envelope
+still drives the feeder past an overvoltage trip threshold in every seed, and an adversary that
+merely suppresses volt-var --- needing no injection authority at all --- does so too. Least
+privilege, applied to this function set on this feeder, is not sufficient.
+
+What follows is not that the mechanism is useless but that its useful part is temporal. Once scope
+cannot bound the instantaneous envelope, bounding the \emph{duration} of retained authority is
+what remains, and that is what attested short-lived credentials with session and command-effect
+enforcement provide. The price is stated rather than hidden: containment latency is the credential
+lifetime divided by the per-cycle attestation detection probability, not the lifetime itself, and a
+gateway-proxy tier is the only one of our three deployment tiers that resolves the secure-time and
+constrained-hardware constraints the mechanism inherits from the problem it addresses. These are
+pilot results on one feeder; the pre-registered confirmatory sweep is what would generalise them.

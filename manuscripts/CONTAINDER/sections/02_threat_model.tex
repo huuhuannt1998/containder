@@ -61,22 +61,18 @@ active session or an already-issued control remains effective after credential e
 CRL/OCSP bounds only the first.
 
 \paragraph{The paper's primary open risk, stated plainly.}
-\textbf{We were unable to obtain IEEE~2030.5-2023.} It is paywalled at roughly US\$255, it is not
-included in the IEEE GET free-standards programme, and we found no publicly accessible document
-that quotes its clause text; every free source that quotes 2030.5 quotes the 2018 edition. Our
-premise --- that a device certificate's lifetime is effectively indefinite while online revocation
-is unavailable --- is therefore evidenced against the \emph{2018} edition and the Sandia
-analysis~\cite{obert2019recommendations}, not against the edition now in force. We consider this
-the single largest threat to the paper's external validity and we do not minimise it.
-Table~\ref{tab:standards} states, row by row, exactly what each claim rests on and what would
-still change if the 2023 text differed. Two rows deserve the reader's attention before the rest of
-the paper is read. \textbf{S5 is not supported by any source we could access}, and is contradicted
-in spirit: the Sandia analysis lists dynamic re-provisioning as a \emph{recommendation}, i.e.\ a
-capability judged absent, so we treat re-enrollment as something CONTAINDER must supply rather
-than something the standard already offers. \textbf{S8 is the row most exposed to edition drift},
-because vendor and reseller descriptions of the 2023 revision state that it eliminates the
-requirements for mandatory DERControl modes, which is precisely the territory S8 occupies. Where
-our argument depends on S5 or S8 we say so at the point of use.
+\textbf{We were unable to obtain IEEE~2030.5-2023.} It is paywalled at roughly US\$255, is not in
+the IEEE GET free-standards programme, and we found no publicly accessible document quoting its
+clause text --- every free source that quotes 2030.5 quotes the 2018 edition. Our premise, that a
+certificate's lifetime is effectively indefinite while online revocation is unavailable, is
+therefore evidenced against the \emph{2018} edition and the Sandia
+analysis~\cite{obert2019recommendations}, not the edition in force. This is the single largest
+threat to the paper's external validity and we do not minimise it. Table~\ref{tab:standards} gives
+each claim's evidence row by row. Two rows matter most. \textbf{S5 is unsupported by any source we
+could access} and contradicted in spirit --- Sandia lists dynamic re-provisioning as a
+recommendation, i.e.\ a capability judged absent --- so we treat re-enrollment as something
+CONTAINDER must supply. \textbf{S8 is most exposed to edition drift}, since the 2023 revision is
+described as eliminating mandatory DERControl modes, exactly S8's territory.
 \BLOCKER{PI: purchase IEEE 2030.5-2023 (IEEE Xplore doc 10785536, DOI 10.1109/IEEESTD.2024.10785536, approx.\ US\$255) and confirm S1--S8 clause by clause}
 
 \begin{table}[t]

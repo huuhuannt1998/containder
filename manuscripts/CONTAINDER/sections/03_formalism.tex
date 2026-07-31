@@ -1,79 +1,56 @@
-\section{Impact Accounting: Notation and Motivation}\label{sec:formalism}
-% provenance: jrn_01KXT490ZD4444AWMRG5296GJA (original radius definitions).
-% provenance: jrn_01KXTVC4CT850YTVE5EM3RJDGS (PI revision directive: state-dependent flexibility, 3-part persistence, optimization BR_phys).
-% provenance: dec_01KXT4C6ZPYD1Z92DH6CN1KKM3 fixes the primary physical metric.
-% M10(b): compressed from a claimed formal contribution to notation and motivation only.
+\section{Impact Accounting, and Why Reachability Alone Cannot Rank These Designs}\label{sec:formalism}
+% provenance: jrn_01KXT490ZD4444AWMRG5296GJA; jrn_01KXT49DNW5ZK6CEFDJW7CCK5M; dec_01KXT4C6ZPYD1Z92DH6CN1KKM3.
+% M10(b): sections III and IV merged and compressed; this is notation and motivation, not a contribution.
 
-This section fixes notation. It is not offered as a contribution: as
-Section~\ref{sec:separation} makes explicit, the accounting below is what one obtains by adding
+This section fixes notation and says why we need it. It is \emph{not} a contribution. Adding
 resource-by-scope product nodes, a time index, and attached state and policy to a classical attack
-graph. We need a vocabulary for ``how much, for how long, under which grid conditions'', because
-the experiments in Section~\ref{sec:prelim} move those three quantities differently, and a single
-scalar ``blast radius'' cannot express that. We keep the $\mathrm{BR}$ prefix for continuity with
-prior drafts and call each quantity a dimension.
+graph yields exactly the accounting below, so an extended attack
+graph~\cite{poolsappasit2012dynamic,wang2008attackgraph,frigault2008measuring} agrees with us
+rather than competing. We keep the notation only because the experiments in
+Section~\ref{sec:prelim} move ``how much'', ``for how long'', and ``under which grid conditions''
+differently, and one scalar cannot express that.
 
-\paragraph{Substrate.} A static privilege graph $G=(V,E)$ has principals and resources as nodes and
-access relations as edges. A compromise $x \subseteq V$ is a set of compromised credentials, and a
-protection policy $\pi=(L,\mathrm{Att},A)$ encodes a credential-lifetime function $L$, an
-attestation-gated renewal predicate $\mathrm{Att}$, and an authorization scope map $A$. The device
-and grid operating state at time $t$ is $u_t \in U$ and $F$ is the feeder power-flow and protection
-model. Neither $u_t$ nor $F$ appears in $G$, which is the whole point.
+\paragraph{Substrate and the four quantities.}
+A static privilege graph $G=(V,E)$ has principals and resources as nodes and access relations as
+edges; $x \subseteq V$ is a set of compromised credentials, and a policy $\pi=(L,\mathrm{Att},A)$
+gives a lifetime function $L$, an attestation-gated renewal predicate $\mathrm{Att}$, and a scope
+map $A$. The device and grid state $u_t$ and the feeder power-flow and protection model $F$ appear
+nowhere in $G$, which is the point.
 
-\paragraph{The four dimensions.}
-\emph{Cyber reach} $\BRreach = \Reach(x,\pi)$ is the set of endpoints to which the compromised
-authority can submit an authenticated request, the least fixed point of the $\pi$-enabled access
-relation from $x$. Reaching a server is not controlling a resource, so we keep it separate from
-everything below.
-
-\emph{Commandable flexibility} $\BRflex$ is state dependent rather than nameplate. For DER $d$,
-$\mathcal{C}_d(t;u_t,A_\pi(d))$ is the set of set-points an adversary holding scope $A_\pi(d)$ can
-command given irradiance, state of charge, present set-point, and inverter apparent-power and ramp
-limits. Aggregating over reachable DERs gives achievable intervals
-$[\Delta P^{-},\Delta P^{+}]$ and $[\Delta Q^{-},\Delta Q^{+}]$; where a scalar is needed we use
-$\BRflex = w_P(\Delta P^{+}{-}\Delta P^{-}) + w_Q(\Delta Q^{+}{-}\Delta Q^{-})$ and state the
-weights. A read-only scope yields the singleton current set-point, hence zero flexibility.
-
-\emph{Retained authority} separates three durations that certificate lifetime alone conflates:
-$T_{\mathrm{cred}}$, until the stolen credential is refused for a \emph{new} session;
-$T_{\mathrm{sess}}$, until sessions already authenticated with it can no longer issue commands; and
-$T_{\mathrm{cmd}}$, until queued, scheduled, or latched controls stop affecting the DER. Then
+\emph{Cyber reach} $\BRreach=\Reach(x,\pi)$, a count, is the least fixed point of the
+$\pi$-enabled access relation from $x$: the endpoints the compromised authority can send an
+authenticated request to. \emph{Commandable flexibility} $\BRflex$, in kW and kVAr, is the
+aggregate over reachable DERs of the feasible set-point region
+$\mathcal{C}_d(t;u_t,A_\pi(d))$ given irradiance, state of charge, and inverter limits; a
+read-only scope yields the current set-point alone, hence zero. \emph{Retained authority}
+separates three durations, in seconds,
 \begin{equation}
-\BRauth = \max\big(T_{\mathrm{cred}}, T_{\mathrm{sess}}, T_{\mathrm{cmd}}\big),
-\qquad
-\BRexp = \int \BRflex(t)\,\mathbf{1}[\text{authority effective at } t]\, dt,
+\BRauth=\max\big(T_{\mathrm{cred}},T_{\mathrm{sess}},T_{\mathrm{cmd}}\big),
 \end{equation}
-with $\BRexp$ in kW$\cdot$h or kVAr$\cdot$h. This distinction is the design's load-bearing one:
-expiry bounds $T_{\mathrm{cred}}$ only, so shortening lifetime without enforcing $T_{\mathrm{sess}}$
-and $T_{\mathrm{cmd}}$ does not bound exposure.
+where $T_{\mathrm{cred}}$ runs until the stolen credential is refused for a \emph{new} session,
+$T_{\mathrm{sess}}$ until already-authenticated sessions can no longer issue commands, and
+$T_{\mathrm{cmd}}$ until queued or latched controls stop affecting the DER; the capacity-time
+exposure $\BRexp=\int \BRflex(t)\,\mathbf{1}[\text{authority effective}]\,dt$ carries
+kW$\cdot$h or kVAr$\cdot$h. This split is the design's load-bearing one: expiry bounds
+$T_{\mathrm{cred}}$ only. \emph{Physical consequence} $\BRphys=\max_{a}J_V(F,u,a)$ is the worst
+outcome reachable within the adversary's authority, where $J_V$ is the voltage-violation area
+outside the ANSI~C84.1 band weighted by magnitude. $\BRphys$ carries two units and we label
+every table with which: \emph{p.u.-node} evaluated at one operating point, and
+\emph{p.u.-node-min} accumulated over a horizon. Secondary metrics are maximum per-unit
+deviation, violating-node count, protection trips, regulator tap operations, energy not served,
+unnecessary curtailment, and recovery time.
 
-\emph{Physical consequence} $\BRphys = \max_{a\in\mathcal{A}} J(F,u,a)$ is the worst outcome
-reachable within the adversary's authority, where $\mathcal{A}$ is constrained to authorized
-functions and device limits. Our primary objective $J_V$ is the voltage-violation area, the
-node-time outside the ANSI~C84.1 band weighted by magnitude. Secondary metrics are maximum
-per-unit deviation, violating-node count, protection trips, regulator tap operations, energy not
-served, unnecessary curtailment, and recovery time. We report both an optimizing attacker and an
-operationally realistic one, so no result is only an omniscient upper bound.
-
-Table~\ref{tab:dimensions} gives the types and units. The types differ --- a set, a power region, a
-set of durations, and a physics functional --- which is why we do not collapse them into one
-number.
-
-\begin{table}[t]
-\centering
-\caption{The four impact dimensions. $\BRphys$ carries two units depending on whether it is
-evaluated at one operating point or accumulated over a horizon; both appear in
-Section~\ref{sec:prelim} and each table states which.}
-\label{tab:dimensions}
-\footnotesize
-\begin{tabular}{@{}p{0.10\columnwidth}p{0.12\columnwidth}p{0.24\columnwidth}p{0.40\columnwidth}@{}}
-\toprule
-Dim. & Type & Unit & Computation \\
-\midrule
-$\BRreach$ & set & count & fixed point of $\pi$-enabled access from $x$ \\
-$\BRflex$ & interval & kW, kVAr & $\sum_d \mathcal{C}_d(t;u_t,A_\pi(d))$ over reachable DERs \\
-$\BRauth$ & duration & s & $\max(T_{\mathrm{cred}},T_{\mathrm{sess}},T_{\mathrm{cmd}})$ \\
-$\BRphys$ & scalar & \emph{snapshot} p.u.-node; \emph{integrated} p.u.-node-min &
-$\max_a J_V(F,u,a)$ at one operating point, or $\int \max_a J_V\,dt$ over the horizon \\
-\bottomrule
-\end{tabular}
-\end{table}
+\paragraph{Three separations, true by construction.}
+Call a measurement \emph{reachability-only} if it is a function $M$ of $\Reach(x)$ alone. Then:
+varying only the scope map $A$ at fixed reachable set changes $\BRflex$; an attestation-gated
+ephemeral credential and a long-lived unrevoked one differ in $\BRauth$ and $\BRexp$ at equal
+initial reach; and at fixed $x$ and $\pi$ the same authorized command is harmless at one operating
+state and drives nodes past an IEEE~1547 overvoltage trip threshold at another. \textbf{None of
+these can fail.} $M$ is single-valued in $\Reach(x)$ and each construction varies a quantity that
+is by definition not an argument of $M$, so they restate a definition rather than establish a
+result. We state them because they say which quantities an evaluation must move, and each ships as
+a regression test in the released engine. \textbf{They are not evidence for the design; that is in
+Section~\ref{sec:prelim}, and only there.} One correction: the third construction previously
+turned on a reverse-power protection trip the simulator could not represent, there being no
+protection model at all. Section~\ref{sec:feeder} now implements the IEEE~1547-2018 Category~II
+overvoltage screen, and Section~\ref{sec:prelim} reports the state dependence as measured.

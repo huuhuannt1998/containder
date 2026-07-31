@@ -66,25 +66,14 @@ lifetime-by-scope factorial, whose interaction term is the compositional claim.
 The experimental unit is the complete paired scenario run, not the per-timestep sample. The
 primary voltage-violation area is analyzed with a mixed-effects model,
 $\log(1+Y)=\beta_0+\beta_1\log(\mathrm{TTL})+\beta_2\,\mathrm{Scope}+\beta_3\log(\mathrm{TTL})\times\mathrm{Scope}+b_{\mathrm{day}}+b_{\mathrm{seed}}+\epsilon$,
-with the interaction coefficient testing the primary hypothesis and robust, aligned-rank, or
+whose interaction coefficient tests the primary hypothesis, with robust, aligned-rank, or
 permutation fallbacks where assumptions fail. Protection trips use mixed-effects logistic
-regression, violating-node counts a negative-binomial mixed model, and recovery time survival
-analysis. Effect sizes are the median paired difference, the ratio of geometric means, the paired
-rank-biserial correlation, and odds ratios, each with bootstrap confidence intervals, and Holm
-correction is applied within, not across, hypothesis families. A five-seed pilot and a
-simulation-based power analysis set the production seed count before final comparisons are viewed.
-These inferential procedures apply to the confirmatory sweep, not to the pilot in
-Section~\ref{sec:prelim}: the stored pilot data support medians and interquartile ranges over
-seeds, which is what that section reports, but they do not support the mixed-effects estimates,
-bootstrap intervals, or family-corrected $p$-values specified here, and none are claimed.
-
-\paragraph{Pre-registered hypotheses and honesty rule.}
-The primary hypothesis is a non-additive lifetime-by-scope interaction on voltage-violation area.
-Secondary hypotheses cover capacity-time exposure reduction, the advantage of the full design over
-both the ephemeral-only and attestation-only ablations, the reduction of post-expiry residual
-authority by session and command enforcement, locus dominance, the safe-mode availability
-tradeoff, fresh-key containment of a copied key, and the renewal-latency safety margin. The full
-design must reduce capacity-time exposure and voltage-violation area on at least one public feeder,
-which is the study's go/no-go gate. The expected-pattern statement records what we anticipate; any
-deviation, including a weak physical effect on a robust feeder, is reported rather than engineered
-away, and severe or nonconverging runs are never silently dropped.
+regression --- now a well-defined outcome, since Section~\ref{sec:feeder} implements a protection
+model --- violating-node counts a negative-binomial mixed model, and recovery time survival
+analysis. Effect sizes are the median paired difference, ratio of geometric means, paired
+rank-biserial correlation, and odds ratios, each with bootstrap confidence intervals, with Holm
+correction within rather than across hypothesis families. A five-seed pilot and a power analysis
+set the production seed count before final comparisons are viewed. These procedures apply to the
+confirmatory sweep. The pilot in Section~\ref{sec:prelim} reports paired per-seed contrasts with
+bootstrap intervals, which its stored data do support, and does not report the mixed-effects
+estimates, which they do not.
