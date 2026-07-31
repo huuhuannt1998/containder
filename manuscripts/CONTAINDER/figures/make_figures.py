@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate publication figures from the real experiment results (JSON in experiments/results)."""
 import json
+import statistics
 from pathlib import Path
 
 import matplotlib
@@ -98,22 +99,39 @@ def fig_containment_chain():
 
 
 def fig_timeseries():
-    d = json.loads((RES / "timeseries.json").read_text())
-    run = d["runs"][0]
-    H, ttl, ta = d["params"]["horizon"], d["params"]["ttl"], d["params"]["t_attack"]
+    """Corrected time series: median across all seeds with a min-max band (reviewer minor 5).
+
+    Reads timeseries2.json (per-arm recompile, legitimate-PV counterfactual, IEEE 1547 scope),
+    not the superseded timeseries.json.
+    """
+    d = json.loads((RES / "timeseries2.json").read_text())
+    P = d["params"]
+    H, ttl, ta, n = P["horizon"], P["ttl"], P["t_attack"], P["n_seeds"]
+    seeds = list(range(1000, 1000 + n))
     t = list(range(H))
-    fig, ax = plt.subplots(figsize=(3.4, 2.2))
-    ax.plot(t, run["B1_legacy_full"]["series"], "-", color=DARK, lw=1.4, label="legacy full (B1)")
-    ax.plot(t, run["A4_full_lifecycle"]["series"], "--", color="#D55E00", lw=1.4,
-            label="broad scope + lifecycle (A4)")
-    ax.plot(t, run["B5_narrow_lifecycle"]["series"], "-.", color=LIGHT, lw=1.5,
-            label="CONTAINDER (B5)")
+
+    def band(pol, state="light_load"):
+        S = [d["runs"][f"{state}|{s}|{pol}"]["series"] for s in seeds]
+        med = [statistics.median(x[i] for x in S) for i in range(H)]
+        lo = [min(x[i] for x in S) for i in range(H)]
+        hi = [max(x[i] for x in S) for i in range(H)]
+        return med, lo, hi
+
+    fig, ax = plt.subplots(figsize=(3.4, 2.4))
+    for pol, style, col, lab in [
+            ("B1_legacy_full", "-", DARK, "legacy full (B1)"),
+            ("B2_acl_narrow_1547", ":", "#0072B2", "legacy + narrow ACL (B2)"),
+            ("A4_full_lifecycle", "--", "#D55E00", "broad scope + lifecycle (A4)"),
+            ("B5_containder_1547", "-.", LIGHT, "CONTAINDER (B5)")]:
+        med, lo, hi = band(pol)
+        ax.plot(t, med, style, color=col, lw=1.4, label=lab)
+        ax.fill_between(t, lo, hi, color=col, alpha=0.15, lw=0)
     ax.axvline(ta + ttl, color="black", ls=":", lw=0.8)
     ax.text(ta + ttl - 1, ax.get_ylim()[1] * 0.55, "credential expiry", fontsize=6, rotation=90,
             va="center", ha="right")
     ax.set_xlabel("time (min)")
-    ax.set_ylabel("induced overvoltage area")
-    ax.legend(loc="upper right", fontsize=6)
+    ax.set_ylabel("overvoltage area (p.u.-node)")
+    ax.legend(loc="upper right", fontsize=5.5)
     ax.grid(True, lw=0.3, alpha=0.5)
     fig.savefig(HERE / "fig_timeseries.pdf")
     plt.close(fig)
