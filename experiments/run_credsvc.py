@@ -67,18 +67,18 @@ def campaign_c1() -> dict:
         good.cert, na + datetime.timedelta(seconds=1), enforce=True)
 
     # 7. per-command authorization matches issued scope
-    checks["I7_scope_matches"] = read_scope(good.cert)["scope"] == "feeder"
+    checks["I6_scope_matches"] = read_scope(good.cert)["scope"] == "feeder"
 
     # 8/12/13. known-bad measurement -> safe-mode narrowed scope, never full
     safe = svc.issue_operational(dev, bkey, bcert, BAD, scope="feeder", safe_mode_scope="read_only")
-    checks["I8_scope_narrowing"] = safe.ok and safe.scope == "read_only" and safe.scope != "feeder"
+    checks["I7_scope_narrowing"] = safe.ok and safe.scope == "read_only" and safe.scope != "feeder"
 
     # 9. command-effect cleanup bounds Delta_effect
-    checks["I9_command_cleanup_bounded"] = (
+    checks["I10_command_cleanup_bounded"] = (
         svc.enforce_command_cleanup and svc.command_max_duration <= 600.0)
 
     # 10. old credential epoch cannot self-renew
-    checks["I10_no_self_renew"] = not svc.renew_with_old_cert_only(dev).ok
+    checks["I8_no_self_renew"] = not svc.renew_with_old_cert_only(dev).ok
 
     # 11. copied previous operational key fails after epoch rotation
     ep1 = svc.issue_operational(dev, bkey, bcert, GOOD, scope="feeder")   # key K1
@@ -87,7 +87,7 @@ def campaign_c1() -> dict:
     # attacker holds K1/cert1; at epoch-2 time cert1 (ttl 2s) is treated as expired
     old_expired = not accept_command(
         ep1.cert, cert_not_after(ep1.cert) + datetime.timedelta(seconds=1), enforce=True)
-    checks["I11_copied_key_contained"] = fresh_key_each_epoch and old_expired
+    checks["I9_copied_key_contained"] = fresh_key_each_epoch and old_expired
 
     passed = sum(1 for v in checks.values() if v)
     return {"checks": checks, "passed": passed, "total": len(checks)}

@@ -62,24 +62,26 @@ they are not a proof of the design, and properties outside this set are untested
 
 \begin{table}[t]
 \centering
-\caption{Security invariants implemented by the prototype (real X.509/mTLS). All ten pass; \emph{Key} is the
-identifier emitted in \texttt{results/credsvc.json}, whose numbering skips I6 and runs to I11.}
+\caption{Security invariants implemented by the prototype (real X.509/mTLS). All ten pass. The
+identifiers emitted in \texttt{results/credsvc.json} are now identical to the IDs below; an earlier
+release numbered them I1--I5 and I7--I11, skipping I6, and the artifact has been renumbered to
+remove that discrepancy.}
 \label{tab:invariants}
 \small
-\begin{tabular}{@{}p{0.05\columnwidth}p{0.55\columnwidth}p{0.20\columnwidth}c@{}}
+\begin{tabular}{@{}p{0.05\columnwidth}p{0.70\columnwidth}c@{}}
 \toprule
-ID & Invariant & Key & Result \\
+ID & Invariant & Result \\
 \midrule
-I1 & Bootstrap identity cannot authorize control & \texttt{I1} & pass \\
-I2 & Issuance requires a fresh attestation & \texttt{I2} & pass \\
-I3 & Credential bound to a fresh public key & \texttt{I3} & pass \\
-I4 & Replayed evidence rejected & \texttt{I4} & pass \\
-I5 & Expired credential cannot issue a command & \texttt{I5} & pass \\
-I6 & Scope enforced per command & \texttt{I7} & pass \\
-I7 & Bad measurement yields degraded/denied scope & \texttt{I8} & pass \\
-I8 & Prior epoch cannot self-renew & \texttt{I10} & pass \\
-I9 & Copied prior key fails after rotation & \texttt{I11} & pass \\
-I10 & Active session/command bounded past expiry & \texttt{I9} & pass \\
+I1 & Bootstrap identity cannot authorize control & pass \\
+I2 & Issuance requires a fresh attestation & pass \\
+I3 & Credential bound to a fresh public key & pass \\
+I4 & Replayed evidence rejected & pass \\
+I5 & Expired credential cannot issue a command & pass \\
+I6 & Scope enforced per command & pass \\
+I7 & Bad measurement yields degraded/denied scope & pass \\
+I8 & Prior epoch cannot self-renew & pass \\
+I9 & Copied prior key fails after rotation & pass \\
+I10 & Active session/command bounded past expiry & pass \\
 \bottomrule
 \end{tabular}
 \end{table}
