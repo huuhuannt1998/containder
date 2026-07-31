@@ -81,34 +81,106 @@ longer than the lifetime. Injecting verifier outages, fail-closed denial retains
 legitimate control availability, a bounded grace period $0.83$, and degraded-scope safe mode
 $1.0$. The injection is in-process; networked outages, clock skew, and renewal storms remain.
 
-\paragraph{Time-series containment and mechanism decomposition (C5).}
-% provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (real 8500 time-series).
-The central physical result measures temporal containment directly, rather than as a product of a
-measured and a modeled factor. We run each policy as one time-series on the real IEEE~8500-node
-feeder: a compromised credential drives the DER from minute
-five, and its lifecycle then determines whether the malicious setpoint keeps affecting the feeder.
-We integrate the real induced overvoltage area over a $60$-minute horizon, in p.u.-node-minutes,
-across three seeds (Fig.~\ref{fig:timeseries}); values below are medians over those three runs.
-A legacy credential (B1) holds the feeder in violation for the whole
-horizon (integral $6956$, no recovery). Holding the broad scope fixed but adding the CONTAINDER
-lifecycle (A4) halves the integral to $3196$ and the feeder recovers at credential expiry, which
-isolates the temporal effect of lifetime with session and command enforcement at equal scope.
-Removing session enforcement (A2) or command cleanup (A3) from that configuration returns the
-feeder to no recovery ($7030$), so each mechanism is necessary. Narrowing scope (B5) additionally
-bounds the instantaneous envelope, and the integral falls to $3.8$. This single experiment gives
-the equal-scope decomposition the design intends: scope bounds the envelope, lifetime with
-enforcement bounds the duration, and neither alone suffices. Three seeds on one feeder at one
-operating state cannot establish an effect size; the confirmatory sweep is what tests this
-pattern.
+\paragraph{Time-series containment: what the lifetime mechanism does, and what its ratio is not (C5).}
+% provenance: experiments/run_timeseries2.py -> results/timeseries2.json (n=20 paired seeds, 2 states).
+The question this experiment answers is whether bounding a credential's lifetime bounds the
+physical harm a compromise does. A compromised credential drives the DER from minute five of a
+sixty-minute horizon on the real IEEE~8500-node feeder, and the credential's lifetime determines
+whether the malicious setpoint keeps reaching it. Every (state, seed, policy) arm is an
+\emph{independent} feeder compile with a fresh PV fleet and fresh regulator and capacitor state,
+at twenty paired seeds and two operating states. That isolation matters: the predecessor of this
+experiment compiled the feeder once per seed and iterated policies against the same live circuit,
+so each arm warm-started from the previous arm's excursion, and the numbers reported in an earlier
+version of this work ($6956$, $7030$, $3196$, $3.8$) inherit that leak. \textbf{We withdraw all
+four.} Non-convergence is handled by retrying at most twice with a fourfold control-iteration
+budget; $24$ solves were flagged and $48$ retried across the whole sweep, and unsettled solves are
+retained and flagged, never dropped.
+
+Three findings, at the conformant IEEE~1547 Category~B envelope of $5.28$\,kvar --- the envelope
+an operator must authorize to receive volt-var at all (Table~\ref{tab:scope}).
+
+\emph{First, scope alone does not contain, and the legacy arm never recovers.} A long-lived
+credential confined to that envelope holds the feeder in violation for the entire horizon in
+$20/20$ seeds, with a median integral of $5656$ p.u.-node-min (bootstrap CI $[5356, 5857]$) under
+light load. Confining a compromise to the volt-var function set is not a containment measure.
+
+\emph{Second, the lifetime mechanism works by truncation, not by attenuation, and recovery is
+prompt and near-complete.} While the malicious setpoint is applied, the instantaneous excess
+overvoltage area holds at a mean of $101.8$ p.u.-node (SD $10.4$ across seeds); the paired
+per-minute accrual under the CONTAINDER arm and under the legacy arm is \textbf{bit-identical over
+the window they share} (maximum absolute difference $0.0$ across all twenty seeds and both
+envelopes). Lifetime enforcement changes nothing about how fast harm accrues --- only when it
+stops. What it does change is measured and could have come out otherwise: at credential expiry the
+feeder returns to its pre-attack baseline within one minute in $17/20$ seeds, the settled
+post-expiry excess has median $0.000$ p.u.-node, and the entire post-expiry contribution is
+$1.74\%$ of the integral. Nothing latches. A regulator or capacitor left in an excursion-driven
+position could have held voltage up indefinitely after the credential died, which would have made
+lifetime enforcement useless; it does not.
+
+\emph{Third --- and this is the point at which we part company with the earlier reading --- the
+resulting ``$2.16\times$ reduction'' is not an effect size.} Because the accrual rate is identical
+across arms and the residual is negligible, the integral is the rate multiplied by the number of
+minutes the credential is honoured. The ratio of the legacy integral to the CONTAINDER integral is
+therefore pinned to the ratio of exposure windows, $(60-5)/25 = 2.20$, net of the recovery tail.
+The data behave exactly so: the observed mean ratio is $2.159$ (CI $[2.131, 2.183]$) at the
+conformant envelope and $2.159$ (CI $[2.128, 2.184]$) at the narrower $3.6$\,kvar envelope --- the
+\emph{same number to four significant figures at two different operating envelopes whose accrual
+rates differ by $43.7\%$} --- and the largest ratio observed in any seed, state or envelope is
+$2.1988$. A physical
+mechanism does not return the same ratio at two different physical operating points; arithmetic
+does. \textbf{We therefore do not report $2.16\times$ as a measured containment factor.} The
+defensible statement is the relation behind it: integrated harm is the product of a measured
+accrual rate and the credential lifetime, up to the exposure window, so the containment factor an
+operator obtains is $(\text{exposure window})/T_{\mathrm{cred}}$ --- a quantity the operator
+chooses, not one we measured. Quoting the $2.16$ would be quoting our own choice of a
+twenty-five-minute lifetime against a sixty-minute horizon back to the reader. The lifetime sweep
+below measures the relation itself.
+
+\emph{The honest counter-arm.} At the non-conformant $0.6$\,kvar envelope the ordering reverses:
+the CONTAINDER arm is \emph{worse} than the legacy arm (median integral $20.1$ against $12.4$;
+ratio $0.622$, CI $[0.455, 0.781]$; $0/20$ seeds favour CONTAINDER, and under normal load $0/20$
+at ratio $0.083$). Where the authorized envelope is already physically inert, the credential
+lifecycle buys nothing and the transition at expiry costs something: regulator tap operations rise
+from a median of $78.5$ to $125$, a $59.2\%$ increase. The same cost appears at the conformant envelope, where taps
+rise from $67$ to $101.5$, a $51.5\%$ increase in regulator wear that the voltage endpoint does
+not price. We report this because it is the boundary of the mechanism's usefulness: lifetime
+enforcement pays only where scope cannot contain, which --- per Table~\ref{tab:scope} --- is
+precisely the conformant case, but it is not free.
+
+\emph{Two arms we withdraw as uninformative.} The mechanism ablations A2 (session enforcement
+removed) and A3 (command cleanup removed) are \textbf{not identified by this harness}. Its
+activity predicate maps the \texttt{legacy}, \texttt{no\_session} and \texttt{no\_cleanup}
+lifecycles onto the same branch, so A2, A3 and B1 are one arm under three labels: their
+twenty-seed output series are byte-identical, in both operating states. Likewise A4 and B3 share a
+scope and a lifecycle and are a single arm. The earlier claim that removing session enforcement or
+command cleanup ``returns the feeder to no recovery, so each mechanism is necessary'' was
+therefore reading a relabelling as a result, and we withdraw it. The per-command enforcement these
+ablations were meant to probe \emph{is} tested, but on the cyber side, by invariants I5, I6 and
+I10 and by the $\Delta_{\mathrm{expiry}} = -0.5$\,s measurement above; the feeder harness cannot
+distinguish them and we no longer ask it to.
+
+\emph{A label correction.} The arm this artifact calls ``full scope'' commands $(12$\,kW,
+$3.6$\,kvar$)$ while the arm it calls ``narrow ACL at IEEE~1547'' commands $(12$\,kW,
+$5.28$\,kvar$)$, and the inverter's own reactive limit is $5.28$\,kvar. The ``narrow'' envelope is
+thus a strict \emph{superset} of the ``full'' one, which is why the legacy arm reads $5656$ at the
+conformant envelope against $3851$ at the narrower one. That is not narrowing making things worse;
+it is an inverted label, and no comparison in this paper reads a scope \emph{ordering} off those
+two arms. Table~\ref{tab:scope}, which sweeps the envelope continuously and names each level by
+its commanded kvar, is the evidence for scope.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_timeseries.pdf}
-\caption{Time-series induced overvoltage area (p.u.-node-min) on the IEEE 8500-node feeder
-(light load; one representative seed of $n{=}3$; medians in the text are over all three).
-A legacy credential (B1) never recovers; at the same broad scope the CONTAINDER lifecycle (A4)
-recovers at credential expiry; narrow scope (B5) additionally bounds the instantaneous envelope.
-The session-off and command-cleanup-off ablations track B1 and are omitted for clarity.}
+\caption{Overvoltage area (p.u.-node) against time on the IEEE~8500-node feeder, light load:
+median across $n{=}20$ paired seeds, with the min--max band over those seeds shaded. Each arm is
+an independent feeder compile. The two legacy arms never recover within the horizon
+($20/20$ seeds each). The two lifetime-bounded arms track their legacy counterparts
+\emph{exactly} until the credential expires at minute $30$ and then return to baseline within one
+minute --- the mechanism truncates the exposure window rather than attenuating the excursion, so
+the ratio between the integrals is set by the lifetime chosen relative to the horizon and is not
+an effect size (see text). B2/B5 sit above B1/A4 because the envelope labelled ``narrow ACL'' is
+$5.28$\,kvar and the one labelled ``full'' is $3.6$\,kvar; the labels are inverted in the
+artifact.}
 \label{fig:timeseries}
 \end{figure}
 

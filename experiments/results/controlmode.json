@@ -1,0 +1,65 @@
+{
+  "seed": 1000,
+  "n_pv": 600,
+  "load_mult": 0.3,
+  "attack_scope_kw_kvar": [
+    12.0,
+    3.5999999999999996
+  ],
+  "arms": {
+    "static": {
+      "control_mode": "static",
+      "base": {
+        "overvoltage_area": 63.9387,
+        "vmax": 1.093,
+        "control_iterations": 160,
+        "tap_operations_from_cold": 32,
+        "capacitor_changes_from_cold": 6
+      },
+      "attack_full_scope": {
+        "overvoltage_area": 133.1124,
+        "vmax": 1.1282,
+        "control_iterations": 14
+      },
+      "tap_operations_base_to_attack": 24,
+      "capacitor_changes_base_to_attack": 3,
+      "regulators_moved_from_cold": 8,
+      "regulators_moved_base_to_attack": 11,
+      "regulator_count": 12,
+      "capacitor_count": 10,
+      "definitions": {
+        "tap_operations": "sum of |delta tap position| over all regulators",
+        "regulators_moved": "count of regulators whose tap position changed at all",
+        "control_iterations": "OpenDSS Solution.ControlIterations() for that solve"
+      }
+    },
+    "off": {
+      "control_mode": "off",
+      "base": {
+        "overvoltage_area": 584.9795,
+        "vmax": 1.215,
+        "control_iterations": 1,
+        "tap_operations_from_cold": 0,
+        "capacitor_changes_from_cold": 0
+      },
+      "attack_full_scope": {
+        "overvoltage_area": 998.0216,
+        "vmax": 1.3145,
+        "control_iterations": 1
+      },
+      "tap_operations_base_to_attack": 0,
+      "capacitor_changes_base_to_attack": 0,
+      "regulators_moved_from_cold": 0,
+      "regulators_moved_base_to_attack": 0,
+      "regulator_count": 12,
+      "capacitor_count": 10,
+      "definitions": {
+        "tap_operations": "sum of |delta tap position| over all regulators",
+        "regulators_moved": "count of regulators whose tap position changed at all",
+        "control_iterations": "OpenDSS Solution.ControlIterations() for that solve"
+      }
+    }
+  },
+  "note": "Single seed, light load. 'static' is the mode used for every result in the paper; feeder regulator/LTC/capacitor controls operate under it. 'off' is shown only to quantify how much the controls absorb, and is not used anywhere else.",
+  "controls_absorb_ratio": 7.498
+}

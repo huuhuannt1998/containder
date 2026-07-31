@@ -38,11 +38,16 @@ stolen''. All $\Delta J_V$ here are against legitimate operation, and we report 
 case's own violation area so penetration-driven stress is visible separately.
 
 \emph{Control mode.} We solve with \texttt{controlmode=static}, which does \emph{not} disable the
-feeder's controls: the IEEE~8500 base case at light load executes 10 regulator tap changes and 6
-capacitor operations over 15 control iterations, and a full-scope attack drives 12 more. Controls
-are off only under \texttt{controlmode=off}, where the same attack gives area $998.0$ and
-$1.3145$\,p.u.\ rather than $126.4$ and $1.1281$\,p.u. Regulators and capacitors therefore act
-against the disturbance in every result reported, and we report tap operations throughout.
+feeder's controls, and we release the diagnostic that shows it
+(\texttt{results/controlmode.json}). Reaching the legitimate base case at light load moves $8$ of
+the $12$ regulators, for $32$ tap steps, and changes $6$ capacitor states; a full-scope attack
+then moves $11$ regulators for a further $24$ tap steps and $3$ capacitor changes. Controls are
+inert only under \texttt{controlmode=off}, where the same attack drives the total overvoltage area
+to $998.0$ p.u.-node and $v_{\max}$ to $1.3145$\,p.u., against $133.1$ p.u.-node and
+$1.1282$\,p.u.\ with controls active --- the feeder's own regulation absorbs a factor of $7.5$.
+Both figures in that comparison are total areas, not attack-minus-base differences, so that they
+are commensurable. Regulators and capacitors therefore act against the disturbance in every result
+reported, and we report tap operations throughout, including where CONTAINDER increases them.
 
 \emph{Protection.} Every node is screened against the IEEE~1547-2018 Category~II overvoltage trip
 thresholds (OV2 $1.20$\,p.u./$0.16$\,s; OV1 $1.10$\,p.u./$2.0$\,s), plus a substation

@@ -48,10 +48,15 @@ IEEE~1547 overvoltage trip threshold. Scope narrowing alone therefore does not c
 apparent adequacy of a narrow access list in our earlier configuration was an artifact of an
 envelope too small to deliver the service at all.
 % provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series); jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (baseline sweep).
-\item A \emph{pilot evaluation} with paired per-seed contrasts showing that, at that conformant
-scope, bounding the \emph{duration} of retained authority is what bounds integrated harm, and
-quantifying the containment latency this buys: expected retention is the credential lifetime
-divided by the per-cycle attestation detection probability, not the lifetime itself.
+\item A \emph{pilot evaluation} with paired per-seed contrasts over twenty seeds showing that, at
+that conformant scope, bounding the \emph{duration} of retained authority is the only remaining
+control, and characterising it honestly: the mechanism truncates the exposure window rather than
+attenuating the excursion, so integrated harm is a measured accrual rate multiplied by the
+lifetime and the containment factor is a lifetime the operator chooses, not an effect size we
+measured. We report what it costs --- a $51.5\%$ rise in regulator tap operations --- and where it
+does not pay, and we quantify the containment latency it buys: expected retention is the
+credential lifetime divided by the per-cycle attestation detection probability, not the lifetime
+itself.
 \end{itemize}
 
 The threat model separates bootstrap identity, operational credential, and authorization scope,
