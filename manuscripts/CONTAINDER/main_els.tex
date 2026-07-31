@@ -87,9 +87,11 @@ remote attestation \sep authorization \sep cyber-physical security
 \section*{Data availability}
 The analysis engine, the X.509/mutual-TLS credential service, the OpenDSS feeder experiment
 scripts, the pre-registration document, and every result file underlying the numbers reported here
-are deposited as a single archive with a persistent identifier
-\BLOCKER{PI: Zenodo DOI for code + result JSONs + pre-registration} and are cited as
-reference~\cite{dataset_containder}. The IEEE~8500-node and IEEE~123-bus test feeders are publicly
+are provided as a single archive accompanying this submission, and will be deposited under a
+persistent identifier on acceptance; the archive is cited as
+reference~\cite{dataset_containder}. Each reported numeral is checked against that archive by
+\texttt{check\_numbers.py}, which fails if a numeral in the manuscript body cannot be located in
+the released result files. The IEEE~8500-node and IEEE~123-bus test feeders are publicly
 available from the referenced OpenDSS distributions. The one input we cannot redistribute is the
 IEEE~2030.5-2023 standard text itself, which is sold by IEEE; Section~\ref{sec:threat} states
 precisely which claims depend on it and which edition each was checked against.

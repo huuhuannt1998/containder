@@ -1,8 +1,8 @@
-\section{Feeder Co-Simulation Methodology}\label{sec:feeder}
+\section{Feeder Simulation Methodology}\label{sec:feeder}
 % provenance: mis_01KXT2DXXY862RPX7YATTRBDWB (M4 spec); dec_01KXT27V1Y4ZR6ZRAST3H94WC7 (testbed decision).
 % provenance: dec_01KXT4C6ZPYD1Z92DH6CN1KKM3 (BR_phys unit = ANSI C84.1 excursion + trip flag).
 
-The physical consequence dimension is measured by a feeder co-simulation that translates an
+The physical consequence dimension is measured by a feeder simulation that translates an
 authorized-control reach from the analysis engine into a malicious dispatch program and runs
 it on a public distribution feeder. We take the IEEE 8500-node feeder~\cite{arritt2010ieee8500}
 as the primary benchmark and the PNNL 9500-node system~\cite{anderson2022ninethousand} as an
@@ -11,15 +11,10 @@ come from public solar and load datasets. This part of the work is methodologica
 relative to the false-data-injection literature on distribution systems, so we build it to be
 unimpeachable rather than novel.
 
-Two choices harden the protocol against the standard objections to simulation studies. First,
-the protocol specifies a GridLAB-D cross-check on the base case and one attack case, following
-the precedent of the PNNL 9500 report~\cite{anderson2022ninethousand}; it is not yet
-implemented, and any divergence it reveals will be reported rather than suppressed. Second, the
-full design gates dispatch on credential state through a HELICS federation. The present
-implementation applies the authorization envelope directly in the OpenDSS driver, which
-enforces the same constraint without the federation. Of this protocol, the OpenDSS
-single-solver path is implemented and exercised in Section~\ref{sec:prelim}; the HELICS
-federation and GridLAB-D cross-check are specified here and not yet built. The attack families are
+This is a single-solver study, and we state the consequence rather than the aspiration: the
+authorization envelope is applied directly in the OpenDSS driver, so the constraint a credential
+expresses is enforced on the dispatch that actually reaches the feeder, but no second solver
+corroborates the result. Section~\ref{sec:prelim} reports what that costs. The attack families are
 volt-var curve distortion, volt-watt curve distortion, export-limit distortion, and
 curtailment spam. The metrics are the count of nodes violating the ANSI~C84.1
 bands~\cite{ansi2020c841}, maximum

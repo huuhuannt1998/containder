@@ -1,0 +1,36 @@
+{
+  "policies": {
+    "deny": {
+      "success_rate": 0.767,
+      "issued": 6,
+      "denied": 2,
+      "degraded": 0,
+      "recovery_steps": 0
+    },
+    "grace": {
+      "success_rate": 0.833,
+      "issued": 6,
+      "denied": 2,
+      "degraded": 0,
+      "recovery_steps": 0
+    },
+    "safe_mode": {
+      "success_rate": 1.0,
+      "issued": 6,
+      "denied": 0,
+      "degraded": 2,
+      "recovery_steps": 0
+    }
+  },
+  "params": {
+    "horizon": 60,
+    "ttl": 10,
+    "renew_every": 8,
+    "outage": [
+      20,
+      40
+    ],
+    "grace": 4
+  },
+  "note": "In-process verifier-outage injection on the real credential service; issuance and credential validity are real. Not a networked/hardware outage."
+}

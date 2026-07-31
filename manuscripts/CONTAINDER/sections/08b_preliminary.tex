@@ -158,8 +158,9 @@ that narrow scope ``retains the most common legitimate DER function while boundi
 at the tested envelope it did not retain the function, and at the conformant envelope it does not
 bound the attack.
 
-Consequence is strongly state dependent. Under normal load the same sweep produces $\Delta J_V
-\le 12.0$ on the active axis and $\le 11.4$ on the reactive axis, with no trips at any envelope.
+Consequence is strongly state dependent. Under normal load the same sweep produces a median
+$\Delta J_V \le 12.0$ on the active axis and $\le 11.4$ on the reactive axis, with no trips at any
+envelope in any seed.
 Light load with high PV is the binding state, as the physical-state dependence of
 Section~\ref{sec:formalism} anticipates.
 
@@ -177,8 +178,9 @@ overvoltage area. The correct mechanisms are curtailment relative to schedule on
 and reactive \emph{absorption} on the reactive axis.
 
 \paragraph{This attack is loud, and that matters.}
-At the full-scope light-load condition, $6710$ of $8531$ energized nodes ($79\%$) sit above
-$1.05$\,p.u.\ with a maximum of $1.128$\,p.u. That is not a stealthy manipulation; it is a
+At the full-scope light-load condition, a median $6662$ of $8531$ energized nodes ($78\%$; per-seed
+range $6184$--$7104$ over ten seeds) sit above $1.05$\,p.u., with a median maximum voltage of
+$1.124$\,p.u.\ rising to $1.135$\,p.u. That is not a stealthy manipulation; it is a
 feeder-wide excursion that AMI voltage reporting, regulator operation counts, and customer
 complaints would surface within a single metering interval. Two conclusions follow. First, it
 weakens any narrative in which such a compromise quietly persists for the two-year lifetime of a
@@ -228,9 +230,11 @@ $5.28$\,kvar (full IEEE 1547 Cat B) & $87.9$ & 1.00 & $11.44$ & 0.00 \\
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_penetration.pdf}
 \caption{Induced overvoltage area (p.u.-node, snapshot) versus PV penetration (IEEE 8500, light
-load, $n{=}5$ seeds). Harm
-scales with penetration under the legacy baseline; containment is penetration-independent under
-CONTAINDER at the tested levels.}
+load, $n{=}5$ seeds). \textbf{Only the legacy trace stands.} Harm scales with penetration under
+the legacy baseline. The flat CONTAINDER trace was measured at the superseded $0.6$\,kvar
+envelope, which Table~\ref{tab:scope} shows is physically inert and does not deliver volt-var, so
+it reads zero at every penetration by construction and is \emph{not} evidence of containment. We
+have not re-run this sweep at the conformant envelope.}
 \label{fig:penetration}
 \end{figure}
 
@@ -238,8 +242,10 @@ CONTAINDER at the tested levels.}
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_attack_families.pdf}
 \caption{Induced overvoltage area (p.u.-node, snapshot) by attack family (IEEE 8500, light load,
-$n{=}5$ seeds). Narrowing scope
-contains overvoltage driven by active or reactive authority.}
+$n{=}5$ seeds). \textbf{Only the legacy bars stand:} overvoltage is reachable through active or
+reactive authority alike. The CONTAINDER bars were measured at the superseded $0.6$\,kvar
+envelope and read zero because that envelope is inert (Table~\ref{tab:scope}), not because
+narrowing contained the attack.}
 \label{fig:families}
 \end{figure}
 
