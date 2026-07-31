@@ -41,16 +41,12 @@ deviation, violating-node count, protection trips, regulator tap operations, ene
 unnecessary curtailment, and recovery time.
 
 \paragraph{Three separations, true by construction.}
-Call a measurement \emph{reachability-only} if it is a function $M$ of $\Reach(x)$ alone. Then:
-varying only the scope map $A$ at fixed reachable set changes $\BRflex$; an attestation-gated
-ephemeral credential and a long-lived unrevoked one differ in $\BRauth$ and $\BRexp$ at equal
-initial reach; and at fixed $x$ and $\pi$ the same authorized command is harmless at one operating
-state and drives nodes past an IEEE~1547 overvoltage trip threshold at another. \textbf{None of
-these can fail.} $M$ is single-valued in $\Reach(x)$ and each construction varies a quantity that
-is by definition not an argument of $M$, so they restate a definition rather than establish a
-result. We state them because they say which quantities an evaluation must move, and each ships as
-a regression test in the released engine. \textbf{They are not evidence for the design; that is in
-Section~\ref{sec:prelim}, and only there.} One correction: the third construction previously
-turned on a reverse-power protection trip the simulator could not represent, there being no
-protection model at all. Section~\ref{sec:feeder} now implements the IEEE~1547-2018 Category~II
-overvoltage screen, and Section~\ref{sec:prelim} reports the state dependence as measured.
+Call a measurement \emph{reachability-only} if it is a function $M$ of $\Reach(x)$ alone. Then, at
+fixed reachable set, varying the scope map changes $\BRflex$; an attestation-gated ephemeral
+credential and a long-lived unrevoked one differ in $\BRauth$ and $\BRexp$; and the same
+authorized command is harmless at one operating state and trips the IEEE~1547 overvoltage screen
+at another. \textbf{None of these can fail}, since $M$ is single-valued in $\Reach(x)$ and each
+construction varies a quantity that is by definition not an argument of $M$. They restate a
+definition. We keep them only because they say which quantities an evaluation must move, and each
+ships as a regression test in the released engine. \textbf{They are not evidence for the design;
+that is in Section~\ref{sec:prelim}, and only there.}

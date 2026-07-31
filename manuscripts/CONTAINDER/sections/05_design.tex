@@ -99,20 +99,20 @@ no guaranteed connectivity, no trustworthy time on inverters, and no responsible
 Our mechanism inherits two of the three, and we state that rather than let a reader find it.
 
 \emph{Secure time.} Expiry is a judgment about time, so an endpoint that cannot trust its clock
-cannot enforce a short lifetime --- the deficiency cited against OCSP. An adversary who skews a
-device clock would extend a ``short-lived'' credential indefinitely. This is a potential break of
-the core mechanism, so \textbf{expiry is never enforced by the endpoint alone}: the issuer refuses
-renewal server-side where a trustworthy clock exists; each renewal binds a fresh key to a
-verifier-supplied nonce, so replaying an attestation cannot extend authority however the clock
-reads; and session and command limits are monotonic counters, not wall-clock deadlines. A skewed
-clock then costs availability, not containment. We have not measured skew.
+cannot enforce a short lifetime --- the deficiency cited against OCSP --- and a skewed device
+clock would extend a ``short-lived'' credential indefinitely. So \textbf{expiry is never enforced
+by the endpoint alone}: the issuer refuses renewal server-side where a trustworthy clock exists,
+each renewal binds a fresh key to a verifier-supplied nonce so a replayed attestation cannot
+extend authority however the clock reads, and session and command limits are monotonic counters
+rather than wall-clock deadlines. A skewed clock then costs availability, not containment. We
+have not measured skew.
 
 \emph{Connectivity.} A twelve-hour lifetime means a DER losing backhaul for twelve hours loses
-control authority, and rural outages of that length are routine. Our availability figures come
-from in-process fault injection, not networked outages, and renewal storms are untested. An
-aggregator dropping a fifth of fleet controllability during a verifier outage has created a
-reliability hazard while closing a security one. Safe-mode degradation to an autonomous volt-var
-profile exists for this reason; whether that trade is acceptable is an operator's call.
+control authority, and rural outages of that length are routine. An aggregator that drops a fifth
+of fleet controllability during a verifier outage has created a reliability hazard while closing a
+security one. Safe-mode degradation to an autonomous volt-var profile exists for this reason;
+whether the trade is acceptable is an operator's call. Our availability figures come from
+in-process injection, not networked outages, and renewal storms are untested.
 
 \emph{Who reports compromise.} Attestation detects only what it measures. Firmware integrity is
 measurable; \textbf{a stolen operational key on a device with intact firmware passes
@@ -123,13 +123,13 @@ $T/p$ as the containment-latency figure of merit.} The alternative, a narrow acc
 long-lived credential, contains a copied key only when someone notices and edits the list, which
 has no bounded latency at all. Bounded beats unbounded; it does not beat instant.
 
-\emph{Which tier is deployable.} Presenting three tiers evenhandedly is misleading: only one is
+\emph{Which tier is deployable.} Presenting three tiers evenhandedly would mislead: only one is
 deployable within the next standards cycle. The native tier needs attestation and a trusted clock
 on constrained inverter hardware; the legacy tier changes nothing. \textbf{The gateway-attested
 proxy tier resolves all three inheritances at once} --- the gateway holds the credential and the
-clock, attestation runs on capable hardware, downstream devices stay unmodified, and the gateway
-buffers short outages --- and it alone requires no change to already-certified endpoints. We
-regard it as the deployment path.
+clock, attestation runs on capable hardware, downstream devices stay unmodified, and short
+outages are buffered --- and it alone requires no change to already-certified endpoints. We regard
+it as the deployment path.
 
 \subsection{Implementation status}
 % provenance: mis_01KXT2D8VVC1CDNT9WJ4CFGH9P (M3 spec).

@@ -101,59 +101,47 @@ an operator must authorize to receive volt-var at all (Table~\ref{tab:scope}).
 
 \emph{Scope alone does not contain.} A long-lived credential confined to that envelope holds the
 feeder in violation for the entire horizon in $20/20$ seeds, median integral $5656$ p.u.-node-min
-(bootstrap CI $[5356, 5857]$, light load).
+(bootstrap CI $[5356, 5857]$, light load; Fig.~\ref{fig:timeseries}).
 
-\emph{The lifetime mechanism truncates rather than attenuates, and recovery is prompt.} While the
-setpoint is applied the instantaneous excess area holds at a mean of $101.8$ p.u.-node (SD
-$10.4$). That the CONTAINDER and legacy arms accrue harm at the same rate is \emph{not} a
-measurement and we do not present it as one: at equal scope the two arms execute the identical
-trajectory until the credential expires, because the lifetime is the only parameter separating
-them. The paired per-minute accrual is correspondingly identical to machine precision (maximum
-absolute difference $0.0$, all twenty seeds, both envelopes), which is worth reporting only as a
-check that the independent per-arm recompiles are deterministic. The substantive point is a
-property of the design, not of the data: lifetime enforcement is a mechanism that stops the
-malicious setpoint, and nothing in it attenuates the setpoint while it is honoured. What it does change could have come out otherwise, \emph{under light load}: at expiry the feeder
-returns to its pre-attack baseline within one minute in $17/20$ seeds, the settled post-expiry
-excess has median $0.000$ p.u.-node, and the whole post-expiry contribution is $1.74\%$ of the
-integral. Nothing latches --- a regulator or capacitor left in an excursion-driven position could
-have held voltage up after the credential died, which would have made the mechanism useless.
-Excluding seed $1019$, the one seed carrying every flagged solve, the figure is $16/19$ --- that
-seed is not what carries the result.
+\emph{The mechanism truncates rather than attenuates.} While the setpoint is applied the
+instantaneous excess area holds at a mean of $101.8$ p.u.-node (SD $10.4$). That the CONTAINDER
+and legacy arms accrue harm at the same rate is \emph{not} a measurement: at equal scope they
+execute the identical trajectory until expiry, lifetime being the only parameter separating them,
+and the paired per-minute accrual is correspondingly identical to machine precision --- worth
+reporting only as a check that the independent per-arm recompiles are deterministic. Nothing in
+the mechanism attenuates the setpoint while it is honoured; it only stops it.
 
-\textbf{Under normal load it does not hold, and we report that rather than the light-load figure
-alone.} The same twenty seeds, the same arms and the same criterion give recovery in only $2/20$
-seeds, a settled post-expiry excess of median $0.193$ p.u.-node, and a post-expiry tail of
-$5.57\%$. We believe the criterion, not the mechanism, is what fails there: recovery is declared
-when the excess falls below a fixed $0.05$ p.u.-node for three consecutive minutes, and the
-normal-load pre-attack baseline is itself only $0.152$ p.u.-node, so the threshold sits inside the
-feeder's own baseline variation and is not resolvable. That is a defect in our endpoint, and we
-do not read the normal-load numbers as evidence that cleanup fails; we read them as evidence that
-this experiment can only speak to recovery at light load. A relative recovery criterion is
-what the confirmatory sweep should use.
+\emph{Recovery is prompt, under light load.} This could have come out otherwise: at expiry the
+feeder returns to its pre-attack baseline within one minute in $17/20$ seeds ($16/19$ excluding
+seed $1019$), the settled post-expiry excess has median $0.000$ p.u.-node, and the whole
+post-expiry contribution is $1.74\%$ of the integral. A regulator or capacitor left in an
+excursion-driven position could have held voltage up after the credential died, which would have
+made the mechanism useless; nothing latches. \textbf{Under normal load the criterion fails and we
+report that rather than the favourable state alone}: the same seeds and arms recover in only
+$2/20$, with settled excess $0.193$ and a $5.57\%$ tail. We read this as a defect in our endpoint,
+not in the mechanism --- recovery is declared below a fixed $0.05$ p.u.-node while the normal-load
+baseline is itself $0.152$, so the threshold sits inside the feeder's own variation. A relative
+criterion is what the confirmatory sweep should use, and until then this experiment speaks only to
+light load.
 
-\emph{The resulting ``$2.16\times$ reduction'' is therefore not an effect size, and we do not
-report it as one.} With the accrual rate identical across arms and the residual negligible, the
-integral is that rate times the minutes the credential is honoured, so the ratio is pinned to the
-ratio of exposure windows, $(60-5)/25 = 2.20$, net of the recovery tail. The data behave exactly so: the mean ratio is $2.159$ at the conformant envelope and $2.159$ at
-the narrower $3.6$\,kvar one --- \emph{the same number to four significant figures at two
-operating points whose accrual rates differ by $43.7\%$} --- and no seed in any state or envelope
-exceeds $2.1988$. A physical mechanism does not return the same ratio at two different physical
-operating points; arithmetic does.
-
-\emph{We therefore measure the relation instead of the ratio.} Sweeping the credential lifetime
-over $\{5,10,15,25,40,55\}$ minutes at twenty paired seeds (\texttt{run\_ttl\_sweep.py}),
-integrated harm is linear in lifetime with slope $100.4$ p.u.-node-min per minute of retained
-validity at the conformant envelope ($R^2 = 0.965$) and $70.0$ at the $3.6$\,kvar envelope
-($R^2 = 0.960$) --- the two accrual rates, recovered independently. At the inert $0.6$\,kvar
-envelope the slope is $-1.7$ with $R^2 = 0.081$: lifetime buys nothing where the envelope does
-nothing. Two internal checks come free. A lifetime of $55$ minutes, which outlives the exposure
-window, reproduces the legacy arm exactly ($5608.235$ against $5608.235$). And regulator tap
-operations sit at a median of $102$ at every lifetime that expires inside the horizon but fall to
-$67$ at $55$ minutes, confirming that the tap cost we report is the expiry transition itself and
-not the attack. The containment factor an operator obtains is therefore
-$(\text{exposure window})/T_{\mathrm{cred}}$ --- a lifetime they choose against an exposure window
-set by their detection and response time, not an effect size we measured. Non-convergence in this
-sweep: $75$ solves flagged, $150$ retried, all retained.
+\emph{The ``$2.16\times$ reduction'' is therefore not an effect size, and we do not report it as
+one.} The integral is the accrual rate times the minutes the credential is honoured, so the ratio
+is pinned to the ratio of exposure windows, $(60-5)/25 = 2.20$, net of the recovery tail. The mean
+ratio is $2.159$ at the conformant envelope \emph{and} $2.159$ at the $3.6$\,kvar one, whose
+accrual rates differ by $43.7\%$, and no seed anywhere exceeds $2.1988$. A physical mechanism does
+not return the same ratio at two different operating points; arithmetic does. \emph{We therefore
+measure the relation instead.} Sweeping the lifetime over $\{5,10,15,25,40,55\}$ minutes at twenty
+paired seeds, integrated harm is linear in lifetime at slope $100.4$ p.u.-node-min per minute of
+retained validity at the conformant envelope ($R^2 = 0.965$) and $70.0$ at $3.6$\,kvar
+($R^2 = 0.960$) --- the two accrual rates, recovered independently --- while at the inert
+$0.6$\,kvar envelope the slope is $-1.7$ ($R^2 = 0.081$), lifetime buying nothing where the
+envelope does nothing. Two checks fall out: a $55$-minute lifetime outlives the exposure window
+and reproduces the legacy arm exactly ($5608.235$), and tap operations sit at $102$ at every
+lifetime expiring inside the horizon but $67$ at $55$ minutes, confirming the tap cost is the
+expiry transition and not the attack. The containment factor an operator obtains is thus
+$(\text{exposure window})/T_{\mathrm{cred}}$: a lifetime they choose against an exposure window
+set by their detection and response time, not an effect size we measured. ($75$ solves flagged in
+this sweep, $150$ retried, all retained.)
 
 \emph{The honest counter-arm, and the cost.} At the non-conformant $0.6$\,kvar envelope the
 ordering reverses: CONTAINDER is \emph{worse} than legacy (median $20.1$ against $12.4$; ratio
@@ -164,36 +152,32 @@ same cost appears at the conformant envelope, $67$ to $101.5$, a $51.5\%$ rise i
 the voltage endpoint does not price. Lifetime enforcement pays only where scope cannot contain,
 which is precisely the conformant case --- but it is not free.
 
-\emph{Two arms withdrawn as uninformative.} The ablations A2 (session enforcement removed) and A3
-(command cleanup removed) are \textbf{not identified by this harness}: its activity predicate maps
-the \texttt{legacy}, \texttt{no\_session} and \texttt{no\_cleanup} lifecycles onto one branch, so
-A2, A3 and B1 are a single arm under three labels, their twenty-seed output series byte-identical
-in both states; A4 and B3 likewise. The earlier claim that removing session enforcement or command
-cleanup ``returns the feeder to no recovery, so each mechanism is necessary'' was reading a
-relabelling as a result, and we withdraw it. The per-command enforcement those ablations were
-meant to probe \emph{is} tested, but on the cyber side --- invariants I5, I6 and I10 and the
-$\Delta_{\mathrm{expiry}} = -0.5$\,s measurement above.
+\emph{Two arms withdrawn as uninformative.} The ablations A2 and A3 are \textbf{not identified by
+this harness}: its activity predicate maps the \texttt{legacy}, \texttt{no\_session} and
+\texttt{no\_cleanup} lifecycles onto one branch, so A2, A3 and B1 are a single arm under three
+labels --- their twenty-seed output series are byte-identical in both states --- and A4 and B3
+likewise. The earlier claim that removing session enforcement or command cleanup ``returns the
+feeder to no recovery, so each mechanism is necessary'' read a relabelling as a result, and we
+withdraw it. What those ablations were meant to probe is tested on the cyber side instead, by
+invariants I5, I6 and I10.
 
-\emph{A label correction.} The arm this artifact calls ``full scope'' commands $(12$\,kW,
-$3.6$\,kvar$)$ while the arm it calls ``narrow ACL at IEEE~1547'' commands $(12$\,kW,
-$5.28$\,kvar$)$, and the inverter's own reactive limit is $5.28$\,kvar. The ``narrow'' envelope is
-thus a strict \emph{superset} of the ``full'' one, which is why the legacy arm reads $5656$ at the
-conformant envelope against $3851$ at the narrower one. That is not narrowing making things worse;
-it is an inverted label, and no comparison in this paper reads a scope \emph{ordering} off those
-two arms. Table~\ref{tab:scope}, which sweeps the envelope continuously and names each level by
-its commanded kvar, is the evidence for scope.
+\emph{A label correction.} The arm the artifact calls ``full scope'' commands $3.6$\,kvar while
+the one it calls ``narrow ACL at IEEE~1547'' commands $5.28$\,kvar, the inverter's own reactive
+limit --- so ``narrow'' is a strict \emph{superset} of ``full'', which is why the legacy arm reads
+$5656$ at the conformant envelope against $3851$ at the narrower one. That is an inverted label,
+not narrowing making things worse, and no comparison here reads a scope \emph{ordering} off those
+two arms.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_timeseries.pdf}
-\caption{\emph{Total} overvoltage area (p.u.-node) against time --- not the excess above
-baseline that the integrals in the text sum. IEEE~8500 feeder, light load: median over
-$n{=}20$ paired seeds, min--max band shaded, each arm an independent compile. Colour is the
-authorized envelope, style the credential lifetime. The long-lived arms never recover ($20/20$
-seeds each); the bounded arms track them \emph{exactly} until expiry at minute $30$, then return
-to baseline within one minute. The mechanism truncates the exposure window rather than attenuating
-the excursion, so the ratio of the integrals is set by the lifetime chosen against the horizon and
-is not an effect size (see text).}
+\caption{\emph{Total} overvoltage area (p.u.-node) against time --- not the excess above baseline
+that the integrals in the text sum. IEEE~8500, light load: median over $n{=}20$ paired seeds,
+min--max band shaded, each arm an independent compile. Colour is the authorized envelope, style
+the credential lifetime. The long-lived arms never recover ($20/20$ seeds each); the bounded arms
+track them \emph{exactly} until expiry at minute $30$, then return to baseline within one minute.
+The mechanism truncates the exposure window rather than attenuating the excursion, so the ratio of
+the integrals is set by the lifetime chosen against the horizon (see text).}
 \label{fig:timeseries}
 \end{figure}
 
@@ -270,15 +254,14 @@ and measured against legitimate operation rather than an empty feeder it breache
 \begin{table}[t]
 \centering
 \caption{Two reactive authorization models at matched magnitude (IEEE~8500, five paired seeds).
-$q_{\mathrm{high}}$ is the reactive setpoint the adversary may command at the top of the voltage
-range, in p.u.\ of nameplate apparent power; negative is absorption. \emph{Curve} leaves the
-IEEE~1547 volt-var controller enabled and bounds how far the characteristic may be moved;
-\emph{override} disables it and writes a fixed setpoint, as an \texttt{opModFixedVar} command
-does. ``Trip'' is the fraction of seeds in which the Category~II overvoltage screen fires
-\emph{and did not already fire in that seed's legitimate base case}; the light-load base trips in
-no seed. Under curve authorization no seed trips down to $-0.33$; under override the screen fires
-at $-0.22$ despite a \emph{negative} $\Delta J_V$, and at zero commanded reactive power the area
-rises with every seed tripping.}
+$q_{\mathrm{high}}$ is the reactive setpoint commandable at the top of the voltage range, in p.u.\
+of nameplate apparent power; negative is absorption. \emph{Curve} leaves the volt-var controller
+enabled and bounds how far the characteristic may move; \emph{override} disables it and writes a
+fixed setpoint, as \texttt{opModFixedVar} does. ``Trip'' counts only seeds where the screen fires
+and did \emph{not} already fire in that seed's legitimate base case (the light-load base trips in
+none). Under curve authorization no seed trips down to $-0.33$; under override the screen fires at
+$-0.22$ despite a \emph{negative} $\Delta J_V$, and at zero commanded reactive power the area rises
+with every seed tripping.}
 \label{tab:curve}
 \small
 \begin{tabular}{@{}lcccccc@{}}
@@ -310,14 +293,6 @@ J_V \le 12.0$ on the active axis and $\le 11.4$ on the reactive axis, with no tr
 in any seed. Light load with high PV is the binding state, as Section~\ref{sec:formalism}
 anticipates.
 
-\paragraph{Why $\Delta J_V$ is negative at small envelopes.}
-The negative entries are neither noise nor reactive ``support''. Against a counterfactual in
-which PV generates at its full scheduled output, an adversary held below $\sigma{=}0.7$ is
-\emph{curtailing}, so voltage rise falls and the one-sided area shrinks. A restrictive
-active-power scope thus converts the compromise into an unwanted-curtailment problem --- an
-availability and revenue harm our voltage endpoint does not price --- rather than an overvoltage
-one. An earlier version read such values as a narrow reactive envelope ``marginally supporting''
-voltage, which is backwards: support would \emph{increase} the area.
 
 \paragraph{This attack is loud, and that matters.}
 At the conformant reactive envelope under light load a median $6958$ of $8531$ nodes ($82\%$) sit
@@ -340,7 +315,13 @@ in the present evaluation.
 \caption{Active-power scope sweep, IEEE~8500 feeder: median induced overvoltage area $\Delta J_V$
 (p.u.-node) against legitimate volt-var operation, and the fraction of five paired seeds in which
 the IEEE~1547 Category~II overvoltage trip screen fires. The reactive axis is reported separately
-in Table~\ref{tab:curve}, which distinguishes the two authorization models.}
+in Table~\ref{tab:curve}. Negative entries are neither noise nor reactive ``support'': against a
+counterfactual in which PV generates at full scheduled output, an adversary held below
+$\sigma{=}0.7$ is \emph{curtailing}, so voltage rise and the one-sided area both fall. A
+restrictive active-power scope thus converts the compromise into an unwanted-curtailment problem
+--- an availability and revenue harm this endpoint does not price --- rather than an overvoltage
+one. An earlier version read such values as ``marginally supporting'' voltage, which is backwards:
+support would \emph{increase} the area.}
 \label{tab:scope}
 \small
 \begin{tabular}{@{}lcccc@{}}
@@ -364,18 +345,16 @@ $\sigma=1.0$ & $63.1$ & 1.00 & $11.98$ & 0.00 \\
 Four further sweeps --- PV penetration, attack family, a second feeder (IEEE~123), and a modeled
 retained-authority product $E_{\mathrm{phys}} = \Delta J_V \times \BRauth$ --- were run before the
 corrections of Section~\ref{sec:feeder}, on the superseded \texttt{Generator}-based harness and
-against a counterfactual feeder carrying no DER. Their legacy-baseline halves are directionally
-consistent with what is reported above: induced overvoltage grows with penetration and is
-reachable through active or reactive authority alike. We nevertheless \textbf{do not report them
-as results}, because their $\Delta J_V$ conflates connecting $7.2$\,MW of generation with stealing
-a credential, and their CONTAINDER halves were measured at the inert $0.6$\,kvar envelope and read
-zero by construction. Three claims drawn from them in an earlier version are withdrawn: that
-narrow scope ``retains the most common legitimate DER function while bounding the attack''; that
-moving from ephemeral to legacy persistence ``multiplies light-load exposure roughly $1700\times$''
-(the two cells share a scope, so the measured factor cancels and the ratio reduces to
-$17524/10 = 1752.4$, a quotient of two \emph{assumed} lifetimes containing no measurement); and
-``neither half alone suffices'' as argued from that product table. The runs remain in the released
-artifact under \texttt{results/superseded/} so the withdrawal can be checked.
+against a counterfactual feeder carrying no DER. Their legacy-baseline halves are directionally consistent with what is reported above, but we
+\textbf{do not report them as results}: their $\Delta J_V$ conflates connecting $7.2$\,MW of
+generation with stealing a credential, and their CONTAINDER halves sat at the inert
+$0.6$\,kvar envelope and read zero by construction. Three claims drawn from them are withdrawn:
+that narrow scope ``retains the most common legitimate DER function while bounding the attack'';
+that moving from ephemeral to legacy persistence ``multiplies light-load exposure roughly
+$1700\times$'' (both cells share a scope, so the measured factor cancels and the ratio reduces to
+$17524/10 = 1752.4$, a quotient of two \emph{assumed} lifetimes); and ``neither half alone
+suffices'' as argued from that product table. The runs remain under
+\texttt{results/superseded/} so the withdrawal can be checked.
 
 \paragraph{Seed inventory.}
 Table~\ref{tab:seeds} inventories every measured run behind this section, so no experiment's scale
@@ -409,28 +388,25 @@ These results are pilot results and we do not generalize them. Physical results 
 public feeders and a single OpenDSS solver, with no GridLAB-D cross-check and a fixed
 export attacker; Table~\ref{tab:seeds} gives the full seed inventory.
 
-\emph{The IEEE~9500 failure mode, stated.} The PNNL~9500-node system was obtained but did not
-converge in our build, and we name the mode rather than leave it an unexplained absence. The
-failure is in the \emph{base case}, with no attack and no PV of ours placed: the model's own
-shipped driver, unaltered, returns \texttt{Converged = False} with an empty error description and
-every bus per-unit magnitude reading zero --- the solution collapses rather than missing
-tolerance. It reproduces at $1000$ iterations, under both the normal and Newton algorithms, and
-with feeder controls enabled and disabled, so it is neither a control-loop oscillation nor an
-iteration-budget shortfall. Our build is DSS C-API $0.14.5$ / DSS-Python $0.15.7$ /
-OpenDSSDirect.py $0.9.4$ on macOS arm64. \textbf{We did not resolve it and we do not attribute
-it}: we cannot exclude a build defect on our side, having had no second OpenDSS build to
-discriminate. The consequence is that cross-feeder generality here rests on the IEEE~123 run
-alone, which is weak, and we claim no more.
+\emph{The IEEE~9500 failure mode, stated.} The PNNL~9500-node system did not converge in our
+build, and we name the mode rather than leave it an unexplained absence. The failure is in the
+\emph{base case}, with no attack and no PV of ours placed: the model's own shipped driver,
+unaltered, returns \texttt{Converged = False} with an empty error description and every bus
+per-unit magnitude reading zero --- the solution collapses rather than missing tolerance. It
+reproduces at $1000$ iterations, under both the normal and Newton algorithms, and with feeder
+controls enabled and disabled, so it is neither a control-loop oscillation nor an iteration-budget
+shortfall. Our build is DSS C-API $0.14.5$ / DSS-Python $0.15.7$ / OpenDSSDirect.py $0.9.4$ on
+macOS arm64. \textbf{We did not resolve it and we do not attribute it}, having had no second
+OpenDSS build to discriminate a defect on our side from one in the model. Cross-feeder generality
+here therefore rests on nothing we report.
 
-Retained-authority figures and the exposure proxy built on them are model outputs under assumed
-attestation and lifetime parameters, not measurements. Overhead is workstation-only, with no
-constrained-hardware or TEE measurement. The availability result injects verifier outages
-in-process rather than as networked or hardware failures; clock skew and renewal storms are
-untested. Incremental deployment is by construction, interoperability against an unmodified
-IEEE~2030.5 endpoint is untested, and the clause-level delta between the 2018 and 2023 editions
-remains open pending access to the revised standard. Most importantly, what this evaluation
-supports is narrow: at the one conformant envelope and two operating states tested, scope does
-not contain, credential expiry ends the excursion promptly, and the size of that benefit is the
-lifetime an operator sets. It does not establish an effect size for CONTAINDER, and the
-pre-registered sweep --- two feeders, a cross-solver check, seasonal states, constrained
-hardware, a stealth-constrained attacker, and the full seed budget --- is what would.
+Overhead is workstation-only, with no constrained-hardware or TEE measurement. Availability
+injects verifier outages in-process rather than as networked failures; clock skew and renewal
+storms are untested. Interoperability against an unmodified IEEE~2030.5 endpoint is untested, and
+the clause-level delta between the 2018 and 2023 editions remains open pending access to the
+revised standard. Most importantly, what this evaluation supports is narrow: on one feeder at two
+operating states, bounding a fixed reactive setpoint does not contain while bounding the curve
+does, credential expiry ends the excursion promptly under light load, and the size of that second
+benefit is a lifetime the operator sets. It establishes no effect size for CONTAINDER. The
+pre-registered sweep --- two feeders, a cross-solver check, seasonal states, constrained hardware,
+a stealth-constrained attacker and the full seed budget --- is what would.

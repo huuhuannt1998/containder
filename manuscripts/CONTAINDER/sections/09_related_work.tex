@@ -60,30 +60,25 @@ runtime~\cite{spiffe-spec,spiffe-cncf} implement almost exactly the chain we des
 attests node and workload, issues short-lived scope-bound X.509 SVIDs keyed to the attested
 identity, refuses renewal when attestation fails, and relies on expiry rather than revocation;
 recent work extends it to IoT fleets~\cite{bakoyiannis2025spiffe} and nested
-tokens~\cite{cochak2024lsvid}. We must therefore answer whether CONTAINDER is workload identity
-with a DER label. Two differences are load-bearing. First, SPIFFE has no notion of a
-\emph{physical effect that outlives the credential}: revoking a workload identity stops a process
-opening new connections, but does not retract a volt-var curve already written into an inverter or
-a schedule already accepted for tomorrow. Our $T_{\mathrm{sess}}$ and $T_{\mathrm{cmd}}$
-enforcement exists because actuation persists in a way computation does not. Second, scope binds
-to \texttt{FunctionSetAssignments}, whose conformant settings are dictated by
-IEEE~1547-2018~\cite{ieee1547-2018} and CSIP~\cite{sunspec2018csip} rather than chosen freely ---
-and our central negative result is that this externally fixed envelope is too wide to contain,
-which has no analogue where the deployer picks the scope. The field constraints of
-Section~\ref{sec:design} differ too.
+tokens~\cite{cochak2024lsvid}. We must therefore answer whether CONTAINDER is workload identity with a DER label. Two
+differences are load-bearing. First, SPIFFE has no notion of a \emph{physical effect that outlives
+the credential}: revoking a workload identity stops a process opening new connections but does not
+retract a volt-var curve already written into an inverter. Our $T_{\mathrm{sess}}$ and
+$T_{\mathrm{cmd}}$ enforcement exists because actuation persists in a way computation does not.
+Second, scope binds to \texttt{FunctionSetAssignments}, whose conformant settings are dictated by
+IEEE~1547-2018~\cite{ieee1547-2018} and CSIP~\cite{sunspec2018csip} rather than chosen freely, so
+\emph{which primitive} is authorized is not the deployer's to redesign --- and that, not envelope
+width, is what our result turns on.
 
-\emph{The Web PKI has already adopted non-renewal.} Our mechanism is not speculative, and we
-should not present it as though it were. The CA/Browser Forum defined a Short-lived Subscriber
-Certificate in 2023 and \emph{exempted it from CRL and OCSP status checking}~\cite{cabf-sc063v4},
-which is precisely ``non-renewal replaces revocation'', already ratified; Baseline Requirements
-v2.2.8 sets that threshold at seven days~\cite{cabf-br}. Ballot SC-081v3, approved in April 2025,
-phases the maximum TLS certificate validity from 398 days down to 47 days by
-2029~\cite{cabf-sc081v3}. This is simultaneously the strongest external validation of our premise
---- the largest deployed PKI reached the same conclusion independently --- and the sharpest limit
-on our novelty. We claim no novelty for short-lived credentials or for expiry-based containment.
-What we claim is the mapping onto DER authorization: which scope object to bind, what the
-conformant scope envelope costs, and that session and command-effect enforcement are separately
-necessary because grid actuation persists.
+\emph{The Web PKI has already adopted non-renewal.} The CA/Browser Forum defined a Short-lived
+Subscriber Certificate in 2023 and \emph{exempted it from CRL and OCSP status
+checking}~\cite{cabf-sc063v4} --- precisely ``non-renewal replaces revocation'', already ratified,
+with Baseline Requirements v2.2.8 setting the threshold at seven days~\cite{cabf-br} --- and
+ballot SC-081v3 phases maximum TLS validity from 398 days to 47 by 2029~\cite{cabf-sc081v3}. This
+is at once the strongest external validation of our premise and the sharpest limit on our novelty.
+We claim none for short-lived credentials or expiry-based containment. What we claim is the
+mapping onto DER authorization: which scope object to bind, which primitive to withhold, and that
+session and command-effect enforcement are separately necessary because grid actuation persists.
 
 \emph{DER guidance and competing key management.} IEEE~1547.3-2023 is the cybersecurity guide for
 interconnected DER~\cite{ieee1547.3-2023} and the natural home for these recommendations;

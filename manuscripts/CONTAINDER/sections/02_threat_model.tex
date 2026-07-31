@@ -41,14 +41,13 @@ makes a compromise persist for the certificate lifetime.
 
 \subsection{Compromise loci and adversary}
 % provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
-We consider four compromise loci of increasing consequence: a single device, an edge
-gateway, an aggregator or DER management system, and a utility-side issuing role. The
-adversary obtains a valid credential at one locus (by key extraction, session theft, or a
-misconfigured or compromised server granting scope) and issues protocol-conformant control
-commands within that credential's authorization. The adversary does not break TLS or the
-underlying cryptography. The utility-side issuing role is the ceiling on what any credential
-discipline can bound, because it can subvert issuance itself; we treat it as the boundary of
-the design's protection rather than a case the design defeats.
+We consider four compromise loci of increasing consequence: a single device, an edge gateway, an
+aggregator or DER management system, and a utility-side issuing role. The adversary obtains a
+valid credential at one locus --- by key extraction, session theft, or a misconfigured server
+granting scope --- and issues protocol-conformant control commands within that credential's
+authorization, without breaking TLS or the underlying cryptography. The issuing role is the
+ceiling on what any credential discipline can bound, since it can subvert issuance itself; we
+treat it as the boundary of the design's protection rather than a case it defeats.
 
 \subsection{Credential lifecycle and existing containment}
 % provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE (SAND 4.1, sourced); jrn_01KXTVC4CT850YTVE5EM3RJDGS (verify vs 2030.5-2023).
