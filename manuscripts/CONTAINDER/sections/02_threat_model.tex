@@ -58,28 +58,52 @@ published December 2024), and the profile in force~\cite{sunspec2018csip}. We se
 certificate can be cryptographically revoked; whether a server can locally deny an identity
 despite a valid certificate; whether a device can be re-enrolled or re-keyed; and whether an
 active session or an already-issued control remains effective after credential expiry. Lack of
-CRL/OCSP bounds only the first. Table~\ref{tab:standards} lists the claims our argument uses and
-their current source of record; the revocation rows are sourced to the Sandia analysis, and the
-clause-level rows are marked pending direct verification against the applicable
-edition~\cite{obert2019recommendations}.
+CRL/OCSP bounds only the first.
+
+\paragraph{The paper's primary open risk, stated plainly.}
+\textbf{We were unable to obtain IEEE~2030.5-2023.} It is paywalled at roughly US\$255, it is not
+included in the IEEE GET free-standards programme, and we found no publicly accessible document
+that quotes its clause text; every free source that quotes 2030.5 quotes the 2018 edition. Our
+premise --- that a device certificate's lifetime is effectively indefinite while online revocation
+is unavailable --- is therefore evidenced against the \emph{2018} edition and the Sandia
+analysis~\cite{obert2019recommendations}, not against the edition now in force. We consider this
+the single largest threat to the paper's external validity and we do not minimise it.
+Table~\ref{tab:standards} states, row by row, exactly what each claim rests on and what would
+still change if the 2023 text differed. Two rows deserve the reader's attention before the rest of
+the paper is read. \textbf{S5 is not supported by any source we could access}, and is contradicted
+in spirit: the Sandia analysis lists dynamic re-provisioning as a \emph{recommendation}, i.e.\ a
+capability judged absent, so we treat re-enrollment as something CONTAINDER must supply rather
+than something the standard already offers. \textbf{S8 is the row most exposed to edition drift},
+because vendor and reseller descriptions of the 2023 revision state that it eliminates the
+requirements for mandatory DERControl modes, which is precisely the territory S8 occupies. Where
+our argument depends on S5 or S8 we say so at the point of use.
+\BLOCKER{PI: purchase IEEE 2030.5-2023 (IEEE Xplore doc 10785536, DOI 10.1109/IEEESTD.2024.10785536, approx.\ US\$255) and confirm S1--S8 clause by clause}
 
 \begin{table}[t]
 \centering
-\caption{Claims our argument uses and their current source of record. Rows marked ``pending'' are asserted on the 2018 edition and the Sandia analysis; the corresponding 2023 clause has not been read.}
+\caption{Every standards claim the argument uses, the accessible source of record for it, and what
+remains unverified. \textbf{No row has been checked against IEEE~2030.5-2023}; the edition in force
+could not be obtained (see text). SAND = Sandia SAND2019-1490~\cite{obert2019recommendations};
+CSIP = Common Smart Inverter Profile Implementation Guide v2.1~\cite{sunspec2018csip}. ``Free
+source'' means a document a reader can check without purchase.}
 \label{tab:standards}
 \small
-\begin{tabular}{@{}p{0.06\columnwidth}p{0.52\columnwidth}p{0.30\columnwidth}@{}}
+\begin{tabular}{@{}p{0.05\columnwidth}p{0.34\columnwidth}p{0.24\columnwidth}p{0.27\columnwidth}@{}}
 \toprule
-ID & Claim & Status \\
+ID & Claim & Free source of record & Residual risk \\
 \midrule
-S1 & Device certificate may be long-lived/indefinite & pending 2023 clause \\
-S2 & CRL use prohibited/unsupported & SAND \S4.1; confirm 2023 \\
-S3 & OCSP prohibited/unsupported & SAND \S4.1; confirm 2023 \\
-S4 & Local allow/deny listing available & SAND \S4.1; confirm 2023 \\
-S5 & Certificate replacement/re-enrollment possible & pending 2023 clause \\
-S6 & LFDI/SFDI derives from certificate & pending 2023 clause \\
-S7 & FunctionSetAssignments scopes operations & pending 2023 clause \\
-S8 & Scheduled DER controls can persist & pending 2023 clause \\
+S1 & Device certificate lifetime indefinite & SAND \S4.1, verbatim & 2023 clause unread \\
+S2 & CRL use prohibited & SAND \S4.1, verbatim & 2023 clause unread \\
+S3 & OCSP prohibited & SAND \S4.1, verbatim & 2023 clause unread \\
+S4 & Local allow/deny listing available & SAND \S4.1, \S3.1.1.3; CSIP \S5.2.1.4 & permitted, not
+required (SAND \S3.1.1.4) \\
+S5 & Certificate replacement / re-enrollment possible & \textbf{none} & \textbf{unsupported}; SAND
+Rec.~5 implies absent \\
+S6 & LFDI/SFDI derives from certificate & SAND \S3.1.1.1 and CSIP \S5.2.1.2 (independent) &
+\textbf{low}; two sources agree \\
+S7 & FunctionSetAssignments scopes operations & CSIP \S5.2.3.1 & clause number only \\
+S8 & Scheduled DER controls can persist & CSIP \S4.4.2, \S6.1.8.2 & \textbf{high}; 2023 reportedly
+drops mandatory DERControl modes \\
 \bottomrule
 \end{tabular}
 \end{table}
