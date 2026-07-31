@@ -34,7 +34,7 @@
   edition      = {Version 2.1},
   year         = {2018},
   month        = mar,
-  note         = {Released 16 March 2018; supports CA Rule 21 Phase 2}
+  note         = {Released 15 March 2018; supports CA Rule 21 Phase 2}
 }
 
 @article{qi2016cybersecurity,
@@ -76,7 +76,9 @@
   type        = {Vulnerability Research Report},
   year        = {2025},
   month       = mar,
-  note        = {Industry (non-peer-reviewed) report; landing page titled ``SUN:DOWN Vulnerability Research Report.'' 46 CVEs across Sungrow, Growatt, SMA}
+  note        = {Industry (non-peer-reviewed) report; 46 vulnerabilities across Sungrow,
+                 Growatt and SMA, not all CVE-assigned},
+  url         = {https://www.forescout.com/research-labs/sun-down-a-dark-side-to-solar-energy-grids/}
 }
 
 @inproceedings{hui2025destabilizing,
@@ -517,28 +519,19 @@
 @techreport{obert2019recommendations,
   author = {Obert, James and Cordeiro, Patricia and Johnson, Jay and Lum, Gordon and Tansy, Tom and Pala, Max and Ih, Ronald},
   title = {Recommendations for Trust and Encryption in {DER} Interoperability Standards},
-  institution = {Sandia National Laboratories}, number = {SAND2019-1490}, year = {2019}, month = feb, address = {Albuquerque, NM}}
-@inproceedings{ou2006scalable,
-  author = {Ou, Xinming and Boyer, Wayne F. and McQueen, Miles A.},
-  title = {A Scalable Approach to Attack Graph Generation},
-  booktitle = {13th ACM Conference on Computer and Communications Security (CCS)}, pages = {336--345}, year = {2006}}
-@inproceedings{wang2010kzeroday,
-  author = {Wang, Lingyu and Jajodia, Sushil and Singhal, Anoop and Noel, Steven},
-  title = {k-Zero Day Safety: Measuring the Security Risk of Networks against Unknown Attacks},
-  booktitle = {ESORICS 2010}, series = {Lecture Notes in Computer Science}, volume = {6345}, pages = {573--587}, year = {2010}, publisher = {Springer}}
+  institution = {Sandia National Laboratories}, number = {SAND2019-1490}, year = {2019}, month = feb, address = {Albuquerque, NM},
+  doi = {10.2172/1761841}}
 
-% ===================================================================================
-% Added in the IJCIP major revision. Every entry below was verified against CrossRef,
-% DBLP, OSTI, the IEC webstore, the IEEE Standards Association, or the issuing body's
-% own published record, by DOI or exact title -- never by author-name search.
 % ===================================================================================
 
 % --- Workload identity: the closest existing system to CONTAINDER's containment chain ---
 @misc{spiffe-spec,
   title        = {The {SPIFFE} Specification: Secure Production Identity Framework for Everyone},
   howpublished = {\url{https://github.com/spiffe/spiffe}},
+  year         = {2025},
   note         = {Specification set: SPIFFE ID and Verifiable Identity Document, SPIFFE
-                  Workload API, SPIFFE Workload Endpoint, X.509-SVID, JWT-SVID},
+                  Workload API, SPIFFE Workload Endpoint, X.509-SVID, JWT-SVID; accessed
+                  2026-07-31},
   url          = {https://github.com/spiffe/spiffe}
 }
 
@@ -555,7 +548,10 @@
                Miltos D. Grammatikakis and Marcello Coppola},
   title     = {Trusting {IoT} Devices at Scale in the Computing Continuum Through
                {SPIFFE/SPIRE} Certificates},
-  booktitle = {ApplePies},
+  booktitle = {Applications in Electronics Pervading Industry, Environment and Society
+               (ApplePies 2024)},
+  series    = {Lecture Notes in Electrical Engineering},
+  publisher = {Springer},
   pages     = {279--285},
   year      = {2025},
   doi       = {10.1007/978-3-032-17174-0{\_}40}
@@ -628,6 +624,8 @@
   edition     = {1.0},
   year        = {2020},
   month       = apr,
+  note        = {Withdrawn 2026-07-22 and superseded by IEC 62351-8:2026; cited here as the
+                 edition in force during this work},
   url         = {https://webstore.iec.ch/en/publication/61822}
 }
 
@@ -722,5 +720,5 @@
                   {OpenDSS} feeder pipeline, pre-registration, and result files},
   year         = {2026},
   howpublished = {Zenodo},
-  note         = {DOI pending deposit}
+  note         = {{DOI} pending deposit}
 }
