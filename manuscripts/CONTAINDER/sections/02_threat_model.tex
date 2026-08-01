@@ -18,14 +18,13 @@ access-control object.
 The trust model has two properties central to this work~\cite{obert2019recommendations}.
 Device certificates have indefinite lifetime, and revocation is prohibited: certificate
 authorities are directed not to maintain revocation lists or run status responders, and
-endpoints are directed not to check them. The stated reasons against online revocation are
-concrete design constraints, not incidental: field devices have no guaranteed connectivity,
-a hard-fail check destroys availability while a soft-fail check is trivially bypassed by
-blocking the responder, revocation presupposes a secure time source that inverters may lack,
-and no party is defined as responsible for reporting a compromised device. The sanctioned
-substitute is a local allow or deny list. The consequence for our threat model is direct:
-once a credential is compromised, there is no online mechanism to withdraw it, so its
-authority persists until it expires.
+endpoints are directed not to check them. The stated reasons are concrete design constraints, not
+incidental --- field devices have no guaranteed connectivity, a hard-fail check destroys
+availability while a soft-fail check is trivially bypassed by blocking the responder, revocation
+presupposes a secure time source that inverters may lack, and no party is defined as responsible
+for reporting a compromised device --- and the sanctioned substitute is a local allow or deny list.
+The consequence for our threat model is direct: once a credential is compromised, there is no
+online mechanism to withdraw it, so its authority persists until it expires.
 
 \subsection{Three separated layers}
 % provenance: jrn_01KXT490ZD4444AWMRG5296GJA.

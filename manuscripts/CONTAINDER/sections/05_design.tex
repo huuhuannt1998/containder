@@ -80,16 +80,13 @@ Issuer outage & prior low-risk scope, bounded grace & scope expansion, high impa
 \end{table}
 
 \subsection{Migration compatibility}
-We separate three compatibility levels, and the protocol requires a passing interoperability test
-before any of them is claimed, rather than asserting ``backward compatible.'' None has yet been
-tested; Section~\ref{sec:prelim} reports interoperability as untested. \emph{Protocol compatibility}: 2030.5 messages remain standard conformant.
-\emph{Implementation compatibility}: unmodified client or server software can participate.
-\emph{Deployment compatibility}: legacy and upgraded devices coexist. Three tiers realize this:
-a bootstrap-only legacy tier, a gateway-attested proxy tier where an edge gateway holds the
-operational credential for downstream legacy devices, and a native device-attested tier. We claim
-only the compatibility level demonstrated by an interoperability test; if only the proxy tier
-interoperates with an unmodified endpoint, we say CONTAINDER supports incremental deployment
-through a credential-terminating gateway proxy, and no more.
+We separate three compatibility levels --- \emph{protocol} (2030.5 messages stay conformant),
+\emph{implementation} (unmodified client or server software can participate), and \emph{deployment}
+(legacy and upgraded devices coexist) --- and claim none of them without a passing interoperability
+test rather than asserting ``backward compatible.'' None has yet been tested;
+Section~\ref{sec:prelim} reports interoperability as untested. Three tiers realize this: a
+bootstrap-only legacy tier, a gateway-attested proxy tier where an edge gateway holds the
+operational credential for downstream legacy devices, and a native device-attested tier.
 
 \subsection{What non-renewal inherits from the constraints it cites}
 % Reviewer M11: the mechanism inherits at least two of the three deficiencies it cites against OCSP.

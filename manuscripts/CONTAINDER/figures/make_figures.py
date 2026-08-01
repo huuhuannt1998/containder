@@ -149,10 +149,18 @@ def fig_timeseries():
     plt.close(fig)
 
 
+#: Figures the manuscript actually includes. fig_penetration, fig_exposure and
+#: fig_attack_families read result files that were quarantined to results/superseded/ when the
+#: sweeps behind them were withdrawn (Section VIII, "Earlier sweeps, and why they are not reported
+#: as results"). Their PDFs are no longer \includegraphics'd anywhere, so building them by default
+#: would crash a reader reproducing the artifact. They are retained below and can be rebuilt by
+#: pointing RES at results/superseded/.
+BUILT = (fig_containment_chain, fig_timeseries)
+WITHDRAWN_FIGS = (fig_penetration, fig_exposure, fig_attack_families)
+
 if __name__ == "__main__":
-    fig_penetration()
-    fig_exposure()
-    fig_attack_families()
-    fig_containment_chain()
-    fig_timeseries()
-    print("wrote fig_penetration, fig_exposure, fig_attack_families, fig_chain, fig_timeseries")
+    for fn in BUILT:
+        fn()
+    print("wrote " + ", ".join(fn.__name__ for fn in BUILT))
+    print("skipped (inputs superseded): "
+          + ", ".join(fn.__name__ for fn in WITHDRAWN_FIGS))
