@@ -74,14 +74,14 @@ exists.
 
 \paragraph{Availability (C6).}
 Renewal is fast enough not to be the binding constraint: a $100{,}000$-device fleet re-mints in
-about $20$\,s at the measured issuer throughput. We do \emph{not} claim more from the renewal
-safety margin $T_{\mathrm{TTL}} - (T_{\mathrm{renew,p99}} + T_{\mathrm{net}})$: with a p99 renewal
-of $0.7$\,ms and a flat $1$\,s network allowance it reduces to $T_{\mathrm{TTL}} - 1.0$\,s and
-cannot be negative at any lifetime we tested, so it tests nothing. The real question --- margin
-under a realistic wide-area latency distribution and a renewal storm --- is unmeasured. The
-binding risk is instead a verifier outage longer than the lifetime. Injecting verifier outages, fail-closed denial retains $0.77$ of
-legitimate control availability, a bounded grace period $0.83$, and degraded-scope safe mode
-$1.0$. The injection is in-process; networked outages, clock skew, and renewal storms remain.
+about $20$\,s at the measured issuer throughput. We claim nothing from the renewal safety margin
+$T_{\mathrm{TTL}} - (T_{\mathrm{renew,p99}} + T_{\mathrm{net}})$: with a p99 renewal of $0.7$\,ms
+and a flat $1$\,s network allowance it cannot be negative at any lifetime we tested, so it tests
+nothing, and the real question --- margin under a realistic wide-area latency distribution and a
+renewal storm --- is unmeasured. The binding risk is a verifier outage longer than the lifetime.
+Injecting verifier outages, fail-closed denial retains $0.77$ of legitimate control availability, a
+bounded grace period $0.83$, and degraded-scope safe mode $1.0$. The injection is in-process;
+networked outages, clock skew, and renewal storms remain.
 
 \paragraph{Time-series containment: what the lifetime mechanism does, and what its ratio is not (C5).}
 % provenance: experiments/run_timeseries2.py -> results/timeseries2.json (n=20 paired seeds, 2 states).
@@ -213,39 +213,63 @@ positive between $\sigma{=}0.7$ and $\sigma{=}0.8$, with the IEEE~1547 trip scre
 $60\%$ of seeds at $\sigma{=}0.7$ and in every seed from $\sigma{=}0.8$. Restricting active-power
 authority below roughly $70\%$ of nameplate does contain.
 
-On the \emph{reactive} axis the answer depends on \emph{which object} the authorization bounds,
-and that is this paper's most consequential result. We evaluate two authorization models at
-matched reactive magnitude (Table~\ref{tab:curve}, \texttt{run\_curve\_envelope.py}, five paired
-seeds, two states).
+On the \emph{reactive} axis the answer depends on the \emph{shape} of the authorized set rather
+than on its width, and it does \emph{not} depend on which control primitive carries it. We
+evaluate two authorization models at matched reactive magnitude (Table~\ref{tab:curve},
+\texttt{run\_curve\_envelope.py}, five paired seeds, two states): \emph{setpoint override}, in
+which an \texttt{opModFixedVar} command supersedes the active volt-var curve, and \emph{curve
+modification}, in which the controller stays enabled and only the high-voltage reactive setpoint
+of the characteristic moves.
 
-\emph{Bounding a fixed reactive setpoint does not contain.} Under \emph{setpoint override} --- the
-model in which an \texttt{opModFixedVar} command supersedes the active volt-var curve, which is how
-our other reactive results are produced --- the trip screen fires in $3/5$ seeds at a commanded
-$-0.22$ p.u.\ even though the aggregate area \emph{falls} ($\Delta J_V = -6.8$), and at a
-commanded zero the area rises by $31.2$ with every seed tripping. The mechanism at zero is worth
-stating plainly: an adversary need inject nothing, because overriding the curve at all suppresses
-the reactive absorption the feeder was relying on. \textbf{A bound on the magnitude of a fixed
-setpoint cannot reach that suppression term}, since the suppression is granted by the override
-itself and is present at every magnitude including zero.
+\emph{An authorization that permits zero absorption does not contain, under either primitive.} At
+a commanded high-voltage reactive setpoint of zero the induced area rises by $31.2$ under override
+and by $31.4$ under curve modification, and every seed trips in both. This is the result worth
+stating plainly, and it is the one that survives: \textbf{an adversary need inject nothing.}
+Withdrawing the reactive absorption the feeder was relying on is by itself sufficient to breach the
+band and fire the trip screen, so a bound of the form $|q| \le q_{\max}$ --- which contains zero at
+every width --- cannot contain, however tight it is made. The operative bound must be a
+\emph{floor on retained absorption}, not a cap on magnitude.
 
-\emph{Bounding the volt-var characteristic does contain, within a narrow band.} Under \emph{curve
-modification} --- controller left enabled, adversary free to move the high-voltage reactive
-setpoint only within an authorized band --- no seed trips at the conformant $-0.44$ p.u.\ or at
-$-0.33$, and $\Delta J_V$ is $-3.8$ and $+4.7$ respectively. Trips begin at $-0.22$ ($1/5$) and
-reach every seed by $-0.11$. An operator who authorizes curve parameters and requires the DER to
-retain at least about three quarters of the conformant Category~B absorption therefore \emph{does}
-contain, while still receiving volt-var.
+\textbf{The primitive is not what separates these arms, and we state that rather than let the
+comparison imply it.} Over the band an operator would actually authorize, the two models are
+indistinguishable on the safety outcome: neither trips any seed at the conformant $-0.44$ p.u.\ or
+at $-0.33$. On the area endpoint the override arm is in fact the \emph{lower} of the two at every
+absorbing setpoint ($-20.4$ and $-13.8$ against $-3.7$ and $+4.7$), and at $-0.11$ it trips $1/5$
+seeds where curve modification trips all five. The pre-registered interpretation rule fixed in
+\texttt{run\_curve\_envelope.py} before the run --- a non-degenerate band over which $\Delta J_V
+\le 0$ and no seed trips --- is met by \emph{override} at $-0.33$ and by curve modification only at
+the conformant point itself, i.e.\ not at all; the released
+\texttt{results/derived\_reported.json} records both bands. Had we read a primitive-level
+separation off these arms we would have been reading the shape of the two authorized sets --- a
+two-sided magnitude cap for the setpoint against a one-sided absorption floor for the curve ---
+and reporting it as a property of the feeder. Give the curve the two-sided cap and it fails as well
+($\Delta J_V = 38.8$ at $+0.44$, every seed tripping); give the setpoint the floor and it contains.
+
+One caveat runs the other way, and it does not rescue a primitive-level claim. The override arm's
+negative areas come from forcing full absorption at every node irrespective of local voltage, which
+absorbs more than the conformant curve; our one-sided overvoltage endpoint does not price the
+undervoltage that over-absorption causes on a feeder whose extremities already sag. The area
+comparison between the two models is therefore confounded, which is a further reason to rest the
+result on the zero point and the trip outcome rather than on the ordering of areas.
 
 \textbf{We accordingly withdraw the stronger claim} --- made in an earlier version of this
-section --- that no reactive envelope both contains a compromise and delivers the volt-var
-service. It is false: a bounded-curve authorization does both. What is true, and what we now
-claim, is narrower and more useful: containment depends on the authorization primitive, not on
-the envelope width alone, and the primitive IEEE~2030.5 offers for direct reactive control is the
-one that fails. The design consequence is concrete --- authorize \texttt{opModVoltVar} curve
-parameters within a band and withhold \texttt{opModFixedVar} --- and it is a recommendation about
-the standard's function set rather than about how tightly a number is bounded.
+section --- that no reactive envelope both contains a compromise and delivers the volt-var service.
+It is false: an authorization holding the DER to at least about three quarters of the conformant
+Category~B absorption trips no seed while still delivering volt-var. What we claim is that the
+containing property of that authorization is the excluded zero, which we measured, and not the
+function set that expresses it, which we did not.
 
-Two limits on this result. The band boundary lies between $-0.33$ and $-0.22$ at five seeds and is
+There is a route by which the primitive could still matter, and it is a claim about the standard
+rather than about the feeder: if IEEE~2030.5 can express only a magnitude cap for
+\texttt{opModFixedVar} while a volt-var authorization can pin the characteristic's shape, then in
+deployment a fixed-setpoint grant always admits zero and the distinction becomes real. We flag this
+as a \emph{conjecture we cannot verify}. It turns on \texttt{FunctionSetAssignments} expressiveness,
+row S7 of Table~\ref{tab:standards}, for which our evidence is a clause number in the 2018-era
+profile and nothing in the edition in force. Resolving it needs the 2023 text we could not obtain,
+and until then the safe recommendation is primitive-independent: \textbf{authorize a reactive band
+that excludes zero absorption, by whichever function set carries it.}
+
+Two limits on the measured part. The floor lies between $-0.33$ and $-0.22$ at five seeds and is
 not resolved more finely than that. And the earlier version's ``narrow'' envelope of $0.6$\,kvar
 is still not a counterexample: at $11.4\%$ of the Category~B range it does not deliver volt-var,
 and measured against legitimate operation rather than an empty feeder it breaches anyway
@@ -259,9 +283,12 @@ of nameplate apparent power; negative is absorption. \emph{Curve} leaves the vol
 enabled and bounds how far the characteristic may move; \emph{override} disables it and writes a
 fixed setpoint, as \texttt{opModFixedVar} does. ``Trip'' counts only seeds where the screen fires
 and did \emph{not} already fire in that seed's legitimate base case (the light-load base trips in
-none). Under curve authorization no seed trips down to $-0.33$; under override the screen fires at
-$-0.22$ despite a \emph{negative} $\Delta J_V$, and at zero commanded reactive power the area rises
-with every seed tripping.}
+none). \textbf{Read the rows, not the columns:} at zero commanded reactive power the area rises and
+every seed trips under \emph{both} models, which is the reported result. Neither model trips a seed
+at $-0.44$ or $-0.33$, so the columns do not separate over the band an operator would authorize;
+where they differ the override column is the lower one on area, and at $-0.11$ it trips fewer
+seeds. The negative override areas reflect absorption forced at every node irrespective of local
+voltage, which this one-sided overvoltage endpoint does not penalise.}
 \label{tab:curve}
 \small
 \begin{tabular}{@{}lcccccc@{}}
@@ -296,7 +323,8 @@ anticipates.
 
 \paragraph{This attack is loud, and that matters.}
 At the conformant reactive envelope under light load a median $6958$ of $8531$ nodes ($82\%$) sit
-above $1.05$\,p.u., with $v_{\max}$ rising to $1.142$\,p.u. Most of that is the $62\%$ already
+above $1.05$\,p.u., with $v_{\max}$ at a median of $1.1383$\,p.u.\ and reaching $1.1424$ in the
+worst seed. Most of that is the $62\%$ already
 above band before any attack --- what the attack adds is the $87.9$ p.u.-node increment --- but
 the post-attack state is still not a stealthy manipulation. It is a feeder-wide excursion that AMI voltage reporting,
 regulator operation counts, and customer complaints would surface within a single metering
@@ -384,9 +412,11 @@ Availability fault injection (C6) & 3 policies & 3 & --- \\
 \end{table}
 
 \paragraph{Limitations.}
-These results are pilot results and we do not generalize them. Physical results come from two
-public feeders and a single OpenDSS solver, with no GridLAB-D cross-check and a fixed
-export attacker; Table~\ref{tab:seeds} gives the full seed inventory.
+These results are pilot results and we do not generalize them. Every physical result reported above
+comes from a \emph{single} feeder, the IEEE~8500-node, on a single OpenDSS solver, with no
+GridLAB-D cross-check and a fixed export attacker; the IEEE~123 runs were made on the superseded
+harness and are withdrawn, and the PNNL~9500 system did not converge, so neither contributes a
+reported number. Table~\ref{tab:seeds} gives the full seed inventory.
 
 \emph{The IEEE~9500 failure mode, stated.} The PNNL~9500-node system did not converge in our
 build, and we name the mode rather than leave it an unexplained absence. The failure is in the

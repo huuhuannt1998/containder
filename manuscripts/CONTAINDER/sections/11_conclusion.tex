@@ -3,7 +3,7 @@
 
 \paragraph{Limitations.}
 The boundaries of the evaluation are stated next to the results they bound, at the end of
-Section~\ref{sec:prelim}: two public feeders and a single solver, one PV penetration level at the
+Section~\ref{sec:prelim}: one feeder and a single solver, one PV penetration level at the
 conformant scope envelope, modeled rather than measured retained authority, workstation-only
 overhead, in-process availability injection, untested interoperability, an unmeasured
 stealth-constrained attacker, and no access to the 2023 edition of the standard. Two further
@@ -15,19 +15,26 @@ revocation rest on the Sandia analysis rather than a clause-level reading of the
 \paragraph{Conclusion.}
 Credential compromise in IEEE~2030.5 is not well described by how many nodes an adversary reaches.
 It is described by how much physical capacity those nodes command, how long the adversary keeps
-it, and what the feeder does in response. Our central empirical finding is about \emph{which} authorization
-primitive an operator should grant, not about how tightly to bound it. \textbf{On the
-IEEE~8500-node feeder, bounding the magnitude of a fixed reactive setpoint does not contain a
-credential compromise, while bounding the volt-var characteristic does.} An adversary that merely
-overrides the curve --- needing no injection authority at all, and staying inside any magnitude
-bound including zero --- drives the feeder past an overvoltage trip threshold in every seed,
-because the suppression is granted by the override rather than by the quantity commanded. An
-adversary confined instead to moving the characteristic within a band containing at least about
+it, and what the feeder does in response. Our central empirical finding is about the \emph{shape} of the
+authorization an operator grants, not about how tightly it is drawn. \textbf{On the
+IEEE~8500-node feeder, a reactive authorization that permits zero absorption does not contain a
+credential compromise, and one that mandates a floor on absorption does.} An adversary needing no
+injection authority at all --- commanding zero, which sits inside any magnitude bound --- drives
+the feeder past an overvoltage trip threshold in every seed, because withdrawing the volt-var
+absorption is itself the attack. An adversary confined instead to a band holding at least about
 three quarters of the conformant Category~B absorption trips no seed. Least privilege works here,
-but only when it is applied to the curve rather than to a number.
+but only when the bound is a floor rather than a ceiling.
 
-Two things follow. The concrete one is a recommendation to the standard's users: authorize
-\texttt{opModVoltVar} curve parameters within a band and withhold \texttt{opModFixedVar}. The
+We expected the control primitive to be what separated these cases and it is not: we ran the sweep
+under both a fixed-setpoint override and a bounded volt-var curve, and over the band an operator
+would authorize the two are indistinguishable on the trip outcome. Reporting a primitive-level
+separation would have described the shape of the two authorized sets we chose rather than anything
+the feeder did, so we do not. Whether the standard's function sets can express an absorption floor
+for a fixed setpoint is a question about IEEE~2030.5 that we could not answer without the edition
+in force, and we leave it flagged as a conjecture in Section~\ref{sec:prelim}.
+
+Two things follow. The concrete one is a recommendation to the standard's users: authorize a
+reactive band that excludes zero absorption, by whichever function set carries it. The
 second is that scope discipline remains insufficient on its own at the envelopes deployments
 actually grant today, so bounding the \emph{duration} of retained authority still matters, and
 that is what attested short-lived credentials with session and command-effect enforcement

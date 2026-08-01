@@ -40,14 +40,16 @@ tiers.
 and renewal, plus an OpenDSS feeder pipeline --- with ten implemented security invariants
 verified and containment timing measured.
 % provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTX3PH43VR78AM1GZHC27T1 (measured results).
-\item A \emph{result about which authorization primitive to grant}: on the IEEE~8500-node
-feeder~\cite{arritt2010ieee8500}, bounding the magnitude of a fixed reactive setpoint does not
-contain a compromise --- at zero authorized injection the feeder still breaches, because
-overriding the volt-var curve suppresses absorption the feeder depends on --- while bounding the
-volt-var characteristic itself does contain, provided the DER keeps roughly three quarters of the
-conformant Category~B absorption. Narrowing therefore works on one IEEE~2030.5 primitive and not
-on the other, and the apparent adequacy of a narrow access list in our earlier configuration was
-an artifact of an envelope too small to deliver the service at all.
+\item A \emph{result about the shape a reactive authorization must have}: on the IEEE~8500-node
+feeder~\cite{arritt2010ieee8500}, an authorization that permits zero reactive absorption does not
+contain a compromise, because withdrawing the absorption the feeder depends on is by itself enough
+to breach the band and trip every seed --- the adversary need inject nothing. A magnitude cap
+$|q| \le q_{\max}$ admits zero at every width and so cannot contain, while a band holding the DER
+to roughly three quarters of the conformant Category~B absorption trips no seed and still delivers
+volt-var. We measured this under both a fixed-setpoint override and a bounded volt-var curve and
+report that it does \emph{not} separate them, against our own prior expectation that the primitive
+would matter. The apparent adequacy of a narrow access list in our earlier configuration was an
+artifact of an envelope too small to deliver the service at all.
 % provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series); jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (baseline sweep).
 \item A \emph{pilot evaluation} with paired per-seed contrasts over twenty seeds showing that, at
 that conformant scope, bounding the \emph{duration} of retained authority is the only remaining
@@ -73,7 +75,7 @@ vocabulary for how much, for how long, and under which grid conditions. It is no
 advance, and the load-bearing claims here are empirical.
 
 We state scope plainly. The engine, credential service, and feeder pipeline are implemented and
-covered by a regression suite. The evaluation is a pilot: two public feeders, one solver, one
+covered by a regression suite. The evaluation is a pilot: one feeder, one solver, one
 workstation, and --- at the conformant scope envelope where the central result lies --- one
 penetration level and two operating states. The pre-registered confirmatory sweep, with a
 cross-solver check, constrained hardware, a stealth-constrained attacker, and the full seed

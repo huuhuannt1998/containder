@@ -67,8 +67,10 @@ retract a volt-var curve already written into an inverter. Our $T_{\mathrm{sess}
 $T_{\mathrm{cmd}}$ enforcement exists because actuation persists in a way computation does not.
 Second, scope binds to \texttt{FunctionSetAssignments}, whose conformant settings are dictated by
 IEEE~1547-2018~\cite{ieee1547-2018} and CSIP~\cite{sunspec2018csip} rather than chosen freely, so
-\emph{which primitive} is authorized is not the deployer's to redesign --- and that, not envelope
-width, is what our result turns on.
+the \emph{shape} of an authorized envelope is constrained by the profile rather than by the
+deployer --- and it is that shape, not envelope width, that our result turns on. Whether the
+profile can express the absorption floor our result calls for is open
+(Section~\ref{sec:prelim}).
 
 \emph{The Web PKI has already adopted non-renewal.} The CA/Browser Forum defined a Short-lived
 Subscriber Certificate in 2023 and \emph{exempted it from CRL and OCSP status
