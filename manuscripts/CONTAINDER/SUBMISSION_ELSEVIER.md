@@ -48,10 +48,10 @@ Data curation, Writing - original draft, Writing - review and editing, Visualiza
 
 ## Build status (updated 2026-07-31)
 
-`main_els.tex` is the primary build; `main.tex` (IEEEtran) is **broken** -- it still inputs
+`main.tex` is the primary build; `main.tex` (IEEEtran) is **broken** -- it still inputs
 `sections/04_separation`, deleted in 37156d0 -- and is not needed for IJCIP.
 
-- Build: `latexmk -pdf -interaction=nonstopmode main_els.tex`.
+- Build: `latexmk -pdf -interaction=nonstopmode main.tex`.
 - Last clean build: 0 errors, 0 undefined references, 0 undefined citations, 0 overfull boxes,
   **48 pages** in the `review` (double-spaced, line-numbered) format Elsevier expects. Page count
   is a review-format artifact; IJCIP is word-count governed.
@@ -71,7 +71,7 @@ python3 manuscripts/CONTAINDER/check_highlights.py   # 3-5 bullets, <= 85 chars 
 python3 experiments/validate_matrix.py               # pre-registration SHA-256 still matches
 ```
 
-`check_numbers.py` scans the section files **and** `main_els.tex`, since the abstract carries the
+`check_numbers.py` scans the section files **and** `main.tex`, since the abstract carries the
 headline numerals and was previously unchecked. It also tracks withdrawn numerals separately and
 fails if one is used outside an explicit withdrawal. Regenerate derived statistics first with
 `python3 experiments/derive_reported_stats.py` if any experiment has been re-run.

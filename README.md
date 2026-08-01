@@ -85,7 +85,7 @@ The manuscript lives in `manuscripts/CONTAINDER/`. Two builds are maintained:
 
 | Target | Class | Status |
 |---|---|---|
-| `main_els.tex` -> `main_els.pdf` | `elsarticle` | **primary** (IJCIP, Elsevier) |
+| `main.tex` -> `main.pdf` | `elsarticle` | **primary** (IJCIP, Elsevier) |
 | `main.tex` -> `main.pdf` | `IEEEtran` | contingency only |
 
 `elsarticle.cls` is installed system-wide under `TEXMFHOME`
@@ -93,7 +93,7 @@ The manuscript lives in `manuscripts/CONTAINDER/`. Two builds are maintained:
 
 ```
 cd manuscripts/CONTAINDER
-latexmk -pdf -interaction=nonstopmode main_els.tex     # primary
+latexmk -pdf -interaction=nonstopmode main.tex     # primary
 latexmk -pdf -interaction=nonstopmode main.tex         # contingency
 ```
 
@@ -111,14 +111,14 @@ the manuscript directory only if `kpsewhich` comes back empty and `tlmgr` is una
 Two DOIs in `refs.bib` contain underscores and are escaped as `{\_}`
 (`10.1007/0-387-24230-9{\_}9`, `10.1007/978-3-540-70567-3{\_}22`). The escape survives BibTeX and
 is required: unescaped, the `elsarticle` build raises eight LaTeX errors. If you regenerate
-`refs.bib`, delete the stale `main_els.bbl` before rebuilding, or the errors will appear to
+`refs.bib`, delete the stale `main.bbl` before rebuilding, or the errors will appear to
 persist.
 
 Acceptance for either build is zero LaTeX errors, zero undefined references, and zero undefined
 citations.
 
 **Maintenance trap:** the abstract exists twice. `main.tex` reads `sections/00_abstract.tex`;
-`main_els.tex` carries an inline copy because `elsarticle` requires the abstract inside
+`main.tex` carries an inline copy because `elsarticle` requires the abstract inside
 `\begin{frontmatter}`. Edit both, or the two builds silently disagree. They are in sync as of
 commit `a78264d` and after.
 

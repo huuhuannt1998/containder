@@ -89,14 +89,14 @@ def main():
     pool = harvest_results()
     print(f"harvested {len(pool)} distinct numeric literals from {len(list(RESULTS.glob('*.json')))} result files\n")
     unmatched, escaped = [], []
-    # main_els.tex carries the abstract inline, which is where the headline numerals live; it was
+    # main.tex carries the abstract inline, which is where the headline numerals live; it was
     # previously unchecked, so a stale abstract could pass the gate while every section passed.
     # supplementary.tex holds detail moved out of the body under the length recommendation --
     # moving a number out of the body must not move it out of the gate. highlights.tex is the
     # Elsevier front-matter file and is a claim surface of its own: it carried a superseded
     # headline once already because nothing checked it.
     targets = (sorted(SECTIONS.glob("*.tex"))
-               + [HERE / "main_els.tex", HERE / "supplementary.tex", HERE / "highlights.tex"])
+               + [HERE / "main.tex", HERE / "supplementary.tex", HERE / "highlights.tex"])
     for tex in targets:
         body = re.sub(r"(?m)^\s*%.*$", "", tex.read_text())
         # Structural notation that is not a measurement: thousands separators (100{,}000),
