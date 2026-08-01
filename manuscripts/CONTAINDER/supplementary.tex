@@ -1,0 +1,78 @@
+% CONTAINDER --- Supplementary material, submitted as a SEPARATE file from the manuscript.
+% Holds detail moved out of the body under the IJCIP length recommendation. Nothing here is a
+% result: S1 is a negative result (a feeder that produced no number) and S2 is a scale inventory
+% for experiments the body already reports. Each block is pointed to from the body, so a reviewer
+% reaches it without having to know this file exists.
+%
+% NOTE: every numeral in this file is covered by check_numbers.py, which includes supplementary.tex
+% in its targets. Moving a number out of the body must not move it out of the freeze gate.
+\documentclass[review]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{url}
+
+\journal{International Journal of Critical Infrastructure Protection}
+
+\begin{document}
+
+\begin{frontmatter}
+\title{Supplementary material for\\
+CONTAINDER: Bounding Credential-Compromise Impact in IEEE~2030.5 DER Systems}
+\author{Huan Bui}
+\ead{hbui11@charlotte.edu}
+\affiliation{organization={University of North Carolina at Charlotte},
+             city={Charlotte}, state={NC}, country={USA}}
+\end{frontmatter}
+
+\section*{S1. The IEEE~9500 non-convergence, in full}
+
+The manuscript's limitations paragraph states that the PNNL~9500-node system did not converge in
+our build and therefore contributes no reported number. This section names the failure mode, so
+that the absence is an explained negative result rather than a silent omission.
+
+The failure is in the \emph{base case}, with no attack and no PV of ours placed: the model's own
+shipped driver, unaltered, returns \texttt{Converged = False} with an empty error description and
+every bus per-unit magnitude reading zero --- the solution collapses rather than missing tolerance.
+It reproduces at $1000$ iterations, under both the normal and Newton algorithms, and with feeder
+controls enabled and disabled, so it is neither a control-loop oscillation nor an
+iteration-budget shortfall. Our build is DSS C-API $0.14.5$ / DSS-Python $0.15.7$ /
+OpenDSSDirect.py $0.9.4$ on macOS arm64.
+
+\textbf{We did not resolve it and we do not attribute it}, having had no second OpenDSS build to
+discriminate a defect on our side from one in the model. The consequence for the manuscript is
+stated there and repeated here because it is load-bearing: cross-feeder generality rests on
+nothing we report, and every physical number in the paper comes from the single IEEE~8500-node
+feeder.
+
+\section*{S2. Seed inventory for the pilot evaluation}
+
+Table~\ref{tab:seeds} inventories every measured run behind the manuscript's pilot evaluation, so
+no experiment's scale has to be inferred from prose. Seeds are paired across arms within an
+experiment; ``arms'' counts the policy or envelope conditions evaluated at each seed. The runs made
+on the superseded harness --- withdrawn in the manuscript and not reported as results --- are
+inventoried separately in \texttt{results/superseded/}.
+
+\begin{table}[h]
+\centering
+\caption{Inventory of the measured runs the pilot evaluation reports.}
+\label{tab:seeds}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Experiment & Seeds & Arms & States \\
+\midrule
+IEEE 8500 time series & 20 & 9 & 2 \\
+Credential-lifetime sweep & 20 & 18 & 2 \\
+Scope-envelope sweep & 5 & 21 & 2 \\
+Volt-var-curve sweep & 5 & 18 & 2 \\
+Control-mode diagnostic & 1 & 2 & 1 \\
+Credential-service invariants (C1) & 1 & 10 & --- \\
+Overhead microbenchmarks (C3) & 500 iterations & 4 & --- \\
+Availability fault injection (C6) & 3 policies & 3 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

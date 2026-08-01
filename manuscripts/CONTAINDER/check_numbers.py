@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reverse claim-check: every numeral asserted in the manuscript against results/*.json.
+"""Reverse claim-check: every numeral asserted in any submitted file against results/*.json.
 
 Freeze-gate step 3. For each numeral appearing in the manuscript body, report whether it can be
 located in the released result files. This cannot prove a number is used *correctly* -- only a
@@ -91,7 +91,12 @@ def main():
     unmatched, escaped = [], []
     # main_els.tex carries the abstract inline, which is where the headline numerals live; it was
     # previously unchecked, so a stale abstract could pass the gate while every section passed.
-    targets = sorted(SECTIONS.glob("*.tex")) + [HERE / "main_els.tex"]
+    # supplementary.tex holds detail moved out of the body under the length recommendation --
+    # moving a number out of the body must not move it out of the gate. highlights.tex is the
+    # Elsevier front-matter file and is a claim surface of its own: it carried a superseded
+    # headline once already because nothing checked it.
+    targets = (sorted(SECTIONS.glob("*.tex"))
+               + [HERE / "main_els.tex", HERE / "supplementary.tex", HERE / "highlights.tex"])
     for tex in targets:
         body = re.sub(r"(?m)^\s*%.*$", "", tex.read_text())
         # Structural notation that is not a measurement: thousands separators (100{,}000),
@@ -123,8 +128,8 @@ def main():
             print(f"  [{f}] {n:>10}   {why}")
         print()
     if not unmatched:
-        print("PASS: every non-whitelisted numeral in the manuscript body and abstract appears "
-              "in results/*.json")
+        print("PASS: every non-whitelisted numeral in the manuscript body, abstract, Highlights "
+              "and supplementary material appears in results/*.json")
         return 0
     print(f"{len(unmatched)} numerals not located in results/*.json "
           f"(each needs a source, a whitelist entry, or removal):\n")

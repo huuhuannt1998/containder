@@ -18,63 +18,14 @@ plt.rcParams.update({"font.size": 8, "axes.linewidth": 0.6, "figure.dpi": 300,
 DARK, LIGHT = "#0072B2", "#E69F00"   # colorblind-safe; distinguished also by marker/hatch
 
 
-def fig_penetration():
-    d = json.loads((RES / "penetration.json").read_text())
-    x = [int(v * 100) for v in d["levels"]]
-    fig, ax = plt.subplots(figsize=(3.3, 2.1))
-    ax.plot(x, d["B1_full"], "o-", color=DARK, label="legacy full (B1)", lw=1.3, ms=4)
-    ax.plot(x, d["B5_narrow"], "s--", color=LIGHT, label="CONTAINDER (B5)", lw=1.3, ms=4)
-    ax.set_xlabel("PV penetration (%)")
-    ax.set_ylabel("induced overvoltage area")
-    ax.set_xticks(x)
-    ax.grid(True, lw=0.3, alpha=0.5)
-    ax.legend(loc="upper left")
-    fig.savefig(HERE / "fig_penetration.pdf")
-    plt.close(fig)
-
-
-def fig_exposure():
-    d = json.loads((RES / "full_sweep.json").read_text())
-    jv, ba = d["jv_by_scope"], d["br_auth_hours"]
-    baselines = [("B1", "full", "legacy_long"), ("B2", "narrow", "legacy_long"),
-                 ("B3", "full", "ephemeral"), ("B4", "reference", "attest_long"),
-                 ("B5", "narrow", "containder")]
-    labels, vals = [], []
-    for name, scope, regime in baselines:
-        exp = jv[f"{scope}|light_load"] * ba[regime]
-        labels.append(name)
-        vals.append(max(exp, 1.0))   # floor for log display
-    fig, ax = plt.subplots(figsize=(3.3, 2.1))
-    bars = ax.bar(labels, vals, color=[DARK, LIGHT, DARK, "#56B4E9", LIGHT], edgecolor="k", lw=0.5)
-    bars[1].set_hatch("//"); bars[4].set_hatch("//")
-    ax.set_yscale("log")
-    ax.set_ylabel(r"capacity-time exposure  $J_V\times BR_{auth}$")
-    for b, v in zip(bars, vals):
-        ax.text(b.get_x() + b.get_width() / 2, v * 1.3, ("$\\approx$0" if v <= 1.0 else f"{v:.0e}"),
-                ha="center", va="bottom", fontsize=6)
-    ax.set_ylim(0.5, max(vals) * 8)
-    fig.savefig(HERE / "fig_exposure.pdf")
-    plt.close(fig)
-
-
-def fig_attack_families():
-    d = json.loads((RES / "attack_families.json").read_text())["overvoltage_families"]
-    fams = ["export_limit", "volt_var", "volt_watt"]
-    legacy = [d[f]["full"] for f in fams]
-    cont = [d[f]["narrow"] for f in fams]
-    x = range(len(fams))
-    w = 0.38
-    fig, ax = plt.subplots(figsize=(3.3, 2.1))
-    ax.bar([i - w / 2 for i in x], legacy, w, color=DARK, edgecolor="k", lw=0.5, label="legacy full")
-    ax.bar([i + w / 2 for i in x], cont, w, color=LIGHT, edgecolor="k", lw=0.5, hatch="//",
-           label="CONTAINDER")
-    ax.set_xticks(list(x))
-    ax.set_xticklabels(["export", "volt-var", "volt-watt"])
-    ax.set_ylabel("induced overvoltage area")
-    ax.legend(loc="upper right")
-    ax.grid(True, axis="y", lw=0.3, alpha=0.5)
-    fig.savefig(HERE / "fig_attack_families.pdf")
-    plt.close(fig)
+# Removed: fig_penetration, fig_exposure and fig_attack_families. They plotted the PV-penetration,
+# capacity-time-exposure and attack-family sweeps, all of which were run on the superseded
+# Generator-based harness against a no-DER counterfactual and are withdrawn in Section VIII ("Earlier
+# sweeps, and why they are not reported as results"). Their inputs now live in
+# experiments/results/superseded/ and their PDFs have been deleted, so nothing in the manuscript
+# refers to them. The withdrawn runs remain in the archive under that directory's README, which is
+# where the withdrawal can be checked; regenerating the plots would only invite the reader to treat
+# them as findings.
 
 
 def fig_containment_chain():
@@ -149,18 +100,11 @@ def fig_timeseries():
     plt.close(fig)
 
 
-#: Figures the manuscript actually includes. fig_penetration, fig_exposure and
-#: fig_attack_families read result files that were quarantined to results/superseded/ when the
-#: sweeps behind them were withdrawn (Section VIII, "Earlier sweeps, and why they are not reported
-#: as results"). Their PDFs are no longer \includegraphics'd anywhere, so building them by default
-#: would crash a reader reproducing the artifact. They are retained below and can be rebuilt by
-#: pointing RES at results/superseded/.
+#: The two figures the manuscript includes, and the only two this script builds. Every input it
+#: reads is a live file in experiments/results/, so a clean checkout reproduces both.
 BUILT = (fig_containment_chain, fig_timeseries)
-WITHDRAWN_FIGS = (fig_penetration, fig_exposure, fig_attack_families)
 
 if __name__ == "__main__":
     for fn in BUILT:
         fn()
     print("wrote " + ", ".join(fn.__name__ for fn in BUILT))
-    print("skipped (inputs superseded): "
-          + ", ".join(fn.__name__ for fn in WITHDRAWN_FIGS))
