@@ -80,7 +80,7 @@ is the matched-feasible-set comparison the pilot did not perform. Two feeders, t
 rungs each, $20$ paired seeds, $2520$ arms.
 
 \paragraph{Result: consequence tracks the support the feeder is drawing, not penetration.}
-Table~\ref{tab:reliance} is the central conditional result. The harm an adversary can do by
+Table~\ref{tab:reliance} and Fig.~\ref{fig:reliance} are the central conditional result. The harm an adversary can do by
 withdrawing reactive support scales with the reactive absorption the fleet was
 \emph{actually delivering} under the conformant characteristic --- from $0.1$ p.u.-node where the
 fleet is net injecting to $334$ where it absorbs $2.0$\,Mvar --- and that quantity is not a
@@ -122,6 +122,18 @@ IEEE 8500 & $150\%$  & $24.468$ & no  & $-1979$ & $334.50$ & $1.00$ \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_reliance.pdf}
+\caption{Induced $\Delta J_{\mathrm{band}}$ against the reactive absorption the fleet delivers
+under the conformant characteristic, worst admissible point of the full-width symmetric cap,
+$n{=}20$ paired seeds per point, bars are bootstrap $95\%$ intervals. Circled points are rungs at
+which legitimate operation is compliant. Both feeders lie on the same relationship although their
+penetrations at comparable harm differ by an order of magnitude, which is why absorption rather
+than penetration is the quantity an operator should watch.}
+\label{fig:reliance}
+\end{figure}
 
 \paragraph{Result: shape contains where width does not (H1).} At the exactly matched width of
 $0.50\,Q_b$, a symmetric cap that admits zero absorption is worse than an absorption floor that
@@ -169,7 +181,7 @@ IEEE 123  & $1000\%$ & curve    & $37.08$  & $[26.85, 56.13]$  & $+0.000$ \\
 IEEE 123  & $600\%$  & setpoint & $-2.81$  & $[-11.73, -1.90]$ & $+0.001$ \\
 IEEE 8500 & $50\%$   & curve    & $1.48$   & $[1.14, 1.83]$    & $+0.146$ \\
 IEEE 8500 & $100\%$  & curve    & $24.24$  & $[22.82, 25.60]$  & $+0.027$ \\
-IEEE 8500 & $150\%$  & curve    & $41.12$  & $[38.49, 43.27]$  & $+0.071$ \\
+IEEE 8500 & $150\%$  & curve    & $41.12$  & $[38.48, 43.27]$  & $+0.071$ \\
 IEEE 8500 & $150\%$  & setpoint & $36.38$  & $[33.31, 43.71]$  & $+0.018$ \\
 \bottomrule
 \end{tabular}
@@ -201,10 +213,20 @@ seeds, $22$ lifecycle arms each.
 \paragraph{Result: identity denial alone contains nothing (Table~\ref{tab:lifecycle}).} This is
 the paper's motivating claim, and it is now a measurement. Denying the compromised identity ---
 the mechanism IEEE~2030.5 sanctions in place of revocation --- reduces integrated harm by
-\textbf{exactly zero} on both feeders, at both detection delays. The denied identity opens no new
+\textbf{exactly zero} (Fig.~\ref{fig:layers}) on both feeders, at both detection delays. The denied identity opens no new
 session, and that is all it does: the adversary's established session keeps accepting commands and
 its issued control keeps acting. Adding session termination reduces harm by $48.8\%$ on IEEE~8500
 and $54.4\%$ on IEEE~123; adding command cancellation as well reaches $70.6\%$ and $76.3\%$.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_layers.pdf}
+\caption{Integrated harm by containment layer, IEEE~8500 at $150\%$ penetration, $n{=}20$ paired
+seeds, bars are bootstrap $95\%$ intervals and the dotted line is the long-lived baseline. Dark
+bars are indistinguishable from that baseline: credential expiry alone, command cleanup alone, and
+denying the compromised identity each remove no harm. Percentages are relative to the baseline.}
+\label{fig:layers}
+\end{figure}
 
 \paragraph{Result: neither mechanism suffices alone, for two different reasons (H4).} The
 mechanism ablation separates cleanly, which the pilot's harness could not do --- its activity

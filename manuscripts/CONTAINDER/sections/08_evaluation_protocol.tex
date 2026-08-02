@@ -1,80 +1,65 @@
-\section{Evaluation Protocol (Pre-Registered)}\label{sec:protocol}
-% provenance: jrn_01KXTQR71C4YJ194114Y0JSQFF (v1 pre-registration); jrn_01KXTVC4CT850YTVE5EM3RJDGS (revision: mechanism baselines, mixed-effects, OSF).
-% provenance: mis_01KXT2FNB2JRTETEPAH14KK8B6 (M5 spec); dec_01KXT24BG2923V59HR33CCQC2Z (RQ2).
+\section{Evaluation Methodology}\label{sec:protocol}
+% provenance: experiments/PREREGISTRATION_CONFIRMATORY.md, committed at git f35c2e7 before any
+% treatment arm ran; amendments A1 and A2 recorded there.
 
-\emph{No measured results are reported in this section.} We state the evaluation protocol for the
-confirmatory sweep, and we state precisely what our immutability evidence for it is worth, because
-a pre-registration that overstates its own guarantee is worse than none.
+\paragraph{What the pre-registration guarantees, and what it does not.}
+The hypotheses, endpoints, operating ladder, authorization families, attacker models,
+interpretation rules and exclusion policy are recorded in
+\texttt{PREREGISTRATION\_CONFIRMATORY.md}, \textbf{committed to version control before any
+treatment arm was run}. The ordering is checkable: the commit introducing that document precedes
+the commit introducing every result file the paper reports. This is a genuine ordering guarantee
+within the repository and it is what the predecessor version of this work lacked, since there
+every result predated the repository itself.
 
-The scenario matrix and statistical plan are recorded in \texttt{PREREGISTRATION.md} with a
-SHA-256 content hash recomputable by \texttt{validate\_matrix.py}. \textbf{That hash is not a
-timestamp.} It was computed by the same party who could have edited the file, so it shows only
-that the matrix has not changed since the hash was written; it cannot show \emph{when} the matrix
-was fixed relative to seeing any outcome. The repository's version-control anchor does not repair
-this: the initial commit capturing the pre-registration is dated 2026-07-30, which
-\textbf{postdates every pilot result reported in Section~\ref{sec:results}}. We therefore make no
-claim that the design could not have been adjusted after seeing pilot outcomes. It could have
-been, and no artifact in this repository proves otherwise.
+It is not an independent timestamp. The commit is authored by the party who could rewrite history,
+so it establishes ordering to a reader who trusts the repository and not to one who does not.
+Converting it into an independent guarantee requires a third-party deposit, which has not been
+made. We claim repository-internal ordering and nothing more.
 
-The consequence follows directly, and we adopt it without qualification: the measured results in
-Section~\ref{sec:results} are reported as \textbf{exploratory}, not confirmatory, and are excluded
-from the confirmatory tests.
+\paragraph{Two departures, both disclosed.}
+Before any result of the shape sweep was seen, the top rung of each penetration ladder and two
+points of the attacker grid were removed: at those rungs the strong-injection admissible points
+exhaust the solver's retry budget and the sweep projected four and a half hours. The first run was
+stopped and its partial output discarded rather than merged, and both removed rungs sit beyond
+their feeder's compliance transition and support no primary claim.
 
-\paragraph{Baselines and mechanism ablations.}
-Six credential-lifecycle designs are compared: legacy identity-as-authority (B1), legacy with a
-narrow access list (B2), ephemeral-only (B3), attestation-only (B4), full CONTAINDER (B5), and
-safe-mode renewal (B6). Each baseline is specified by explicit fresh-key, session-enforcement, and
-command-cleanup attributes, because the central claim is that short lifetime alone does not
-contain a copied key, an active session, or a persistent command. Eight mechanism ablations
-(A1--A8) each remove one link of the containment chain, so the measured reduction is attributed
-to a mechanism rather than to shorter certificates. Table~\ref{tab:baselines} gives the baseline
-mechanism attributes.
+The second departure was made \emph{after} seeing results and is a defect correction. The IEEE~123
+fleet had been set to $91$, exactly that feeder's load-bus count, so every seed selected the same
+buses and merely permuted them: all twenty IEEE~123 seeds were one circuit, returning a single
+distinct value per rung with degenerate bootstrap intervals. The nominal $n{=}20$ was an $n{=}1$.
+This is the same class of error as the predecessor's withdrawn ablations --- replication reported
+where the harness produced none --- and it is corrected the same way. The IEEE~123 fleet was
+halved so that placement varies with the seed, those arms were re-run, and the originals were
+discarded. IEEE~8500, whose $600$ units are drawn from $1177$ load buses, was unaffected. No
+hypothesis, endpoint, interpretation rule or seed count changed.
 
-\begin{table*}[t]
-\centering
-\caption{Credential-lifecycle baselines \emph{as pre-registered}. FK = fresh key per epoch;
-Sess = session enforcement; Cmd = command-effect cleanup. ``Narrow'' here is a design
-category, not a value: the executed pilot instantiated it at two different envelopes, and
-Section~\ref{sec:results} reports every result by the commanded kvar rather than by this
-label.}
-\label{tab:baselines}
-\small
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llccllcc@{}}
-\toprule
-ID & Design & Lifetime & Attestation & Scope & FK & Sess & Cmd \\
-\midrule
-B1 & legacy identity-as-authority & long & no & deployment ACL & no & no & no \\
-B2 & legacy + narrow ACL & long & no & narrow & no & no & no \\
-B3 & ephemeral-only & short & no & reference & opt. & expiry & opt. \\
-B4 & attestation-only & long & yes & reference & enroll & weak & no \\
-B5 & full CONTAINDER & short & yes & narrow & per-epoch & yes & yes \\
-B6 & CONTAINDER safe-mode & short & yes & narrow/degraded & per-epoch & yes & yes \\
-\bottomrule
-\end{tabular}%
-}
-\end{table*}
-
-\paragraph{Factors and design.}
-The factors are credential time to live, authorization scope, compromise locus (with the issuer
-treated as a trust boundary, not a defended case), DER penetration and technology mix, attack
-program, attestation-trust state, renewal policy, and operating state. Every attack runs under
-both a worst-case optimizing attacker and an operationally realistic telemetry-limited attacker,
-so no result is only an omniscient upper bound. The primary comparison is the fully-crossed
-lifetime-by-scope factorial, whose interaction term is the compositional claim.
+One interpretation rule could not be applied as written, and \S\ref{sec:results} gives the
+substitution and the null control that justifies it.
 
 \paragraph{Statistics.}
-The experimental unit is the complete paired scenario run, not the per-timestep sample. The
-primary voltage-violation area is analyzed with a mixed-effects model,
-$\log(1+Y)=\beta_0+\beta_1\log(\mathrm{TTL})+\beta_2\,\mathrm{Scope}+\beta_3\log(\mathrm{TTL})\times\mathrm{Scope}+b_{\mathrm{day}}+b_{\mathrm{seed}}+\epsilon$,
-whose interaction coefficient tests the primary hypothesis, with robust, aligned-rank, or
-permutation fallbacks where assumptions fail. Protection trips use mixed-effects logistic
-regression --- now a well-defined outcome, since Section~\ref{sec:feeder} implements a protection
-model --- violating-node counts a negative-binomial mixed model, and recovery time survival
-analysis. Effect sizes are the median paired difference, ratio of geometric means, paired
-rank-biserial correlation, and odds ratios, each with bootstrap confidence intervals, with Holm
-correction within rather than across hypothesis families. A five-seed pilot and a power analysis
-set the production seed count before final comparisons are viewed. These procedures apply to the
-confirmatory sweep. The pilot in Section~\ref{sec:results} reports paired per-seed contrasts with
-bootstrap intervals, which its stored data do support, and does not report the mixed-effects
-estimates, which they do not.
+The experimental unit is the complete paired scenario run --- (feeder, rung, set, primitive,
+attacker, seed) --- never a node, a timestep or a command. Every contrast is paired on seed: the
+same seeded fleet placement carries the legitimate baseline and every treatment arm at that seed,
+and each arm is an independent compile so no solver state leaks between arms. Estimates are the
+median paired difference with a bias-corrected percentile bootstrap interval at $10{,}000$
+resamples; count outcomes additionally carry an exact binomial sign test. Twenty paired seeds
+support every primary contrast. Holm correction is applied within each hypothesis family and not
+across them.
+
+Non-convergence is a recorded outcome, never a dropped run: the retry cap is two with the
+control-iteration budget tripling $500 \to 1500 \to 4500$, unsettled solves are retained and
+flagged, and every reported aggregate carries its flagged count. The calibration sweep records
+that IEEE~8500 at $300\%$ penetration does not converge under the corrected characteristic even
+after the full ladder, which is why the ladder stops below it.
+
+\paragraph{Operating states.}
+The ladder is calibrated, not assumed. A hosting-capacity sweep under \emph{legitimate} operation
+only --- no treatment, no attacker --- locates the penetration at which each feeder's legitimate
+volt-var operation stops holding the ANSI upper band, using a tolerance relative to that feeder's
+own zero-PV base case, because the IEEE~8500 base is itself marginally out of band with no PV
+present. The resulting limits are $50\%$ penetration on IEEE~8500 at half load and, on IEEE~123,
+\emph{right-censored}: that feeder holds the band at every penetration tested up to $1200\%$,
+because its voltages stay inside the characteristic's deadband. That censoring is why the
+confirmatory ladder is an explicit penetration ladder per feeder rather than fractions of a limit,
+and why \S\ref{sec:results} reports fleet reactive absorption alongside penetration --- it is the
+quantity that actually varies with exposure.

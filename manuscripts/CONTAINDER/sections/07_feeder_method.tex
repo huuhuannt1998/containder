@@ -1,70 +1,74 @@
 \section{Feeder Simulation Methodology}\label{sec:feeder}
-% provenance: mis_01KXT2DXXY862RPX7YATTRBDWB (M4 spec); dec_01KXT27V1Y4ZR6ZRAST3H94WC7 (testbed decision).
-% provenance: dec_01KXT4C6ZPYD1Z92DH6CN1KKM3 (BR_phys unit = ANSI C84.1 excursion + trip flag).
+% provenance: power/confirmatory.py, power/metrics.py, power/profiles.py.
+% The superseded pilot harness (power/feeder8500v2.py) is retained in the artifact but supplies
+% no reported number; its two defects are named below.
 
-The physical consequence dimension is measured by a feeder simulation that translates an
-authorized-control reach from the analysis engine into a malicious dispatch program and runs
-it on a public distribution feeder. We take the IEEE 8500-node feeder~\cite{arritt2010ieee8500}
-as the primary benchmark and the PNNL 9500-node system~\cite{anderson2022ninethousand} as an
-advanced validation tier --- the latter did not converge in our build and contributes no reported
-number, a failure mode we name in Section~\ref{sec:results}. Time-series inputs
-come from public solar and load datasets. This part of the work is methodologically routine
-relative to the false-data-injection literature on distribution systems, so we build it to be
-unimpeachable rather than novel.
+Physical consequence is measured by translating an authorized-control set into a dispatch program
+and running it on public distribution feeders. Every confirmatory result uses one harness,
+\texttt{power/confirmatory.py}, on two feeders: the IEEE~8500-node feeder~\cite{arritt2010ieee8500}
+and the IEEE~123-bus feeder, both built from \texttt{PVSystem} objects with an inverter rating and
+an \texttt{InvControl} volt-var controller on the IEEE~1547-2018 Category~B default
+characteristic~\cite{ieee1547-2018}. The counterfactual throughout is that same fleet at its
+\emph{legitimate scheduled output} under that characteristic, not a feeder with no DER. The PNNL
+9500-node system~\cite{anderson2022ninethousand} did not converge in our build, in its base case
+under its own shipped driver, and contributes no number; Section~S1 of the supplement names the
+mode and the build versions so the absence is an explained negative result.
 
-This is a single-solver study, and we state the consequence rather than the aspiration: the
-authorization envelope is applied directly in the OpenDSS driver, so the constraint a credential
-expresses is enforced on the dispatch that actually reaches the feeder, but no second solver
-corroborates the result. Section~\ref{sec:results} reports what that costs. The attack families are
-volt-var curve distortion, volt-watt curve distortion, export-limit distortion, and curtailment
-spam; the metrics are those of Section~\ref{sec:formalism}, with the per-unit voltage excursion as
-the primary continuous measure and a protection-trip flag as the discrete outcome.
+\paragraph{Two corrections that the reported results depend on.}
+The predecessor harness contains two defects, both found by re-measuring its own arms, and both
+invalidate the comparison its central claim rested on.
 
-\paragraph{Two feeder models, and which results use which.}
-Results in this paper come from two OpenDSS harnesses, and we say plainly which produced what
-rather than describe only the better one.
+\emph{The two reactive primitives were not magnitude-matched.} The curve arm writes its setpoint
+into an \texttt{XYCurve} read by an \texttt{InvControl} declared
+\texttt{RefReactivePower=VARMAX}, so its axis is per unit of \texttt{kvarmax}; the fixed-setpoint
+arm multiplies by the apparent-power rating. At the nominally identical label $q_{\mathrm{high}}
+= -0.44$ the two commanded $-2.15$ and $-5.28$\,kvar per DER, a factor of $2.46$. Any row-wise
+comparison of the two therefore compared two different physical absorptions --- exactly the
+mismatched-feasible-set confound that makes a control primitive look causal when only the bound
+differs.
 
-\emph{The corrected model} (\texttt{power/feeder8500v2.py}) builds the fleet from
-\texttt{PVSystem} objects with an inverter rating and an \texttt{InvControl} volt-var controller
-on the IEEE~1547-2018 Category~B default characteristic~\cite{ieee1547-2018}, and takes as its
-counterfactual the PV dispatched at its \emph{legitimate scheduled output} under that curve. The
-scope-envelope sweep, the volt-var-curve sweep, the time series and the lifetime sweep use it.
+\emph{The legitimate counterfactual under-delivered volt-var.} The conformant Category~B
+characteristic absorbs $44\%$ of \emph{nameplate} at $V_4 = 1.08$\,p.u., which against a
+\texttt{VARMAX} reference of that same quantity is $-1.0$; the predecessor wrote $-0.44$ and
+absorbed less than half. The baseline against which every induced quantity was differenced was a
+degraded service. Correcting it lowers the light-load legitimate overvoltage area from $57.1$ to
+$46.1$ p.u.-node.
 
-\emph{The superseded model} (\texttt{power/feeder8500.py}) used \texttt{Generator} objects at
-fixed $P,Q$ --- no inverter, no curve --- against a counterfactual with every unit at
-$P{=}Q{=}0$, so its $\Delta J_V$ conflates ``connect this much generation'' with ``a credential
-was stolen'', and a ``volt-var curve distortion'' attack under it was really a static setpoint
-delta. The PV-penetration, attack-family, IEEE~123 and retained-authority sweeps were run under
-it and are reported in Section~\ref{sec:results} with that provenance attached. \textbf{$\Delta
-J_V$ is therefore not on a common footing across every table}, and each table states which
-counterfactual its numbers use.
+Both are fixed by carrying every reactive quantity in \textbf{physical kvar} and converting to
+whichever per-unit reference each OpenDSS object consumes at a single site. A third change is
+methodological rather than a defect: penetration is swept through \emph{per-unit rating} rather
+than fleet count, because IEEE~123 has $91$ load buses and a fleet-count sweep saturates above
+that, returning an identical circuit at every larger fleet.
 
-\emph{How the adversary acts on the reactive axis.} Two distinct models appear, and the
-distinction turns out to matter (Section~\ref{sec:results}). Under \emph{setpoint override} the
-autonomous controller is switched off and a fixed reactive setpoint is written, which is how a
-\texttt{opModFixedVar} command supersedes an active volt-var curve. Under \emph{curve
-modification} the controller stays enabled and the adversary rewrites the characteristic within
-whatever band its authorization allows. The two express different authorizations, and an envelope
-bound means something different in each.
+\paragraph{Endpoints.}
+The primary endpoint is the two-sided ANSI~C84.1 Range~A violation area, $J_{\mathrm{band}}$,
+summing overvoltage and undervoltage excursions over all energized nodes. The one-sided
+overvoltage term is retained as an attack-specific secondary and reported alongside it, never
+instead: a one-sided endpoint credits an attack for lifting sagging nodes, cannot price the
+undervoltage that a forced absorption floor causes, and --- as \S\ref{sec:results} shows --- scores
+a stealth attacker that curtails the entire fleet as an \emph{improvement}. Service quality is the
+shortfall of realised reactive output against what the conformant characteristic prescribes at
+each unit's observed terminal voltage, reported as an excess over the paired legitimate arm.
 
-\emph{Control mode.} We solve with \texttt{controlmode=static}, which does \emph{not} disable the
-feeder's controls, and we release the diagnostic that shows it
+\paragraph{Threshold screen, not a trip.} Every node is screened against the IEEE~1547-2018
+Category~II overvoltage thresholds (OV2 $1.20$\,p.u./$0.16$\,s; OV1 $1.10$\,p.u./$2.0$\,s), plus a
+substation reverse-power flag. We call the outcome a \emph{screen} throughout and never a trip,
+because the model has no persistence timer, no disconnection and no post-disconnection state
+update: a crossing means a DER at that node would be required to cease to energize, not that a
+trip was simulated.
+
+\paragraph{Control mode.} We solve with \texttt{controlmode=static}, which does \emph{not} disable
+the feeder's controls, and release the diagnostic that shows it
 (\texttt{results/controlmode.json}). Reaching the legitimate base case at light load moves $8$ of
-the $12$ regulators, for $32$ tap steps, and changes $6$ capacitor states; a full-scope attack
-then moves $11$ regulators for a further $24$ tap steps and $3$ capacitor changes. Controls are
-inert only under \texttt{controlmode=off}, where the same attack drives the total overvoltage area
-to $998.0$ p.u.-node and $v_{\max}$ to $1.3145$\,p.u., against $133.1$ p.u.-node and
-$1.1282$\,p.u.\ with controls active --- the feeder's own regulation absorbs a factor of $7.5$.
-Both figures in that comparison are total areas, not attack-minus-base differences, so that they
-are commensurable. Regulators and capacitors therefore act against the disturbance in every result
-reported, and we report tap operations throughout, including where CONTAINDER increases them.
+$12$ regulators for $32$ tap steps and changes $6$ capacitor states. Controls are inert only under
+\texttt{controlmode=off}. Regulators and capacitors therefore act against the disturbance in every
+result reported, and tap operations are reported throughout, including where CONTAINDER increases
+them.
 
-\emph{Protection.} Every node is screened against the IEEE~1547-2018 Category~II overvoltage trip
-thresholds (OV2 $1.20$\,p.u./$0.16$\,s; OV1 $1.10$\,p.u./$2.0$\,s), plus a substation
-reverse-power flag. Earlier versions declared a trip metric with no protection model behind it, so
-it could never fire and any claim resting on it was unsupported.
-
-We do not tune feeder parameters to amplify impact; we report what the standard models produce. A
-first benchmark run on the IEEE~8500-node feeder appears in the pilot evaluation; the full sweep on
-both feeders, with the GridLAB-D cross-check and seasonal operating states, follows the
-pre-registered protocol.
+\paragraph{Horizon experiments.} The lifecycle experiments step a moving exogenous state:
+irradiance on a midday arc with a cloud transient placed deliberately inside the post-expiry
+window, and load rising toward evening. Within an arm the circuit is stepped forward without
+recompiling, so taps and capacitor states carry over and post-expiry recovery is a measurement
+rather than a construction; arms remain independent of one another, each its own compile. Under
+the predecessor's static profile, integrated harm was exactly (accrual rate)~$\times$~(minutes
+honoured), so no lifetime comparison could report anything a multiplication would not.

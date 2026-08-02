@@ -49,60 +49,91 @@ def fig_containment_chain():
     plt.close(fig)
 
 
-def fig_timeseries():
-    """Corrected time series: median across all seeds with a min-max band (reviewer minor 5).
+def fig_reliance():
+    """Harm against the reactive support the feeder is actually drawing (RQ2, H2).
 
-    Reads timeseries2.json (per-arm recompile, legitimate-PV counterfactual, IEEE 1547 scope),
-    not the superseded timeseries.json.
+    The central conditional result: what an adversary gains by withdrawing reactive support is
+    governed by how much support the fleet was delivering, not by PV penetration. Both feeders
+    are plotted on the same axes because that is the claim -- the relationship holds across two
+    feeders whose penetrations at comparable harm differ by an order of magnitude.
     """
-    d = json.loads((RES / "timeseries2.json").read_text())
-    P = d["params"]
-    H, ttl, ta, n = P["horizon"], P["ttl"], P["t_attack"], P["n_seeds"]
-    seeds = list(range(1000, 1000 + n))
-    t = list(range(H))
-
-    def band(pol, state="light_load"):
-        S = [d["runs"][f"{state}|{s}|{pol}"]["series"] for s in seeds]
-        med = [statistics.median(x[i] for x in S) for i in range(H)]
-        lo = [min(x[i] for x in S) for i in range(H)]
-        hi = [max(x[i] for x in S) for i in range(H)]
-        return med, lo, hi
-
-    # Colour encodes the AUTHORIZED ENVELOPE, line style encodes CREDENTIAL LIFETIME. The two
-    # arms sharing an envelope are bit-identical until expiry, which is the point of the figure,
-    # so they must share a colour; encoding them as two different colours (as an earlier version
-    # did, with B1 and B2 both #0072B2) hid the overlap and duplicated a colour across envelopes.
-    # Arms are labelled by their commanded kvar because the artifact's "full"/"narrow" labels are
-    # inverted: "full" commands 3.6 kvar, "narrow ACL" commands 5.28 kvar.
+    d = json.loads((RES / "shape_contrasts.json").read_text())
+    rows = d["h2_reliance"]
     fig, ax = plt.subplots(figsize=(3.4, 2.5))
-    for pol, style, col, lab in [
-            ("B2_acl_narrow_1547", "-", LIGHT, "5.28 kvar, long-lived (B2)"),
-            ("B5_containder_1547", "--", "#8C5000", "5.28 kvar, bounded (B5)"),
-            ("B1_legacy_full", "-", DARK, "3.60 kvar, long-lived (B1)"),
-            ("A4_full_lifecycle", "--", "#00355A", "3.60 kvar, bounded (A4)")]:
-        med, lo, hi = band(pol)
-        ax.plot(t, med, style, color=col, lw=1.3, label=lab)
-        ax.fill_between(t, lo, hi, color=col, alpha=0.13, lw=0)
-    ax.axvline(ta + ttl, color="black", ls=":", lw=0.8)
-    top = ax.get_ylim()[1]
-    ax.text(ta + ttl - 1.2, top * 0.60, "credential expiry", fontsize=6, rotation=90,
-            va="center", ha="right")
-    ax.annotate("bounded and long-lived arms\ncoincide exactly until expiry",
-                xy=(17, 0.60 * top), xytext=(6.5, 0.17 * top), fontsize=5.5,
-                ha="left", va="center", color="#333333",
-                arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333",
-                                shrinkA=0, shrinkB=2))
-    ax.set_xlabel("time (min)")
-    ax.set_ylabel("overvoltage area (p.u.-node)")
-    ax.legend(loc="upper right", fontsize=5.2, ncol=1, handlelength=2.6)
+    for key, col, mark, lab in [("ieee8500", DARK, "o", "IEEE 8500-node"),
+                                ("ieee123", LIGHT, "s", "IEEE 123-bus")]:
+        sub = sorted([r for r in rows if r["feeder"] == key],
+                     key=lambda r: abs(r["legit_q_fleet_kvar"] or 0))
+        x = [abs(r["legit_q_fleet_kvar"] or 0) / 1000.0 for r in sub]
+        y = [r["median_dJ_band_widest_Q1"] for r in sub]
+        lo = [max(1e-3, r["median_dJ_band_widest_Q1"] - (r["ci_lo"] or 0)) for r in sub]
+        hi = [max(1e-3, (r["ci_hi"] or 0) - r["median_dJ_band_widest_Q1"]) for r in sub]
+        ax.errorbar(x, y, yerr=[lo, hi], color=col, marker=mark, ms=4, lw=1.2,
+                    capsize=2, elinewidth=0.7, label=lab)
+        # Mark the rungs at which legitimate operation is compliant.
+        cx = [xi for xi, r in zip(x, sub) if r["legit_compliant"]]
+        cy = [yi for yi, r in zip(y, sub) if r["legit_compliant"]]
+        ax.scatter(cx, cy, s=64, facecolors="none", edgecolors=col, lw=1.1, zorder=5)
+    ax.set_yscale("symlog", linthresh=1.0)
+    ax.set_xlabel("legitimate fleet reactive absorption (Mvar)")
+    ax.set_ylabel(r"induced $\Delta J_{\mathrm{band}}$ (p.u.-node)")
+    ax.legend(loc="upper left", fontsize=6)
     ax.grid(True, lw=0.3, alpha=0.5)
-    fig.savefig(HERE / "fig_timeseries.pdf")
+    ax.text(0.97, 0.05, "circled: legitimate operation compliant", transform=ax.transAxes,
+            fontsize=5.4, ha="right", va="bottom", color="#333333")
+    fig.savefig(HERE / "fig_reliance.pdf")
+    plt.close(fig)
+
+
+def fig_layers():
+    """What each containment layer is worth (RQ3/RQ5/RQ6).
+
+    The headline is the flat bar: denying the compromised identity removes no harm at all. The
+    figure exists to make that comparable at a glance against the layers that do remove harm.
+    """
+    d = json.loads((RES / "lifecycle_physical.json").read_text())
+    S = {(r["state"], r["arm"]): r for r in d["summary"]}
+    st = "ieee8500_stress"
+    arms = [("legacy", "long-lived baseline"),
+            ("mech_S0", "expiry only"),
+            ("mech_S2", "cleanup only"),
+            ("mech_S1", "session only"),
+            ("mech_S3", "session + cleanup"),
+            ("deny_denylist_d5", "identity denial"),
+            ("deny_denylist+session_d5", "denial + session"),
+            ("deny_denylist+session+cancel_d5", "denial + session + cancel")]
+    vals, los, his, labs = [], [], [], []
+    for a, lab in arms:
+        r = S.get((st, a))
+        if not r:
+            continue
+        vals.append(r["median_integral"])
+        los.append(r["median_integral"] - r["ci_lo"])
+        his.append(r["ci_hi"] - r["median_integral"])
+        labs.append(lab)
+    base = vals[0]
+    fig, ax = plt.subplots(figsize=(3.4, 2.7))
+    ypos = list(range(len(vals)))[::-1]
+    cols = [DARK if v >= base * 0.999 else LIGHT for v in vals]
+    ax.barh(ypos, vals, xerr=[los, his], color=cols, height=0.62,
+            error_kw=dict(elinewidth=0.7, capsize=2, ecolor="#333333"))
+    ax.set_yticks(ypos)
+    ax.set_yticklabels(labs, fontsize=6)
+    ax.axvline(base, color="black", ls=":", lw=0.8)
+    # Place each label clear of its own error bar, not at the bar end, or the two overlap.
+    for y, v, h in zip(ypos, vals, his):
+        ax.text(v + h + base * 0.025, y, f"{100*(v-base)/base:+.0f}%", va="center",
+                fontsize=5.8, color="#333333")
+    ax.set_xlabel("integrated harm (p.u.-node-min)")
+    ax.set_xlim(0, base * 1.30)
+    ax.grid(True, axis="x", lw=0.3, alpha=0.5)
+    fig.savefig(HERE / "fig_layers.pdf")
     plt.close(fig)
 
 
 #: The two figures the manuscript includes, and the only two this script builds. Every input it
 #: reads is a live file in experiments/results/, so a clean checkout reproduces both.
-BUILT = (fig_containment_chain, fig_timeseries)
+BUILT = (fig_containment_chain, fig_reliance, fig_layers)
 
 if __name__ == "__main__":
     for fn in BUILT:
