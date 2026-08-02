@@ -1,0 +1,45 @@
+{
+  "note": "derived counts quoted in the supplement's inventory table; emitted so they fall inside the freeze gate",
+  "experiments": {
+    "hosting_capacity": {
+      "seeds": 5,
+      "arms": 560,
+      "solves": 1120,
+      "status": "calibration"
+    },
+    "authz_shape": {
+      "seeds": 20,
+      "arms": 2520,
+      "solves": 18000,
+      "feeders": 2,
+      "rungs_per_feeder": 3,
+      "sets": 11,
+      "status": "confirmatory"
+    },
+    "lifecycle_physical": {
+      "seeds": 20,
+      "arms": 40,
+      "lifecycle_arms_per_seed": 19,
+      "solves": 48000,
+      "horizon_min": 60,
+      "status": "confirmatory"
+    },
+    "attackers": {
+      "seeds": 20,
+      "arms": 60,
+      "solves": 2760,
+      "status": "confirmatory"
+    },
+    "reliance_resolution": {
+      "seeds": 20,
+      "arms": 160,
+      "solves": 1280,
+      "status": "post-hoc"
+    },
+    "lifecycle_sensitivity": {
+      "settings": 60,
+      "solves": 0,
+      "status": "post-hoc, model only"
+    }
+  }
+}

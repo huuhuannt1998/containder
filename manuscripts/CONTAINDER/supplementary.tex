@@ -1,11 +1,13 @@
 % CONTAINDER --- Supplementary material, submitted as a SEPARATE file from the manuscript.
 % Holds detail moved out of the body under the IJCIP length recommendation. Nothing here is a
-% result: S1 is a negative result (a feeder that produced no number) and S2 is a scale inventory
-% for experiments the body already reports. Each block is pointed to from the body, so a reviewer
-% reaches it without having to know this file exists.
+% result the body does not already state.
 %
-% NOTE: every numeral in this file is covered by check_numbers.py, which includes supplementary.tex
-% in its targets. Moving a number out of the body must not move it out of the freeze gate.
+% Sections are numbered SM.n rather than Sn: the body uses S0-S3 for the four mechanism-ablation
+% arms, and "S1" would otherwise name both an ablation arm and a supplement section.
+%
+% NOTE: every numeral in this file is covered by check_numbers.py, which includes
+% supplementary.tex in its targets. Moving a number out of the body must not move it out of the
+% freeze gate.
 \documentclass[review]{elsarticle}
 
 \usepackage{amsmath,amssymb}
@@ -26,11 +28,82 @@ CONTAINDER: Bounding Credential-Compromise Impact in IEEE~2030.5 DER Systems}
              city={Charlotte}, state={NC}, country={USA}}
 \end{frontmatter}
 
-\section*{S1. The IEEE~9500 non-convergence, in full}
+\section*{SM.1 Standards quotations supporting the claim matrix}
 
-The manuscript's limitations paragraph states that the PNNL~9500-node system did not converge in
-our build and therefore contributes no reported number. This section names the failure mode, so
-that the absence is an explained negative result rather than a silent omission.
+The manuscript's standards table cites a free source for each claim. This section reproduces the
+load-bearing text verbatim, so a reader can check the reading without obtaining any document that
+must be purchased. All quotations are from Sandia National Laboratories, \emph{Recommendations for
+Trust and Encryption in DER Interoperability Standards}, SAND2019-1490, whose full text is
+publicly available from OSTI.
+
+\paragraph{Certificate lifetime and revocation.} From \S4.1:
+
+\begin{quote}
+``The IEEE~2030.5/CSIP PKI is different than other PKI's in the use of non-expiring certificates
+and the explicit prohibition of CRL and OCSP. Once issued, a device certificate has an indefinite
+lifetime, so it is always valid. \dots\ If the device's private key is compromised, the device
+certificate cannot be revoked. \dots\ In fact, IEEE~2030.5 prohibits their use. This means that
+Certificate Authorities (CA) shall not maintain CRLs or run OSCP servers, and clients and servers
+shall not check for CRLs or OCSP servers to verify certificate validity.''
+\end{quote}
+
+The prohibition is scoped, which is why the manuscript qualifies it. From \S6.4, quoting the
+standard's own certificate-management statements:
+
+\begin{quote}
+``The phrase `Optional OCSP' means that the server device (and optionally, the client device) may
+utilize Online Certificate Status Protocol as an additional mechanism to determine if a
+certificate has been revoked. \textbf{OCSP may only be used to verify non-IEEE~2030.5
+certificates.}''
+\end{quote}
+
+\paragraph{Local allow/deny listing, and its limits.} From \S4.1 and \S4.1.2:
+
+\begin{quote}
+``This does not preclude servers or clients from maintaining or obtaining their own list of
+blacklisted or whitelisted devices if the operator prefers.''
+
+``A blacklist is essentially a local CRL but without the process, rigor and verification behind
+its issuance.''
+
+``With fragmented blacklists and policies, it is possible for a stolen device certificate that was
+disallowed in one region to be used in a different region to gain access because it was only
+locally blacklisted.''
+\end{quote}
+
+\paragraph{A short-lived operational credential is permitted.} From \S6.4:
+
+\begin{quote}
+``Inverter manufacturers strictly following these guidelines are \textbf{not required to limit the
+life of a device certificate} or to validate IEEE~2030.5 certificates using OCSP or CRLs.''
+
+``(1 year certificate life is the usual recommended renewal interval).''
+\end{quote}
+
+This is why the manuscript claims no novelty for the short lifetime itself: it is recommended
+practice in the analysis of record, and permitted rather than prohibited by the profile.
+
+\paragraph{The adversary the design targets.} From \S6.4:
+
+\begin{quote}
+``If a manufacturer decides not to implement certificate revocation and replacement, for a
+critical period an adversary could potentially extract a private key from a device and masquerade
+as the legitimate device without other nodes being aware of the device compromise.''
+\end{quote}
+
+\paragraph{What no accessible source states.} Searched for and not found, in SAND2019-1490 or in
+the CSIP Implementation Guide: any statement that adding an identity to a deny list terminates
+that identity's \emph{established} mutual-TLS session; any statement that it cancels an
+already-issued \texttt{DERControl}; and any mechanism by which an authorization can bound the
+\emph{value} a control may take rather than which function may be invoked. The first two are the
+premise of the manuscript's containment argument, and the third is why its numeric authorization
+is placed above \texttt{FunctionSetAssignments} rather than inside it.
+
+\section*{SM.2 The IEEE~9500 non-convergence, in full}
+
+The manuscript states that the PNNL~9500-node system did not converge in our build and therefore
+contributes no reported number. This section names the failure mode, so the absence is an
+explained negative result rather than a silent omission.
 
 The failure is in the \emph{base case}, with no attack and no PV of ours placed: the model's own
 shipped driver, unaltered, returns \texttt{Converged = False} with an empty error description and
@@ -41,36 +114,75 @@ iteration-budget shortfall. Our build is DSS C-API $0.14.5$ / DSS-Python $0.15.7
 OpenDSSDirect.py $0.9.4$ on macOS arm64.
 
 \textbf{We did not resolve it and we do not attribute it}, having had no second OpenDSS build to
-discriminate a defect on our side from one in the model. The consequence for the manuscript is
-stated there and repeated here because it is load-bearing: cross-feeder generality rests on
-nothing we report, and every physical number in the paper comes from the single IEEE~8500-node
-feeder.
+discriminate a defect on our side from one in the model. The consequence is that the 9500 system
+supports nothing in the manuscript. Cross-feeder generality rests instead on the IEEE~8500-node
+and IEEE~123-bus feeders, which every physical result in the paper uses, and which differ in
+voltage level, topology, regulator structure and stiffness.
 
-\section*{S2. Seed inventory for the pilot evaluation}
+\section*{SM.3 Inventory of the runs behind the manuscript}
 
-Table~\ref{tab:seeds} inventories every measured run behind the manuscript's pilot evaluation, so
-no experiment's scale has to be inferred from prose. Seeds are paired across arms within an
-experiment; ``arms'' counts the policy or envelope conditions evaluated at each seed. The runs made
-on the superseded harness --- withdrawn in the manuscript and not reported as results --- are
-inventoried separately in \texttt{results/superseded/}.
+Table~\ref{tab:inventory} inventories every run, so no experiment's scale has to be inferred from
+prose. Seeds are paired across arms within an experiment. ``Arms'' counts independent feeder
+compiles; ``solves'' counts power-flow solutions, since an arm that searches an authorization set
+or steps a horizon contains many.
 
 \begin{table}[h]
 \centering
-\caption{Inventory of the measured runs the pilot evaluation reports.}
-\label{tab:seeds}
+\caption{Runs behind the manuscript. The calibration and the two post-hoc sweeps are labelled as
+such; neither supports a hypothesis test.}
+\label{tab:inventory}
 \small
-\begin{tabular}{@{}lccc@{}}
+\begin{tabular}{@{}lrrrl@{}}
 \toprule
-Experiment & Seeds & Arms & States \\
+Experiment & Seeds & Arms & Solves & Status \\
 \midrule
-IEEE 8500 time series & 20 & 9 & 2 \\
-Credential-lifetime sweep & 20 & 18 & 2 \\
-Scope-envelope sweep & 5 & 21 & 2 \\
-Volt-var-curve sweep & 5 & 18 & 2 \\
-Control-mode diagnostic & 1 & 2 & 1 \\
-Credential-service invariants (C1) & 1 & 10 & --- \\
-Overhead microbenchmarks (C3) & 500 iterations & 4 & --- \\
-Availability fault injection (C6) & 3 policies & 3 & --- \\
+Hosting-capacity calibration      & 5   & 560  & 1120  & calibration \\
+Authorization-shape sweep         & 20  & 2520 & 18000 & confirmatory \\
+Lifecycle horizon experiment      & 20  & 40   & 48000 & confirmatory \\
+Attacker action-space scan        & 20  & 60   & 2760  & confirmatory \\
+Reliance resolution sweep         & 20  & 160  & 1280  & post-hoc \\
+Lifecycle parameter sensitivity   & --- & 60   & ---   & post-hoc, model only \\
+Credential-service invariants     & 1   & 10   & ---   & confirmatory \\
+Overhead microbenchmarks          & 500 iterations & 4 & --- & confirmatory \\
+Availability fault injection      & 3 policies & 3 & --- & confirmatory \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The authorization-shape sweep is $2$ feeders $\times$ $3$ penetration rungs $\times$ $11$
+authorization sets $\times$ $2$ control primitives $\times$ $20$ paired seeds, less the read-only
+set, which has no fixed-setpoint realisation. The lifecycle experiment is $2$ operating states
+$\times$ $20$ paired seeds $\times$ $19$ lifecycle arms plus a paired legitimate arm, each stepped
+over a $60$-minute horizon.
+
+\section*{SM.4 Result files and the claims they support}
+
+Every numeral in the manuscript is checked against these files by \texttt{check\_numbers.py},
+which fails if a reported number cannot be located in them.
+
+\begin{table}[h]
+\centering
+\caption{Released result files and the manuscript claims each supports.}
+\label{tab:files}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & Supports \\
+\midrule
+\texttt{hosting\_capacity.json}      & operating ladder, compliance criterion \\
+\texttt{authz\_shape.json}           & authorization-set families, H1, H2, H3 \\
+\texttt{shape\_contrasts.json}       & paired H1/H2/H3 estimates and intervals \\
+\texttt{reliance\_resolution.json}   & intermediate rungs of the reliance curve \\
+\texttt{lifecycle\_physical.json}    & horizon time series, all lifecycle arms \\
+\texttt{lifecycle\_contrasts.json}   & paired lifecycle contrasts, Holm-corrected \\
+\texttt{lifecycle\_sensitivity.json} & parameter sensitivity of the exposure window \\
+\texttt{attackers.json}              & five attacker models, full action-space scan \\
+\texttt{attacker\_detectors.json}    & dual-detector analysis, dual-evading optimum \\
+\texttt{retention.json}              & compromise-class retention expectations \\
+\texttt{credsvc.json}                & the ten security invariants \\
+\texttt{hwkey.json}                  & the failed hardware-keystore attempt \\
+\texttt{controlmode.json}            & feeder controls active under \texttt{static} \\
+\texttt{availability.json}           & safe-mode availability under verifier outage \\
 \bottomrule
 \end{tabular}
 \end{table}
