@@ -131,6 +131,19 @@ transition**, with the calibrated limit reported as a marker rather than used as
 the overstressed cases, and the pilot's 222%-penetration point is retained as a stress case that
 is never the sole support for a claim.
 
+### Amendment A1 (recorded before any shape result was seen)
+
+The ladders above originally carried a fourth rung each — IEEE 8500 at 2.00 and IEEE 123 at
+14.00 — and the attacker searched a 9-point grid. At those rungs the strong-injection admissible
+points exhaust the retry ladder of §7 (500 → 1500 → 4500 control iterations, roughly 60 s per
+arm), and the sweep projected about 4.5 hours. The top rung of each ladder was removed and the
+grid reduced to 7 points.
+
+The run was stopped and restarted under the amended design; **no result of the original run was
+inspected**, and its partial output was discarded rather than merged. Both removed rungs sit well
+beyond their feeder's compliance transition and support no primary claim; the 20-seed count and
+the retry policy are unchanged. This paragraph is the record of the change.
+
 The ladder is the independent variable in place of a compliant/non-compliant dichotomy, because
 the calibration showed the governing quantity to be continuous: how much reactive absorption the
 fleet is actually delivering under the conformant characteristic. That quantity is reported for

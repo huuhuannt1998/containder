@@ -7,9 +7,10 @@ Hypotheses tested (frozen in ``PREREGISTRATION_CONFIRMATORY.md`` before this ran
   symmetric cap Q1 -- which contains zero absorption at every width -- produces more harm than
   the worst admissible point of an absorption floor Q2 of the same width, and the Q1 excess does
   not diminish as the cap narrows.
-* **H2 (hosting-limit conditionality).** The withdrawal-of-absorption effect grows with
-  penetration relative to the compliant hosting limit and is not materially different from zero
-  at the compliant tiers. *Not blind; see §0 of the pre-registration.*
+* **H2 (reliance conditionality).** The withdrawal-of-absorption effect is governed by the
+  reactive absorption the fleet actually delivers under the conformant characteristic, not by
+  penetration as such, and is not materially different from zero at every rung where legitimate
+  operation is compliant. *Not blind; see §0 of the pre-registration.*
 * **H3 (primitive versus feasible set).** Given matched feasible sets, ``opModFixedVar`` and
   ``opModVoltVar`` semantics do not differ materially on the primary endpoint.
 
@@ -17,9 +18,10 @@ Three things distinguish this from the pilot's reactive sweep.
 
 1. **An authorization is a set and the adversary plays its worst point.** The pilot fixed one
    setpoint per arm and reported the harm at that point, which measures a setpoint, not an
-   authorization. Here each set carries an explicit 9-point grid, declared in code before the
-   run, and the reported harm is the maximum over the grid -- with the argmax retained, because
-   *where in its authorized set the adversary ends up* is the whole content of the shape claim.
+   authorization. Here each set carries an explicit grid of admissible points, declared in code
+   before the run, and the reported harm is the maximum over that grid -- with the argmax
+   retained, because *where in its authorized set the adversary ends up* is the whole content of
+   the shape claim.
 
 2. **Both primitives receive the identical physical bound.** The pilot's two arms differed by a
    factor of 2.46 in commanded kvar at nominally identical labels, so its cross-primitive
@@ -50,10 +52,18 @@ SEEDS = [1001, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051,
 #: is right-censored: that feeder holds the band at every penetration tested, since its voltages
 #: stay inside the volt-var deadband and the fleet therefore delivers almost no absorption.
 #: See PREREGISTRATION_CONFIRMATORY.md §3.
+#:
+#: Amendment, recorded before any result of this sweep was seen: the top rung of each ladder
+#: (IEEE 8500 at 2.00, IEEE 123 at 14.00) was removed and the attacker grid reduced from 9 to 7
+#: points. At those rungs the strong-injection points exhaust the pre-registered retry ladder --
+#: 500 -> 1500 -> 4500 control iterations, about 60 s per arm -- and the sweep projected 4.5
+#: hours. The removed rungs are stress cases well beyond each feeder's compliance transition;
+#: every rung supporting a primary claim is retained, as is the 20-seed count. The retry policy
+#: itself is unchanged.
 LADDER = {
-    "ieee8500": {"load_mult": 0.50, "penetrations": [0.50, 1.00, 1.50, 2.00],
+    "ieee8500": {"load_mult": 0.50, "penetrations": [0.50, 1.00, 1.50],
                  "calibrated_limit": 0.50},
-    "ieee123": {"load_mult": 1.00, "penetrations": [2.00, 6.00, 10.00, 14.00],
+    "ieee123": {"load_mult": 1.00, "penetrations": [2.00, 6.00, 10.00],
                 "calibrated_limit": None},   # right-censored above 12.0
 }
 
@@ -61,7 +71,7 @@ FLEET = {"ieee8500": 600, "ieee123": 91}
 
 PRIMITIVES = ["setpoint", "curve"]
 
-GRID_N = 9
+GRID_N = 7
 
 
 def _linspace(a, b, n):

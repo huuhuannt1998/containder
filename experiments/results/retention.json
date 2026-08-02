@@ -1,0 +1,38 @@
+{
+  "ttl_hours": 6.0,
+  "note": "T/p applies only to a persistent compromise arriving immediately after issuance; it overstates a uniform-arrival persistent compromise by T/2 and is irrelevant to a copied key.",
+  "rows": [
+    {
+      "p": 0.2,
+      "copied_key_uniform_h": 3.0,
+      "persistent_immediate_h": 30.0,
+      "persistent_uniform_h": 27.0
+    },
+    {
+      "p": 0.5,
+      "copied_key_uniform_h": 3.0,
+      "persistent_immediate_h": 12.0,
+      "persistent_uniform_h": 9.0
+    },
+    {
+      "p": 0.9,
+      "copied_key_uniform_h": 3.0,
+      "persistent_immediate_h": 6.667,
+      "persistent_uniform_h": 3.667
+    },
+    {
+      "p": 1.0,
+      "copied_key_uniform_h": 3.0,
+      "persistent_immediate_h": 6.0,
+      "persistent_uniform_h": 3.0
+    }
+  ],
+  "session_example": {
+    "revalidation_s": 60.0,
+    "expected_s": 60.0
+  },
+  "command_example": {
+    "cancel_latency_s": 60.0,
+    "expected_s": 60.0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "platform": "Apple Secure Enclave (arm64, M4)",
+  "iterations": 200,
+  "scope_restriction": "Hardware-backed non-exportable P-256 key only. The Secure Enclave provides no TPM-style measured-boot quote, so these numbers support no claim about attestation-gated issuance on hardware; the attestation path remains software-emulated.",
+  "software": [
+    {
+      "op": "sw_keygen",
+      "n": 200,
+      "median_ms": 0.01421,
+      "mean_ms": 0.01973,
+      "min_ms": 0.01392,
+      "p95_ms": 0.01475,
+      "p99_ms": 0.02863,
+      "max_ms": 1.08625
+    },
+    {
+      "op": "sw_sign",
+      "n": 200,
+      "median_ms": 0.02012,
+      "mean_ms": 0.05716,
+      "min_ms": 0.01983,
+      "p95_ms": 0.05667,
+      "p99_ms": 0.14812,
+      "max_ms": 5.99525
+    }
+  ],
+  "secure_enclave_available": false,
+  "secure_enclave_error": "SecKeyCreateRandomKey returned NULL (no Secure Enclave entitlement?)"
+}
