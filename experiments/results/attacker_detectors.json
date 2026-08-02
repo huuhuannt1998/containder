@@ -1,0 +1,158 @@
+{
+  "status": "post-hoc sensitivity; D2 declared after seeing confirmatory results",
+  "d1": "voltage: screen crossing or > 10 nodes added above 1.05 p.u.",
+  "d2": "generation: |fleet P - scheduled P| > 10% of available power",
+  "gen_tol": 0.1,
+  "states": {
+    "ieee123_stress": {
+      "attackers": {
+        "A1_oracle": {
+          "n": 20,
+          "median_dJ_band": 55.8322,
+          "median_curtailed_frac": 0.0,
+          "frac_flagged_d1_voltage": 0.9,
+          "frac_flagged_d2_generation": 0.2,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A2_telemetry_limited": {
+          "n": 20,
+          "median_dJ_band": 44.396,
+          "median_curtailed_frac": 0.0,
+          "frac_flagged_d1_voltage": 0.9,
+          "frac_flagged_d2_generation": 0.0,
+          "frac_flagged_either": 0.9,
+          "frac_evading_both": 0.1
+        },
+        "A3_stealth": {
+          "n": 20,
+          "median_dJ_band": -2.8351,
+          "median_curtailed_frac": 0.5,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 0.95,
+          "frac_flagged_either": 0.95,
+          "frac_evading_both": 0.05
+        },
+        "A4_wear": {
+          "n": 20,
+          "median_dJ_band": -3.1898,
+          "median_curtailed_frac": 1.0,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 1.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A5_curtailment": {
+          "n": 20,
+          "median_dJ_band": -4.2186,
+          "median_curtailed_frac": 1.0,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 1.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        }
+      },
+      "dual_evading_best": null
+    },
+    "ieee8500_compliant": {
+      "attackers": {
+        "A1_oracle": {
+          "n": 20,
+          "median_dJ_band": 7.4191,
+          "median_curtailed_frac": 0.0,
+          "frac_flagged_d1_voltage": 1.0,
+          "frac_flagged_d2_generation": 0.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A2_telemetry_limited": {
+          "n": 20,
+          "median_dJ_band": 7.4191,
+          "median_curtailed_frac": 0.0,
+          "frac_flagged_d1_voltage": 1.0,
+          "frac_flagged_d2_generation": 0.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A3_stealth": {
+          "n": 20,
+          "median_dJ_band": 0.0087,
+          "median_curtailed_frac": 0.5,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 0.85,
+          "frac_flagged_either": 0.85,
+          "frac_evading_both": 0.15
+        },
+        "A4_wear": {
+          "n": 20,
+          "median_dJ_band": -0.0154,
+          "median_curtailed_frac": 1.0,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 1.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A5_curtailment": {
+          "n": 20,
+          "median_dJ_band": -0.0155,
+          "median_curtailed_frac": 1.0,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 1.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        }
+      },
+      "dual_evading_best": null
+    },
+    "ieee8500_stress": {
+      "attackers": {
+        "A1_oracle": {
+          "n": 20,
+          "median_dJ_band": 405.9121,
+          "median_curtailed_frac": 0.1865,
+          "frac_flagged_d1_voltage": 1.0,
+          "frac_flagged_d2_generation": 0.55,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A2_telemetry_limited": {
+          "n": 20,
+          "median_dJ_band": 306.4136,
+          "median_curtailed_frac": 0.0,
+          "frac_flagged_d1_voltage": 1.0,
+          "frac_flagged_d2_generation": 0.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A3_stealth": {
+          "n": 20,
+          "median_dJ_band": 14.0557,
+          "median_curtailed_frac": 0.25,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 0.75,
+          "frac_flagged_either": 0.75,
+          "frac_evading_both": 0.25
+        },
+        "A4_wear": {
+          "n": 20,
+          "median_dJ_band": -24.4573,
+          "median_curtailed_frac": 1.0,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 1.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        },
+        "A5_curtailment": {
+          "n": 20,
+          "median_dJ_band": -24.4573,
+          "median_curtailed_frac": 1.0,
+          "frac_flagged_d1_voltage": 0.0,
+          "frac_flagged_d2_generation": 1.0,
+          "frac_flagged_either": 1.0,
+          "frac_evading_both": 0.0
+        }
+      },
+      "dual_evading_best": null
+    }
+  }
+}

@@ -255,6 +255,37 @@ difference in ΔJ_band is positive with a CI excluding zero **and** the Q2 arm's
 deficit stays below 25% of conformant demand. An authorization that contains by destroying the
 service does not count as containment.
 
+### Amendment A3 (recorded after seeing results — analysis corrections and two additions)
+
+Four changes were made once the confirmatory results were in hand. All are disclosed here and all
+are visible in the manuscript.
+
+1. **Holm correction was declared in §7 and had not been implemented.** It now is
+   (`experiments/stats.py`), applied within the mechanism, response and lifetime families
+   separately. Every contrast that was reported as significant survives it.
+
+2. **The lifecycle contrasts were not paired.** §7 declares pairing, but the lifecycle analysis
+   bootstrapped each arm's own median and reported the difference between them as a bare
+   percentage. They are now paired per seed with bootstrap intervals, which is both the declared
+   procedure and the more powerful one; the estimates move (S3 from −11.1% to −15.2%) because a
+   median of differences is not a difference of medians.
+
+3. **Arms whose paired differences are identically zero are no longer reported as measured
+   nulls.** Three arms — credential expiry alone, command cleanup alone, and identity denial —
+   reproduce the baseline exactly in all twenty seeds. That is a consequence of the reach the
+   lifecycle model assigns each response, not a measurement, and the manuscript now says so and
+   argues the reach assignment from the standards material instead.
+
+4. **A second detector was added to the attacker analysis**, declared post-hoc: generation
+   telemetry flagging any attack withholding more than 10% of available active power. The
+   confirmatory analysis declared only a voltage detector, against which the curtailment attackers
+   are invisible. Under the generation detector they are flagged in every seed, which materially
+   weakens the stealth claim, and the manuscript reports the weakened form.
+
+A **post-hoc resolution sweep** (`run_reliance_resolution.py`) adds four intermediate rungs per
+feeder to the reliance curve. It evaluates one arm, tests no hypothesis, is excluded from every
+confirmatory contrast, and is plotted with open markers.
+
 ## 8. What is out of scope for this study
 
 Named so that absence is not read as omission: no constrained-hardware or TPM attestation

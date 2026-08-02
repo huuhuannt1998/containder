@@ -133,6 +133,9 @@ def one_arm(task):
         "base_j_band": round(base["j_band"], 6), "base_n_over": base["n_over"],
         "base_screen": base["screen"],
         "n_points": len(pts), "n_stealthy": len(stealthy),
+        # The full scan is retained so that a detector declared later can be applied to the same
+        # action space without re-simulating; analyze_attackers.py depends on it.
+        "points": pts,
         "attackers": {k: v for k, v in attackers.items() if v is not None},
         "missing": [k for k, v in attackers.items() if v is None],
         "nonconverged": dict(C.NONCONVERGED),

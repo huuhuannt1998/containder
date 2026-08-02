@@ -19,12 +19,14 @@ revoked''~\cite{obert2019recommendations}. What the standard offers instead is a
 deny list.
 
 The obvious objection is that a denylist is enough --- the operator refuses the compromised
-identity and the incident is over. \textbf{We measure that assumption and it does not hold.}
-Denying the identity of an adversary who is already connected reduces integrated feeder harm by
-\emph{exactly zero} on both feeders we evaluate. It refuses new sessions, which is all it claims
-to do; the adversary's established session continues to issue commands, and the scheduled control
-it has already installed continues to act on the inverter. Containment fails not because authority
-cannot be withdrawn but because withdrawing it at one layer leaves two others running.
+identity and the incident is over. \textbf{That holds only if denial reaches more layers than the
+standards material specifies, and nothing we could find says it does.} Nothing in the accessible
+sources states that adding an identity to a deny list terminates that identity's established
+mutual-TLS session, or cancels a \texttt{DERControl} it has already installed. A denial that
+refuses new sessions and does nothing else leaves an adversary who is already connected in full
+possession of both. Containment fails not because authority cannot be withdrawn, but because
+withdrawing it at one layer leaves two others running --- and Section~\ref{sec:results} measures
+what closing each of those two is worth.
 
 That observation organises the paper. Bounding a DER compromise requires controlling two
 independent quantities: the \emph{set of physical actions} an authorization admits, and the
@@ -33,10 +35,10 @@ credential, the open session, and the issued command.
 
 CONTAINDER separates bootstrap identity from short-lived, attested, scope-bound operational
 authority, and enforces expiry at all three layers. Because grid actuation persists in a way
-computation does not, expiry that stops at the credential is not containment: we show that a
-credential lifetime with neither session nor command enforcement removes no harm at all, and that
-command cleanup without session enforcement removes none either, because the adversary re-issues
-over the session that is still open.
+computation does not, expiry that stops at the credential is not containment: a credential
+lifetime with neither session nor command enforcement leaves an adversary's open session and
+issued control untouched, and command cleanup without session enforcement is defeated because the
+adversary re-issues over the session that is still open.
 
 \subsection*{Contributions}
 \begin{itemize}
@@ -45,12 +47,12 @@ operational credential and value-constrained authorization, and enforces expiry 
 session and command-effect layers, deployable through a gateway proxy that leaves downstream
 IEEE~2030.5 endpoints unmodified.
 
-\item \emph{A measurement of what each containment layer is worth.} Identity denial alone removes
-$0\%$ of integrated harm; adding session termination removes $48.8$--$54.4\%$; adding command
-cancellation removes $70.6$--$76.3\%$. The two enforcement mechanisms fail alone for different
-reasons and are separately necessary --- a claim an earlier version of this work asserted from a
-harness that could not identify it, and which is here earned from a lifecycle model that
-distinguishes the three layers.
+\item \emph{A measurement of what each containment layer is worth.} Against a long-lived
+credential, adding session termination to identity denial removes $50.0\%$ of integrated feeder
+harm (CI $[46.5, 54.1]$) and adding command cancellation $69.5\%$ (CI $[65.8, 77.5]$), paired by
+seed and Holm-corrected. The two enforcement mechanisms are separately necessary and fail alone
+for different reasons: session enforcement leaves a command overhang of one control duration,
+while command cleanup is defeated by an adversary that re-issues over its still-open session.
 
 \item \emph{An authorization-shape result, with the condition under which it matters.} At
 identical width, a reactive bound that admits zero absorption fails to contain where an absorption

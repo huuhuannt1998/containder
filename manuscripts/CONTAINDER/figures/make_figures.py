@@ -56,31 +56,48 @@ def fig_reliance():
     governed by how much support the fleet was delivering, not by PV penetration. Both feeders
     are plotted on the same axes because that is the claim -- the relationship holds across two
     feeders whose penetrations at comparable harm differ by an order of magnitude.
+
+    Filled markers are the confirmatory rungs; open markers are the post-hoc resolution sweep
+    (results/reliance_resolution.json), which tests no hypothesis and exists only to resolve a
+    curve whose endpoints the confirmatory rungs had already fixed. The two are drawn
+    differently so no reader mistakes one for the other.
     """
-    d = json.loads((RES / "shape_contrasts.json").read_text())
-    rows = d["h2_reliance"]
-    fig, ax = plt.subplots(figsize=(3.4, 2.5))
+    conf = json.loads((RES / "shape_contrasts.json").read_text())["h2_reliance"]
+    extra = json.loads((RES / "reliance_resolution.json").read_text())["summary"]
+
+    fig, ax = plt.subplots(figsize=(3.4, 2.6))
     for key, col, mark, lab in [("ieee8500", DARK, "o", "IEEE 8500-node"),
                                 ("ieee123", LIGHT, "s", "IEEE 123-bus")]:
-        sub = sorted([r for r in rows if r["feeder"] == key],
-                     key=lambda r: abs(r["legit_q_fleet_kvar"] or 0))
-        x = [abs(r["legit_q_fleet_kvar"] or 0) / 1000.0 for r in sub]
-        y = [r["median_dJ_band_widest_Q1"] for r in sub]
-        lo = [max(1e-3, r["median_dJ_band_widest_Q1"] - (r["ci_lo"] or 0)) for r in sub]
-        hi = [max(1e-3, (r["ci_hi"] or 0) - r["median_dJ_band_widest_Q1"]) for r in sub]
-        ax.errorbar(x, y, yerr=[lo, hi], color=col, marker=mark, ms=4, lw=1.2,
-                    capsize=2, elinewidth=0.7, label=lab)
-        # Mark the rungs at which legitimate operation is compliant.
-        cx = [xi for xi, r in zip(x, sub) if r["legit_compliant"]]
-        cy = [yi for yi, r in zip(y, sub) if r["legit_compliant"]]
-        ax.scatter(cx, cy, s=64, facecolors="none", edgecolors=col, lw=1.1, zorder=5)
-    ax.set_yscale("symlog", linthresh=1.0)
+        pts = []
+        for r in conf:
+            if r["feeder"] == key:
+                pts.append((abs(r["legit_q_fleet_kvar"] or 0) / 1000.0,
+                            r["median_dJ_band_widest_Q1"], r["legit_compliant"], True))
+        for r in extra:
+            if r["feeder"] == key:
+                pts.append((abs(r["legit_q_fleet_kvar"] or 0) / 1000.0,
+                            r["median_dJ_band"], r["legit_compliant"], False))
+        pts.sort()
+        ax.plot([p[0] for p in pts], [max(p[1], 1e-3) for p in pts], "-",
+                color=col, lw=1.0, alpha=0.75, label=lab, zorder=2)
+        for x, y, compliant, is_conf in pts:
+            y = max(y, 1e-3)
+            ax.plot([x], [y], marker=mark, ms=5 if is_conf else 4.2,
+                    mfc=col if is_conf else "white", mec=col,
+                    mew=1.0, ls="none", zorder=4)
+            if compliant:
+                ax.plot([x], [y], marker="o", ms=10, mfc="none", mec=col,
+                        mew=0.9, ls="none", zorder=3)
+
+    ax.set_yscale("symlog", linthresh=0.1)
     ax.set_xlabel("legitimate fleet reactive absorption (Mvar)")
     ax.set_ylabel(r"induced $\Delta J_{\mathrm{band}}$ (p.u.-node)")
     ax.legend(loc="upper left", fontsize=6)
     ax.grid(True, lw=0.3, alpha=0.5)
-    ax.text(0.97, 0.05, "circled: legitimate operation compliant", transform=ax.transAxes,
-            fontsize=5.4, ha="right", va="bottom", color="#333333")
+    ax.text(0.97, 0.06, "filled: confirmatory   open: resolution sweep",
+            transform=ax.transAxes, fontsize=5.2, ha="right", va="bottom", color="#333333")
+    ax.text(0.97, 0.015, "large circle: legitimate operation compliant",
+            transform=ax.transAxes, fontsize=5.2, ha="right", va="bottom", color="#333333")
     fig.savefig(HERE / "fig_reliance.pdf")
     plt.close(fig)
 

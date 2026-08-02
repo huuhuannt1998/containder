@@ -14,31 +14,24 @@ characteristic~\cite{ieee1547-2018}. The counterfactual throughout is that same 
 under its own shipped driver, and contributes no number; Section~S1 of the supplement names the
 mode and the build versions so the absence is an explained negative result.
 
-\paragraph{Two corrections that the reported results depend on.}
-The predecessor harness contains two defects, both found by re-measuring its own arms, and both
-invalidate the comparison its central claim rested on.
+\paragraph{Reference bases, stated because they are easy to get wrong.}
+An ``\texttt{InvControl}'' declared \texttt{RefReactivePower=VARMAX} reads its curve in per unit
+of \texttt{kvarmax}, while a fixed setpoint written to a \texttt{PVSystem} is in kvar and clips at
+that same limit. A bound nominally expressed as ``$-0.44$'' therefore means $-2.15$\,kvar through
+one path and $-5.28$\,kvar through the other, a factor of $2.46$: a cross-primitive comparison
+carried in per-unit is not a comparison of primitives at all, but of two different absorptions.
+Every reactive quantity in this work is consequently carried in \emph{physical kvar per DER} and
+converted at a single site.
 
-\emph{The two reactive primitives were not magnitude-matched.} The curve arm writes its setpoint
-into an \texttt{XYCurve} read by an \texttt{InvControl} declared
-\texttt{RefReactivePower=VARMAX}, so its axis is per unit of \texttt{kvarmax}; the fixed-setpoint
-arm multiplies by the apparent-power rating. At the nominally identical label $q_{\mathrm{high}}
-= -0.44$ the two commanded $-2.15$ and $-5.28$\,kvar per DER, a factor of $2.46$. Any row-wise
-comparison of the two therefore compared two different physical absorptions --- exactly the
-mismatched-feasible-set confound that makes a control primitive look causal when only the bound
-differs.
-
-\emph{The legitimate counterfactual under-delivered volt-var.} The conformant Category~B
-characteristic absorbs $44\%$ of \emph{nameplate} at $V_4 = 1.08$\,p.u., which against a
-\texttt{VARMAX} reference of that same quantity is $-1.0$; the predecessor wrote $-0.44$ and
-absorbed less than half. The baseline against which every induced quantity was differenced was a
-degraded service. Correcting it lowers the light-load legitimate overvoltage area from $57.1$ to
-$46.1$ p.u.-node.
-
-Both are fixed by carrying every reactive quantity in \textbf{physical kvar} and converting to
-whichever per-unit reference each OpenDSS object consumes at a single site. A third change is
-methodological rather than a defect: penetration is swept through \emph{per-unit rating} rather
-than fleet count, because IEEE~123 has $91$ load buses and a fleet-count sweep saturates above
-that, returning an identical circuit at every larger fleet.
+The same care applies to the counterfactual. The conformant Category~B characteristic absorbs
+$44\%$ of \emph{nameplate} at $V_4 = 1.08$\,p.u., which against a \texttt{VARMAX} reference of
+that quantity is $-1.0$ and not $-0.44$; writing the latter yields a legitimate baseline
+delivering less than half the volt-var support the standard specifies, against which every induced
+quantity would then be differenced. Penetration is swept through \emph{per-unit rating} rather
+than fleet count, because IEEE~123 has $91$ load buses and a fleet-count sweep returns an identical
+circuit at every larger fleet. An earlier harness in the released artifact makes the opposite
+choice on all three points; \texttt{artifact/superseded/README.md} records the differences and the
+numbers they move.
 
 \paragraph{Endpoints.}
 The primary endpoint is the two-sided ANSI~C84.1 Range~A violation area, $J_{\mathrm{band}}$,
@@ -46,7 +39,7 @@ summing overvoltage and undervoltage excursions over all energized nodes. The on
 overvoltage term is retained as an attack-specific secondary and reported alongside it, never
 instead: a one-sided endpoint credits an attack for lifting sagging nodes, cannot price the
 undervoltage that a forced absorption floor causes, and --- as \S\ref{sec:results} shows --- scores
-a stealth attacker that curtails the entire fleet as an \emph{improvement}. Service quality is the
+an attacker that curtails the entire fleet as an \emph{improvement}. Service quality is the
 shortfall of realised reactive output against what the conformant characteristic prescribes at
 each unit's observed terminal voltage, reported as an excess over the paired legitimate arm.
 

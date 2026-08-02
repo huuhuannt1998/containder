@@ -48,25 +48,25 @@ IEEE~2030.5 DER Systems}
              city={Charlotte}, state={NC}, country={USA}}
 
 \begin{abstract}
-IEEE~2030.5 authenticates distributed energy resources with device certificates that do not
-expire and cannot be revoked; the standard's sanctioned substitute is a local allow/deny list. We
-show by measurement that denying a compromised identity reduces integrated feeder harm by exactly
-zero. It refuses new sessions, while the adversary's established session keeps issuing commands
-and its scheduled control keeps acting. We present CONTAINDER, which separates bootstrap identity
-from short-lived attested operational authority and enforces expiry at the credential, session and
-command-effect layers, deployable through a gateway proxy. Across two public feeders, twenty
-paired seeds and $2520$ authorization arms on a corrected OpenDSS harness we find that adding
-session termination to identity denial removes $48.8$--$54.4\%$ of integrated harm and adding
-command cancellation $70.6$--$76.3\%$; that credential expiry alone removes none; and that command
-cleanup alone also removes none, because the adversary simply re-issues over its still-open
-session. Only both mechanisms together bound the residual effect at the cleanup latency. On the
-authorization side, a reactive bound admitting zero absorption fails to contain where an
-absorption floor of identical width contains, at negligible cost to volt-var service. The
-consequence of withdrawing support, however, scales with the absorption the feeder is actually
-drawing rather than with PV penetration, and at a compliant operating point it is an order of
-magnitude smaller than at an overstressed one. Bounded lifetime truncates exposure rather than
-attenuating it, at a measured cost in regulator operations. All cryptographic timings are
-software-path; no hardware-backed key measurement was obtained.
+IEEE~2030.5 authenticates distributed energy resources with device certificates that do not expire
+and cannot be revoked; the standard's sanctioned substitute is a local allow/deny list. The
+accessible standards material does not specify whether denying an identity terminates an
+established session or retracts an already-issued control. Under the permissive reading it leaves
+open, denial reaches neither, and a compromise survives the response that is supposed to end it.
+CONTAINDER separates bootstrap identity from short-lived attested operational authority and
+enforces expiry at the credential, session and command-effect layers, deployable through a gateway
+proxy. We quantify what each layer is worth on two public feeders over twenty paired seeds. Against a long-lived credential, adding
+session termination to identity denial removes $50.0\%$ of integrated feeder harm (CI
+$[46.5, 54.1]$) and adding command cancellation $69.5\%$ (CI $[65.8, 77.5]$). The two enforcement
+mechanisms are separately necessary and fail alone for different reasons: session enforcement
+leaves a command overhang of one control duration, while command cleanup is defeated outright by
+an adversary that re-issues over its still-open session. On the authorization side, a reactive
+bound admitting zero absorption fails to contain where an absorption floor of identical width
+contains, at negligible cost to volt-var service. That effect is conditional on a measurable
+quantity: it scales with the reactive absorption the feeder actually draws rather than with PV
+penetration, and at a compliant operating point it is an order of magnitude smaller than at an
+overstressed one. Bounded lifetime truncates exposure rather than attenuating it, at a measured
+cost in regulator operations.
 \end{abstract}
 
 \begin{keyword}

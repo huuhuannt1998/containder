@@ -12,15 +12,12 @@ per-unit nodes, and $\Delta J_{\mathrm{band}}$ is its increment over the paired 
 arm --- scheduled PV under the conformant IEEE~1547-2018 Category~B volt-var characteristic --- at
 the same seed and operating state.
 
-Two corrections to the harness precede everything reported here, because the pilot's central
-comparison depended on both. Its two ``matched magnitude'' reactive primitives were not matched:
-the curve arm's setpoint is per unit of \texttt{kvarmax} while the fixed-setpoint arm's is per
-unit of apparent power, so at nominally identical labels they commanded $-2.15$ and $-5.28$\,kvar
-per DER, a factor of $2.46$. And the conformant characteristic was written at $44\%$ of
-\texttt{kvarmax} rather than $44\%$ of nameplate, so the legitimate counterfactual delivered less
-than half the volt-var support it should have. Both are fixed by carrying every reactive quantity
-in physical kvar; the corrected legitimate baseline at the pilot's light-load point falls from
-$57.1$ to $46.1$ p.u.-node.
+Two measurement conventions carry the results and are stated here because comparisons of this
+kind are easy to get wrong. Every reactive bound is expressed in \emph{physical kvar per DER} and
+converted at one site to whichever per-unit reference each OpenDSS object consumes, so that the
+two control primitives receive the identical physical quantity. And the legitimate counterfactual
+delivers the \emph{full} Category~B characteristic, absorbing $44\%$ of nameplate at
+$V_4 = 1.08$\,p.u. Section~\ref{sec:feeder} gives both in full.
 
 \subsection{RQ1 --- Credential-service correctness and overhead}
 The credential service uses real X.509 / ECDSA certificates and an EAT-style attestation token.
@@ -80,23 +77,37 @@ is the matched-feasible-set comparison the pilot did not perform. Two feeders, t
 rungs each, $20$ paired seeds, $2520$ arms.
 
 \paragraph{Result: consequence tracks the support the feeder is drawing, not penetration.}
-Table~\ref{tab:reliance} and Fig.~\ref{fig:reliance} are the central conditional result. The harm an adversary can do by
-withdrawing reactive support scales with the reactive absorption the fleet was
-\emph{actually delivering} under the conformant characteristic --- from $0.1$ p.u.-node where the
-fleet is net injecting to $334$ where it absorbs $2.0$\,Mvar --- and that quantity is not a
-function of penetration. IEEE~123 at $200\%$ penetration draws no absorption at all, because its
-voltages sit inside the characteristic's deadband, and there the attack is worth nothing; the same
-feeder at $1000\%$ draws $2.2$\,Mvar and the attack is worth $58$. The operational reading is
-direct: an operator can measure the quantity that decides their exposure, and it is fleet reactive
-absorption, not PV capacity.
+Table~\ref{tab:reliance} and Fig.~\ref{fig:reliance} are the central conditional result. The harm
+available from withdrawing reactive support scales with the absorption the fleet was
+\emph{actually delivering} under the conformant characteristic --- from $0.02$ p.u.-node at
+$92$\,kvar to $415$ at $2.6$\,Mvar --- and that quantity is not a function of penetration.
+IEEE~123 at $200\%$ penetration draws no absorption at all, because its voltages sit inside the
+characteristic's deadband, and there the attack is worth nothing; the same feeder at $800\%$ draws
+$2.1$\,Mvar and the attack is worth $36$. The two feeders reach comparable harm at penetrations
+differing by an order of magnitude, and they lie on the same curve once absorption is the abscissa.
+The operational reading is direct: the quantity that decides an operator's exposure is one they
+already meter, and it is fleet reactive absorption rather than installed PV capacity.
 
-\paragraph{The effect survives at a compliant operating point.} This was the pilot's largest
-external-validity gap: its central result was measured where the legitimate feeder was already
-$62\%$ out of band. On IEEE~8500 at the calibrated compliant limit, legitimate operation carries
-a violation area of $0.015$ p.u.-node and the worst admissible point of a full-width symmetric cap
-raises it to $7.5$ --- a factor of $500$ --- without crossing any IEEE~1547 screen threshold. The
-effect is therefore not an artifact of an overstressed feeder. It is, however, an order of
-magnitude smaller than at the stressed rungs, and no screen fires there.
+Seven rungs per feeder support the curve, of which three per feeder are the confirmatory ladder and
+four are a post-hoc resolution sweep declared as such
+(\texttt{results/reliance\_resolution.json}), plotted with open markers in
+Fig.~\ref{fig:reliance}. The resolution sweep tests no hypothesis; it exists because three points
+do not establish the shape of a relationship whose endpoints the confirmatory rungs had already
+fixed.
+
+\paragraph{The effect survives at compliant operating points, on both feeders.} The obvious
+objection to any result of this kind is that it holds only where the feeder was already broken. It
+does not. On IEEE~8500 at its calibrated compliant limit, legitimate operation carries a violation
+area of $0.015$ p.u.-node and the worst admissible point of a full-width symmetric cap raises it to
+$7.5$, a factor of $500$, though without crossing an IEEE~1547 screen threshold. On IEEE~123 at
+$400\%$ penetration --- also compliant, legitimate area below the calibration tolerance --- the same
+attack raises the area to $5.7$ and \textbf{crosses the screen in $90\%$ of seeds}. Compliance of
+the legitimate state is therefore not a defence: a feeder can be inside the band under legitimate
+volt-var and be driven across a protection threshold by an adversary that injects nothing.
+
+What compliance does predict is magnitude. At the compliant rungs the effect is one to two orders
+of magnitude smaller than at the overstressed ones, which is the useful part of the conditionality
+for an operator deciding where to spend attention.
 
 \begin{table}[t]
 \centering
@@ -105,7 +116,8 @@ point of the full-width symmetric cap Q1 under the curve primitive, $n{=}20$ pai
 \emph{Legit.\ $Q$} is the fleet reactive output under the conformant characteristic (negative =
 absorbing); \emph{compliant} is the calibrated criterion of \S\ref{sec:feeder}. Screen is the
 fraction of seeds crossing an IEEE~1547 Category~II threshold that the paired legitimate case did
-not cross.}
+not cross. $^{\dagger}$This rung is from the post-hoc resolution sweep, not the confirmatory
+ladder; it is included because it is the compliant state at which the screen fires most often.}
 \label{tab:reliance}
 \small
 \begin{tabular}{@{}llrrrrr@{}}
@@ -114,6 +126,7 @@ Feeder & Pen. & Legit.\ $J_{\mathrm{band}}$ & Compliant & Legit.\ $Q$ (kvar) &
 $\Delta J_{\mathrm{band}}$ & Screen \\
 \midrule
 IEEE 123  & $200\%$  & $0.000$  & yes & $+42$   & $0.10$   & $0.20$ \\
+IEEE 123  & $400\%^{\dagger}$ & $<0.10$ & yes & $-459$  & $5.67$   & $0.90$ \\
 IEEE 123  & $600\%$  & $0.449$  & no  & $-1249$ & $17.09$  & $0.80$ \\
 IEEE 123  & $1000\%$ & $4.219$  & no  & $-2189$ & $58.14$  & $0.10$ \\
 IEEE 8500 & $50\%$   & $0.015$  & yes & $-292$  & $7.50$   & $0.00$ \\
@@ -210,13 +223,32 @@ integrated harm is exactly (accrual rate)~$\times$~(minutes honoured) and no lif
 can say anything a multiplication could not. Two feeders at their stressed rungs, $20$ paired
 seeds, $22$ lifecycle arms each.
 
-\paragraph{Result: identity denial alone contains nothing (Table~\ref{tab:lifecycle}).} This is
-the paper's motivating claim, and it is now a measurement. Denying the compromised identity ---
-the mechanism IEEE~2030.5 sanctions in place of revocation --- reduces integrated harm by
-\textbf{exactly zero} (Fig.~\ref{fig:layers}) on both feeders, at both detection delays. The denied identity opens no new
-session, and that is all it does: the adversary's established session keeps accepting commands and
-its issued control keeps acting. Adding session termination reduces harm by $48.8\%$ on IEEE~8500
-and $54.4\%$ on IEEE~123; adding command cancellation as well reaches $70.6\%$ and $76.3\%$.
+\paragraph{Identity denial alone contains nothing --- an argument, not a measurement.}
+We state the epistemic status first, because it is the difference between a result and a
+tautology. Three arms in Table~\ref{tab:lifecycle} --- credential expiry alone, command cleanup
+alone, and identity denial --- reproduce the long-lived baseline \textbf{exactly, in every one of
+the twenty seeds, to machine precision}. Their paired differences are identically zero, with no
+variance to put an interval around. That is not a measured null, and we do not report it as one.
+It follows deterministically from the reach the lifecycle model assigns each response: a denial
+that refuses new sessions, and does nothing else, cannot touch a session already open or a control
+already issued, whatever the feeder does downstream.
+
+The substantive question is therefore not whether the simulation confirms it --- it cannot --- but
+whether that reach assignment is right. \textbf{It is what the accessible standards material
+leaves open.} Nothing in the Sandia analysis or in CSIP states that adding an identity to a deny
+list terminates that identity's established mutual-TLS session, and nothing states that it cancels
+a scheduled \texttt{DERControl}; Section~\ref{sec:threat} records where each was sought. A denial
+reaching those layers would be a stronger mechanism than the material specifies, and an
+implementation is free to build one --- which is exactly CONTAINDER's recommendation. We therefore
+report this as a claim about \emph{unspecified protocol semantics}, and the three arms are marked
+in Fig.~\ref{fig:layers} as identical to baseline rather than as measured zeros.
+
+\paragraph{Result: what the layers that do reach are worth.} These contrasts are measurements, and
+they are what the physical experiment contributes. Against the long-lived baseline, paired by seed,
+adding session termination to identity denial removes $50.0\%$ of integrated harm on IEEE~8500
+(CI $[46.5, 54.1]$, $20/20$ seeds) and $47.4\%$ on IEEE~123 (CI $[37.2, 70.7]$, $15/20$); adding
+command cancellation reaches $69.5\%$ (CI $[65.8, 77.5]$) and $82.3\%$ (CI $[63.7, 92.4]$). Every
+contrast survives Holm correction within its family at $\alpha = 0.05$.
 
 \begin{figure}[t]
 \centering
@@ -232,15 +264,18 @@ denying the compromised identity each remove no harm. Percentages are relative t
 mechanism ablation separates cleanly, which the pilot's harness could not do --- its activity
 predicate mapped three lifecycles onto one arm, and the resulting claim was withdrawn. With
 credential expiry but neither enforcement mechanism (S0), retained authority is
-$(T_{\mathrm{cred}}, T_{\mathrm{sess}}, T_{\mathrm{cmd}}) = (25, 55, 55)$ minutes and the
-integrated harm is \emph{identical to the long-lived baseline}: expiry alone contains nothing.
-With command cleanup but no session enforcement (S2) the result is also identical to baseline, but
-by a different route --- the adversary re-issues over its still-open session after every cleanup
-sweep, accepting $17$ commands where the baseline needed $4$. Session enforcement alone (S1)
-bounds the session but leaves a command overhang of one full control duration, $(25, 25, 30)$.
-Only both together (S3) bound the effect at the cleanup latency, $(25, 25, 26)$.
+$(T_{\mathrm{cred}}, T_{\mathrm{sess}}, T_{\mathrm{cmd}}) = (25, 55, 55)$ minutes and the arm is
+identical to the long-lived baseline in the sense of the previous paragraph: expiry alone reaches
+neither layer, so nothing downstream can differ. With command cleanup but no session enforcement
+(S2) the arm is also identical, but for a reason the model does \emph{not} assume and the
+simulation does expose --- the adversary re-issues over its still-open session after every cleanup
+sweep, accepting $17$ commands where the baseline needed $4$. Cleanup fires, and is defeated.
+Session enforcement alone (S1) bounds the session but leaves a command overhang of one full
+control duration, $(25, 25, 30)$; only both together (S3) bound the effect at the cleanup latency,
+$(25, 25, 26)$.
 
-The integral reductions are modest --- $9.4\%$ for S1 and $11.1\%$ for S3 on IEEE~8500 --- because
+The integral reductions are modest --- paired, $11.0\%$ for S1 (CI $[9.3, 11.8]$) and $15.2\%$
+for S3 (CI $[11.9, 16.4]$) on IEEE~8500, both at $20/20$ seeds --- because
 at a $25$-minute lifetime the adversary still holds the feeder for $25$ of the horizon's $55$
 exposed minutes, and the integral is dominated by the pre-expiry period. That is the honest shape
 of the mechanism: \textbf{it truncates the exposure window, it does not attenuate the excursion},
@@ -253,25 +288,28 @@ the $965$ of the unbounded baseline at $55$ minutes.
 \centering
 \caption{Retained authority and integrated harm by containment layer, IEEE~8500 at $150\%$
 penetration, $n{=}20$ paired seeds, sixty-minute horizon with compromise at minute five.
-$(T_{\mathrm{cred}}, T_{\mathrm{sess}}, T_{\mathrm{cmd}})$ in minutes from the compromise;
-integral in p.u.-node-min with bootstrap CI. \emph{Cmds} is the number of adversarial controls
-accepted.}
+$(T_{\mathrm{cred}}, T_{\mathrm{sess}}, T_{\mathrm{cmd}})$ in minutes from the compromise.
+\emph{Change} is the median \emph{paired} difference from the long-lived baseline at the same
+seed, with a bootstrap $95\%$ interval; \emph{Cmds} is the number of adversarial controls
+accepted. Arms marked \emph{identical} reproduce the baseline exactly in every seed --- a
+consequence of the reach assigned to that response, not a measured null (see text). $p$ values
+are Holm-corrected within family; all starred contrasts hold at $\alpha=0.05$.}
 \label{tab:lifecycle}
 \small
-\begin{tabular}{@{}lrrrrlrr@{}}
+\begin{tabular}{@{}lrrrrlr@{}}
 \toprule
-Arm & $T_{\mathrm{cred}}$ & $T_{\mathrm{sess}}$ & $T_{\mathrm{cmd}}$ & Integral & 95\% CI &
-Cmds & vs base \\
+Arm & $T_{\mathrm{cred}}$ & $T_{\mathrm{sess}}$ & $T_{\mathrm{cmd}}$ & Cmds & Change vs baseline &
+Seeds \\
 \midrule
-Long-lived baseline            & $\infty$ & 55 & 55 & $964.97$ & $[936.8, 1037.2]$ & 4  & --- \\
-S0 expiry only                 & 25 & 55 & 55 & $964.97$ & $[936.8, 1037.2]$ & 4  & $0.0\%$ \\
-S1 session enforcement         & 25 & 25 & 30 & $874.40$ & $[822.0, 941.0]$  & 2  & $-9.4\%$ \\
-S2 command cleanup only        & 25 & 55 & 55 & $964.97$ & $[936.8, 1037.2]$ & 17 & $0.0\%$ \\
-S3 both (CONTAINDER)           & 25 & 25 & 26 & $858.04$ & $[788.2, 911.9]$  & 2  & $-11.1\%$ \\
+Long-lived baseline            & $\infty$ & 55 & 55 & 4  & ---                            & --- \\
+S0 expiry only                 & 25 & 55 & 55 & 4  & \emph{identical}                     & $0/20$ \\
+S2 command cleanup only        & 25 & 55 & 55 & 17 & \emph{identical}                     & $0/20$ \\
+S1 session enforcement         & 25 & 25 & 30 & 2  & $-11.0\%$ $[-11.8, -9.3]^{\ast}$     & $20/20$ \\
+S3 both (CONTAINDER)           & 25 & 25 & 26 & 2  & $-15.2\%$ $[-16.4, -11.9]^{\ast}$    & $20/20$ \\
 \midrule
-Denylist only, detect $+5$     & 5  & 55 & 55 & $964.97$ & $[936.8, 1037.2]$ & 4  & $0.0\%$ \\
-\quad $+$ session termination  & 5  & 5  & 15 & $494.45$ & $[439.2, 549.8]$  & 1  & $-48.8\%$ \\
-\quad $+$ command cancellation & 5  & 5  & 6  & $283.41$ & $[213.9, 355.3]$  & 1  & $-70.6\%$ \\
+Denylist only, detect $+5$     & 5  & 55 & 55 & 4  & \emph{identical}                     & $0/20$ \\
+\quad $+$ session termination  & 5  & 5  & 15 & 1  & $-50.0\%$ $[-54.1, -46.5]^{\ast}$    & $20/20$ \\
+\quad $+$ command cancellation & 5  & 5  & 6  & 1  & $-69.5\%$ $[-77.5, -65.8]^{\ast}$    & $20/20$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -300,55 +338,68 @@ this is a declared proxy for AMI-based detection, not a claim about any utility'
 \paragraph{Result: the loud attacker is bounded by detection, and the quiet one is not.}
 Table~\ref{tab:attackers} gives the crossover. The oracle attacker achieves the largest voltage
 harm on IEEE~8500 at $150\%$ penetration --- $\Delta J_{\mathrm{band}} = 406$ p.u.-node --- and is
-detectable in every seed, crossing a protection screen in every seed. Against that adversary the
-credential lifetime is irrelevant: any operator watching voltage sees it within one interval, and
-the containment latency is their response time.
+flagged by the voltage detector in every seed, crossing a protection screen in every seed. Against
+that adversary the credential lifetime is irrelevant: any operator watching voltage sees it within
+one interval, and the containment latency is their response time.
 
-The stealth-constrained attacker is the case the pilot did not evaluate, and it inverts the
-picture. Constrained to cross no screen and to add no nodes above band, it still accrues
-$\Delta J_{\mathrm{band}} = 14.1$ p.u.-node while the count of over-band nodes \emph{falls} by
-$180$ relative to legitimate operation. It does this by curtailing a quarter of fleet output and
-holding reactive support at zero, moving the violation onto the undervoltage side of the band,
-where a one-sided overvoltage endpoint --- the pilot's endpoint --- scores it as an improvement.
+The stealth-constrained attacker inverts the picture. Constrained to cross no screen and to add no
+nodes above band, it still accrues $\Delta J_{\mathrm{band}} = 14.1$ p.u.-node while the count of
+over-band nodes \emph{falls} by $180$ relative to legitimate operation. It does this by curtailing
+a quarter of fleet output and holding reactive support at zero, moving the violation onto the
+undervoltage side of the band --- where a one-sided overvoltage endpoint scores it as an
+improvement. The wear and curtailment attackers go further: subject to the same constraint both
+settle on full absorption at zero active power, curtailing \textbf{$100\%$ of fleet generation}
+while \emph{reducing} the voltage violation area by $24.5$ p.u.-node, and are flagged by the
+voltage detector in no seed on either feeder.
 
-\paragraph{Result: economic harm is entirely invisible to a voltage detector.} The wear and
-curtailment attackers make the point sharply. Subject to the same stealth constraint, both settle
-on full absorption at zero active power: they curtail \textbf{$100\%$ of fleet generation} while
-\emph{reducing} the voltage violation area by $24.5$ p.u.-node, and are detectable in no seed on
-either feeder. A voltage-based detector does not merely miss this attack; it reads the feeder as
-healthier than legitimate operation. Nothing in the operator's voltage telemetry will ever end it,
-so the only bound on its duration is the one the credential imposes. \textbf{This is the regime in
-which bounded lifetime is the binding containment mechanism, and it is the regime an evaluation
-using only a loud attacker and a one-sided endpoint cannot see.}
+\paragraph{The stealth result does not survive a detector that watches generation, and we report
+that rather than the favourable detector alone.} A voltage-only detector is a weak adversary for a
+claim of this kind. We therefore applied a second detector to the same stored action space,
+declared after the confirmatory run and labelled post-hoc: generation telemetry flags any attack
+whose fleet active output departs from schedule by more than $10\%$ of available power. This is
+data an aggregator already collects for settlement.
+
+Under it the strongest form of the claim collapses. The wear and curtailment attackers are flagged
+in \textbf{every seed on every feeder}: an adversary that switches off the entire fleet is not
+stealthy in any operational sense, only invisible to the wrong instrument. What survives is
+narrower and still material. The stealth-constrained attacker A3, which trades curtailment against
+reactive withdrawal, evades \emph{both} detectors in $25\%$ of seeds on IEEE~8500 at $150\%$
+penetration while accruing $\Delta J_{\mathrm{band}} = 14.1$, and in $15\%$ at the compliant rung.
+The honest statement of the lifetime argument is therefore conditional on instrumentation: against
+an operator with voltage telemetry alone, a curtailment compromise runs until the credential
+expires; against one who also reconciles generation against forecast, only a partial-curtailment
+adversary retains that property, and only in a minority of seeds.
 
 \begin{table}[t]
 \centering
-\caption{Attacker models at IEEE~8500, $150\%$ penetration, $n{=}20$ paired seeds. \emph{Detect}
-is the fraction of seeds the declared AMI proxy flags within one metering interval;
-\emph{Curtail} is the fraction of available fleet active energy withheld. Negative
-$\Delta J_{\mathrm{band}}$ means the attack left the feeder with \emph{less} voltage violation
-than legitimate operation while doing economic harm.}
+\caption{Attacker models at IEEE~8500, $150\%$ penetration, $n{=}20$ paired seeds. \emph{D1} is
+the confirmatory voltage detector (screen crossing, or more than ten nodes added above
+$1.05$\,p.u.); \emph{D2} is the post-hoc generation detector ($>10\%$ of available active power
+withheld). \emph{Evades both} is the fraction of seeds flagged by neither. Negative
+$\Delta J_{\mathrm{band}}$ means the attack left the feeder with \emph{less} voltage violation than
+legitimate operation while doing economic harm.}
 \label{tab:attackers}
 \small
 \begin{tabular}{@{}lrrrrr@{}}
 \toprule
-Attacker & $\Delta J_{\mathrm{band}}$ & $\Delta$ nodes over & Detect & Curtail & Taps \\
+Attacker & $\Delta J_{\mathrm{band}}$ & Curtail & D1 voltage & D2 generation & Evades both \\
 \midrule
-A1 oracle              & $405.9$  & $+302$   & $1.00$ & $19\%$  & 46 \\
-A2 telemetry-limited   & $306.4$  & $+1603$  & $1.00$ & $0\%$   & 57 \\
-A3 stealth-constrained & $14.1$   & $-180$   & $0.00$ & $25\%$  & 15 \\
-A4 wear                & $-24.5$  & $-3568$  & $0.00$ & $100\%$ & 42 \\
-A5 curtailment         & $-24.5$  & $-3568$  & $0.00$ & $100\%$ & 42 \\
+A1 oracle              & $405.9$  & $19\%$  & $1.00$ & $0.55$ & $0.00$ \\
+A2 telemetry-limited   & $306.4$  & $0\%$   & $1.00$ & $0.00$ & $0.00$ \\
+A3 stealth-constrained & $14.1$   & $25\%$  & $0.00$ & $0.75$ & $0.25$ \\
+A4 wear                & $-24.5$  & $100\%$ & $0.00$ & $1.00$ & $0.00$ \\
+A5 curtailment         & $-24.5$  & $100\%$ & $0.00$ & $1.00$ & $0.00$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{What this does not settle.} The crossover point is a function of the detection proxy.
-A utility correlating fleet reactive output or generation against forecast would catch the
-curtailment attacker immediately, and the argument above would not apply to it. What the result
-establishes is narrower and still useful: \emph{voltage} monitoring, which is the telemetry a
-distribution operator is most likely to have, is blind to a compromise that does its damage in
-curtailed energy, and against that compromise credential lifetime is the only bound we measured.
+\paragraph{What this does not settle.} Both detectors are proxies with declared thresholds, and
+the crossover moves with them: a tighter generation tolerance would catch A3 as well, and an
+operator reconciling neither instrument would catch none of these. What the result establishes is
+the structure of the trade rather than a number. The attacks that voltage telemetry misses are
+close to exactly the ones generation telemetry catches, so an operator's exposure to a compromise
+bounded only by credential lifetime is a function of which instruments they reconcile against
+forecast, not of the adversary's ingenuity.
 
 \subsection{Threats to validity}\label{sec:limits}
 We report what this evaluation does not establish.
