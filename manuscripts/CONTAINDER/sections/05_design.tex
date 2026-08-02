@@ -13,9 +13,9 @@ link targets a dimension of the model (Fig.~\ref{fig:chain}).
 \centering
 \includegraphics[width=\textwidth]{figures/fig_chain.pdf}
 \caption{The CONTAINDER containment chain. Each link bounds a dimension: attestation gates
-issuance, fresh-key binding contains a copied key, scope and short lifetime bound $\BRflex$ and
-$T_{\mathrm{cred}}$, session and command enforcement bound $T_{\mathrm{sess}}$ and
-$T_{\mathrm{cmd}}$, and measured recovery bounds $\BRphys$.}
+issuance, fresh-key binding contains a copied key, scope bounds the commandable set and a short
+lifetime bounds $T_{\mathrm{cred}}$, session and command enforcement bound $T_{\mathrm{sess}}$
+and $T_{\mathrm{cmd}}$, and measured recovery bounds the feeder consequence.}
 \label{fig:chain}
 \end{figure*}
 
@@ -70,8 +70,9 @@ handling of scheduled DERControls. The two quantities the prototype measures are
 \Delta_{\mathrm{expiry}} &= t_{\text{last adv.\ command}} - t_{\text{expiry}},\\
 \Delta_{\mathrm{effect}}  &= t_{\text{effect ends}} - t_{\text{expiry}},
 \end{align}
-each targeted to zero or a small declared bound. These are exactly the $T_{\mathrm{sess}}$ and
-$T_{\mathrm{cmd}}$ components of $\BRauth$.
+each targeted to zero or a small declared bound. These are the $T_{\mathrm{sess}}$ and
+$T_{\mathrm{cmd}}$ components of the retained-authority vector introduced in
+Section~\ref{sec:threat}.
 
 \subsection{Safe-mode policy}
 Failure behavior is explicit rather than fail-open. The risk controller chooses among the states

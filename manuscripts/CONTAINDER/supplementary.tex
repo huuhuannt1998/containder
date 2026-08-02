@@ -15,6 +15,14 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{url}
 
+
+\newcommand{\BRreach}{\mathrm{BR}_{\mathrm{reach}}}
+\newcommand{\BRflex}{\mathrm{BR}_{\mathrm{flex}}}
+\newcommand{\BRauth}{\mathrm{BR}_{\mathrm{auth}}}
+\newcommand{\BRexp}{\mathrm{BR}_{\mathrm{exp}}}
+\newcommand{\BRphys}{\mathrm{BR}_{\mathrm{phys}}}
+\newcommand{\Reach}{\mathrm{ReachSet}}
+
 \journal{International Journal of Critical Infrastructure Protection}
 
 \begin{document}
@@ -186,5 +194,102 @@ File & Supports \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+
+\section*{SM.5 Impact accounting: notation, and why reachability alone cannot rank these designs}
+
+This section fixes the notation the body uses for the four quantities a credential compromise
+moves. It is \emph{not} a contribution and the body does not claim it as one: an extended attack
+graph yields the same accounting and so agrees with this work rather than competing with it. It
+sits here rather than in the body because the body's load-bearing quantities --- the
+retained-authority components $T_{\mathrm{cred}}$, $T_{\mathrm{sess}}$ and $T_{\mathrm{cmd}}$ ---
+are defined where they are used, and the remaining notation is needed only by a reader who wants
+the general form.
+
+This section fixes notation and says why we need it. As the introduction states, it is \emph{not} a
+contribution: an extended attack
+graph~\cite{poolsappasit2012dynamic,wang2008attackgraph,frigault2008measuring} yields exactly the
+accounting below and so agrees with us rather than competing. We keep the notation only because the
+experiments in the manuscript's results section move ``how much'', ``for how long'', and ``under which grid
+conditions'' differently, and one scalar cannot express that.
+
+\paragraph{Substrate and the four quantities.}
+A static privilege graph $G=(V,E)$ has principals and resources as nodes and access relations as
+edges; $x \subseteq V$ is a set of compromised credentials, and a policy $\pi=(L,\mathrm{Att},A)$
+gives a lifetime function $L$, an attestation-gated renewal predicate $\mathrm{Att}$, and a scope
+map $A$. The device and grid state $u_t$ and the feeder power-flow and protection model $F$ appear
+nowhere in $G$, which is the point.
+
+\emph{Cyber reach} $\BRreach=\Reach(x,\pi)$, a count, is the least fixed point of the
+$\pi$-enabled access relation from $x$: the endpoints the compromised authority can send an
+authenticated request to. \emph{Commandable flexibility} $\BRflex$, in kW and kVAr, is the
+aggregate over reachable DERs of the feasible set-point region
+$\mathcal{C}_d(t;u_t,A_\pi(d))$ given irradiance, state of charge, and inverter limits; a
+read-only scope yields the current set-point alone, hence zero. \emph{Retained authority}
+separates three durations, in seconds,
+\begin{equation}
+\BRauth=\big(T_{\mathrm{cred}},\;T_{\mathrm{sess}},\;T_{\mathrm{cmd}}\big),
+\end{equation}
+where $T_{\mathrm{cred}}$ runs until the stolen credential is refused for a \emph{new} session,
+$T_{\mathrm{sess}}$ until already-authenticated sessions can no longer issue commands, and
+$T_{\mathrm{cmd}}$ until queued or latched controls stop affecting the DER; the capacity-time
+exposure $\BRexp=\int \BRflex(t)\,\mathbf{1}[\text{authority effective}]\,dt$ carries
+kW$\cdot$h or kVAr$\cdot$h. \textbf{We report the vector and not its maximum.} A maximum is the
+obvious summary and it is the wrong one here: the three components are bounded by three different
+mechanisms, and collapsing them hides which one failed. the manuscript's results section measures arms
+whose maxima are identical and whose components --- and physical consequences --- are not. Expiry
+bounds $T_{\mathrm{cred}}$ alone. \emph{Physical consequence} $\BRphys=\max_{a}J_V(F,u,a)$ is the worst
+outcome reachable within the adversary's authority, where $J_V$ is the voltage-violation area
+outside the ANSI~C84.1 band weighted by magnitude. $\BRphys$ carries two units and we label
+every table with which: \emph{p.u.-node} evaluated at one operating point, and
+\emph{p.u.-node-min} accumulated over a horizon. Secondary metrics are maximum per-unit
+deviation, violating-node count, protection-screen crossings, regulator tap operations, energy not served,
+unnecessary curtailment, and recovery time.
+
+\paragraph{Three separations, true by construction.}
+Call a measurement \emph{reachability-only} if it is a function $M$ of $\Reach(x)$ alone. Then, at
+fixed reachable set, varying the scope map changes $\BRflex$; an attestation-gated ephemeral
+credential and a long-lived unrevoked one differ in $\BRauth$ and $\BRexp$; and the same
+authorized command is harmless at one operating state and crosses the IEEE~1547 overvoltage screen
+at another. \textbf{None of these can fail}, since $M$ is single-valued in $\Reach(x)$ and each
+construction varies a quantity that is by definition not an argument of $M$. They restate a
+definition. We keep them only because they say which quantities an evaluation must move, and each
+ships as a regression test in the released engine. \textbf{They are not evidence for the design;
+that is in the manuscript's results section, and only there.}
+
+\section*{SM.6 The cyber-side analysis engine}
+
+The engine computes the cyber-side quantities of SM.5 for a compromise locus under a policy. It
+supports no claim in the body's results, which are physical; it is described here so the released
+artifact is documented.
+
+We implement the cyber-side impact dimensions as an analysis engine, \texttt{pkimodel}, that computes
+$\BRreach$, $\BRflex$, and $\BRauth$ for a compromise locus under a policy. The engine models
+the identity and delegation graph over the six node types of the threat model, with typed
+issuance, delegation, and authorization edges. Its central modeling choice follows the
+formalism: a credential's reach (which DERs it can address) is represented independently of
+its scope (which function sets it may invoke at each DER). This is what makes the separating
+counterexample expressible in code, and we ship that counterexample as a regression test:
+the two compromises resolve to an identical reachable set of eleven DERs, yet the engine
+computes zero commandable kW for the attested credential against tens of MW for the legacy
+one, and a persistence of hours against the analysis horizon.
+
+The authorization policy is parameterized, not fixed: a hardcoded permissive access model would
+overstate what a stolen certificate can command, so the engine exposes four ACL realism levels
+spanning single-device, site, feeder-segment, and whole-fleet scope, varied in the evaluation. On a
+synthetic 200-device fleet over four feeders the reachable-DER count grows from one (single-device
+and site) to fifty (feeder) to two hundred (fleet), with commandable capacity in step; the
+feeder-level figure is the fleet divided by the feeder count and moves with that parameter. This
+operationalizes RQ1: most reach gained by a compromise is attributable to authorization scope
+rather than to authentication alone. Retained authority is returned as a distribution over
+duration, not a point estimate, and separates credential, session, and command-effect components.
+
+The engine consumes synthetic scenarios from a deterministic, seedable generator, since real
+utility authorization graphs are not public; the generator is released as part of the
+artifact. The engine is cyber-side only. It produces the reachable-DER set and the
+commandable-capacity envelope that the feeder simulation consumes to compute $\BRphys$.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
 
 \end{document}

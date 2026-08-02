@@ -9,15 +9,9 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{url}
 
-% Custom macros for the four impact dimensions (single source of notation truth).
-% The BR_ prefix is retained for notational continuity; the impact-accounting section uses
-% "dimension", not "radius".
-\newcommand{\BRreach}{\mathrm{BR}_{\mathrm{reach}}}
-\newcommand{\BRflex}{\mathrm{BR}_{\mathrm{flex}}}
-\newcommand{\BRauth}{\mathrm{BR}_{\mathrm{auth}}}
-\newcommand{\BRexp}{\mathrm{BR}_{\mathrm{exp}}}
-\newcommand{\BRphys}{\mathrm{BR}_{\mathrm{phys}}}
-\newcommand{\Reach}{\mathrm{ReachSet}}
+% The four impact-dimension macros moved to supplementary.tex with the notation section that
+% defines them (SM.5). The body names the retained-authority components directly, so nothing
+% here needs them.
 
 % Staged actions that only the PI can discharge (external deposits, personal identifiers).
 % Each renders as a visible marker so none can be missed at submission. Replace the call with
@@ -78,9 +72,7 @@ remote attestation \sep authorization \sep cyber-physical security
 
 \input{sections/01_introduction}
 \input{sections/02_threat_model}
-\input{sections/03_formalism}
 \input{sections/05_design}
-\input{sections/06_engine}
 \input{sections/07_feeder_method}
 \input{sections/08_evaluation_protocol}
 \input{sections/08b_preliminary}
