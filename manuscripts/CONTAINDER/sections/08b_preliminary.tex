@@ -255,8 +255,10 @@ contrast survives Holm correction within its family at $\alpha = 0.05$.
 \includegraphics[width=\columnwidth]{figures/fig_layers.pdf}
 \caption{Integrated harm by containment layer, IEEE~8500 at $150\%$ penetration, $n{=}20$ paired
 seeds, bars are bootstrap $95\%$ intervals and the dotted line is the long-lived baseline. Dark
-bars are indistinguishable from that baseline: credential expiry alone, command cleanup alone, and
-denying the compromised identity each remove no harm. Percentages are relative to the baseline.}
+bars reproduce that baseline \emph{exactly} in every seed --- credential expiry alone, command
+cleanup alone and identity denial each reach neither the open session nor the issued control, so
+nothing downstream can differ. Those three are not measured nulls and carry no interval; see text.
+Percentages on the remaining arms are median paired differences.}
 \label{fig:layers}
 \end{figure}
 

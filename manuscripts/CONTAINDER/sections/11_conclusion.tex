@@ -10,10 +10,10 @@ property of withdrawing a credential. It is a property of withdrawing authority 
 that can carry it.
 
 Two results follow. On \emph{duration}, the containment layers are separately necessary and fail
-alone for different reasons: credential expiry with no further enforcement removes no harm at all,
-command cleanup without session enforcement removes none either because the adversary re-issues
-over its still-open session, and only both together bound the residual effect at the cleanup
-latency. Against a long-lived credential, session termination on detection removes about half the
+alone for different reasons: credential expiry with no further enforcement reaches neither the open
+session nor the issued control, command cleanup without session enforcement is defeated because the
+adversary re-issues over its still-open session, and only both together bound the residual effect
+at the cleanup latency. Against a long-lived credential, session termination on detection removes about half the
 integrated harm and command cancellation about three quarters. Bounded lifetime truncates the
 exposure window rather than attenuating the excursion inside it, so the benefit is a lifetime the
 operator chooses against the exposure their detection and response leaves open, and it is paid for
