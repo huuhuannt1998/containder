@@ -36,14 +36,14 @@ outcome reachable within the adversary's authority, where $J_V$ is the voltage-v
 outside the ANSI~C84.1 band weighted by magnitude. $\BRphys$ carries two units and we label
 every table with which: \emph{p.u.-node} evaluated at one operating point, and
 \emph{p.u.-node-min} accumulated over a horizon. Secondary metrics are maximum per-unit
-deviation, violating-node count, protection trips, regulator tap operations, energy not served,
+deviation, violating-node count, protection-screen crossings, regulator tap operations, energy not served,
 unnecessary curtailment, and recovery time.
 
 \paragraph{Three separations, true by construction.}
 Call a measurement \emph{reachability-only} if it is a function $M$ of $\Reach(x)$ alone. Then, at
 fixed reachable set, varying the scope map changes $\BRflex$; an attestation-gated ephemeral
 credential and a long-lived unrevoked one differ in $\BRauth$ and $\BRexp$; and the same
-authorized command is harmless at one operating state and trips the IEEE~1547 overvoltage screen
+authorized command is harmless at one operating state and crosses the IEEE~1547 overvoltage screen
 at another. \textbf{None of these can fail}, since $M$ is single-valued in $\Reach(x)$ and each
 construction varies a quantity that is by definition not an argument of $M$. They restate a
 definition. We keep them only because they say which quantities an evaluation must move, and each

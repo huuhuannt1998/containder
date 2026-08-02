@@ -154,7 +154,10 @@ it as the deployment path.
 \subsection{Implementation status}
 % provenance: mis_01KXT2D8VVC1CDNT9WJ4CFGH9P (M3 spec).
 The design is realized as an issuance and renewal service using real X.509 certificates and mutual
-TLS, with a Python IEEE~2030.5-style client in place of the EPRI C client and structured event
+TLS, with a Python IEEE~2030.5-style client in place of a vendor client, and structured event
 logging for every credential, session, and command transition. Its security invariants and
-workstation overhead are reported in Section~\ref{sec:results}; a native EPRI-client integration and
-constrained-hardware measurements remain future work.
+overhead are reported in Section~\ref{sec:results}. Two components of the design are specified and
+enforced in the prototype but not exercised against external hardware or software: the operational
+credential is not held in a hardware keystore, and no third-party IEEE~2030.5 endpoint has
+consumed the gateway's downstream traffic. Section~\ref{sec:limits} states what each absence
+bounds.
