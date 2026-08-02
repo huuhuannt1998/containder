@@ -24,14 +24,17 @@ $\mathcal{C}_d(t;u_t,A_\pi(d))$ given irradiance, state of charge, and inverter 
 read-only scope yields the current set-point alone, hence zero. \emph{Retained authority}
 separates three durations, in seconds,
 \begin{equation}
-\BRauth=\max\big(T_{\mathrm{cred}},T_{\mathrm{sess}},T_{\mathrm{cmd}}\big),
+\BRauth=\big(T_{\mathrm{cred}},\;T_{\mathrm{sess}},\;T_{\mathrm{cmd}}\big),
 \end{equation}
 where $T_{\mathrm{cred}}$ runs until the stolen credential is refused for a \emph{new} session,
 $T_{\mathrm{sess}}$ until already-authenticated sessions can no longer issue commands, and
 $T_{\mathrm{cmd}}$ until queued or latched controls stop affecting the DER; the capacity-time
 exposure $\BRexp=\int \BRflex(t)\,\mathbf{1}[\text{authority effective}]\,dt$ carries
-kW$\cdot$h or kVAr$\cdot$h. This split is the design's load-bearing one: expiry bounds
-$T_{\mathrm{cred}}$ only. \emph{Physical consequence} $\BRphys=\max_{a}J_V(F,u,a)$ is the worst
+kW$\cdot$h or kVAr$\cdot$h. \textbf{We report the vector and not its maximum.} A maximum is the
+obvious summary and it is the wrong one here: the three components are bounded by three different
+mechanisms, and collapsing them hides which one failed. Section~\ref{sec:results} measures arms
+whose maxima are identical and whose components --- and physical consequences --- are not. Expiry
+bounds $T_{\mathrm{cred}}$ alone. \emph{Physical consequence} $\BRphys=\max_{a}J_V(F,u,a)$ is the worst
 outcome reachable within the adversary's authority, where $J_V$ is the voltage-violation area
 outside the ANSI~C84.1 band weighted by magnitude. $\BRphys$ carries two units and we label
 every table with which: \emph{p.u.-node} evaluated at one operating point, and
