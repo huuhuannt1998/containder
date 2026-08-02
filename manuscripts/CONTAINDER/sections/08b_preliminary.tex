@@ -316,6 +316,29 @@ Denylist only, detect $+5$     & 5  & 55 & 55 & 4  & \emph{identical}           
 \end{tabular}
 \end{table}
 
+\paragraph{How much of this is the mechanism, and how much the parameters?} The percentages above
+are measured at one setting of three quantities the lifecycle model supplies rather than the
+feeder: the control duration an adversary installs ($15$ min), the age at which an unenforced
+session lapses ($60$ min), and the cleanup sweep latency ($60$ s). We swept all three ---
+$60$ settings in total --- and report the range, because a percentage quoted from a single setting
+invites the reader to mistake a parameter for a property.
+
+Two things separate. \textbf{The structural claim is invariant}: identity denial alone reduces the
+exposure window by $0\%$ in \emph{every one} of the $60$ settings. It cannot do otherwise, which is
+the point of \S\ref{sec:results}'s framing of it as an argument about unspecified semantics rather
+than a measurement. \textbf{The magnitudes are not invariant}: the window reduction from adding
+session termination ranges from $0$ to $90.9\%$ across the grid ($72.7\%$ at the nominal setting),
+and from adding command cancellation from $66.7$ to $90.9\%$ ($89.1\%$ nominal). An operator
+running $60$-minute controls and a long session cache is in a different regime from one running
+$5$-minute controls, and the ordering of the arms is what survives, not the numbers.
+
+This also shows why the feeder experiment is not redundant with the model. At the nominal setting
+the exposure window falls $45.5\%$ under session enforcement while the integrated \emph{harm} falls
+$11.0\%$: harm does not accrue uniformly over the window, because irradiance and load move, and the
+pre-expiry period dominates the integral. The mapping from retained authority to physical
+consequence is not the identity, and reporting the window reduction as though it were would
+overstate every result in this subsection by a factor of three to four.
+
 \paragraph{Operational cost.} Bounded lifetime is not free. Regulator tap operations rise from a
 median of $49$ under the unbounded baseline to $56$ under S3, and the transition at expiry is what
 causes them: the cost is incurred by the containment event, not by the attack. An operator

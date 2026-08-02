@@ -1,0 +1,3467 @@
+{
+  "status": "post-hoc sensitivity of the exposure window; tests no hypothesis",
+  "horizon_min": 60,
+  "ttl_min": 25,
+  "detect_min": 5,
+  "nominal": {
+    "command_duration_min": 15,
+    "session_age_min": 60,
+    "cleanup_latency_s": 60
+  },
+  "grid_size": 60,
+  "ranges": {
+    "mech_S1": {
+      "n_settings": 60,
+      "min_reduction_pct": 0.0,
+      "median_reduction_pct": 45.45,
+      "max_reduction_pct": 54.55,
+      "always_zero": false
+    },
+    "mech_S3": {
+      "n_settings": 60,
+      "min_reduction_pct": 0.0,
+      "median_reduction_pct": 52.73,
+      "max_reduction_pct": 54.55,
+      "always_zero": false
+    },
+    "deny_denylist": {
+      "n_settings": 60,
+      "min_reduction_pct": 0.0,
+      "median_reduction_pct": 0.0,
+      "max_reduction_pct": 0.0,
+      "always_zero": true
+    },
+    "deny_denylist+session": {
+      "n_settings": 60,
+      "min_reduction_pct": 0.0,
+      "median_reduction_pct": 69.7,
+      "max_reduction_pct": 90.91,
+      "always_zero": false
+    },
+    "deny_denylist+session+cancel": {
+      "n_settings": 60,
+      "min_reduction_pct": 66.67,
+      "median_reduction_pct": 89.09,
+      "max_reduction_pct": 90.91,
+      "always_zero": false
+    }
+  },
+  "nominal_point": {
+    "command_duration_min": 15,
+    "session_age_min": 60,
+    "cleanup_latency_s": 60,
+    "baseline_effect_min": 55,
+    "arms": {
+      "mech_S0": {
+        "effect_min": 55,
+        "reduction_pct": 0.0,
+        "T_cmd_min": 55.0,
+        "identical_to_baseline": true
+      },
+      "mech_S1": {
+        "effect_min": 30,
+        "reduction_pct": 45.45,
+        "T_cmd_min": 30.0,
+        "identical_to_baseline": false
+      },
+      "mech_S2": {
+        "effect_min": 55,
+        "reduction_pct": 0.0,
+        "T_cmd_min": 55.0,
+        "identical_to_baseline": true
+      },
+      "mech_S3": {
+        "effect_min": 26,
+        "reduction_pct": 52.73,
+        "T_cmd_min": 26.0,
+        "identical_to_baseline": false
+      },
+      "deny_none": {
+        "effect_min": 55,
+        "reduction_pct": 0.0,
+        "T_cmd_min": 55.0,
+        "identical_to_baseline": true
+      },
+      "deny_denylist": {
+        "effect_min": 55,
+        "reduction_pct": 0.0,
+        "T_cmd_min": 55.0,
+        "identical_to_baseline": true
+      },
+      "deny_denylist+session": {
+        "effect_min": 15,
+        "reduction_pct": 72.73,
+        "T_cmd_min": 15.0,
+        "identical_to_baseline": false
+      },
+      "deny_denylist+session+cancel": {
+        "effect_min": 6,
+        "reduction_pct": 89.09,
+        "T_cmd_min": 6.0,
+        "identical_to_baseline": false
+      }
+    }
+  },
+  "grid": [
+    {
+      "command_duration_min": 5,
+      "session_age_min": 30,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 16.67,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 31,
+          "reduction_pct": -3.33,
+          "T_cmd_min": 31.0,
+          "identical_to_baseline": false
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 16.67,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 83.33,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 83.33,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 30,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 16.67,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 31,
+          "reduction_pct": -3.33,
+          "T_cmd_min": 31.0,
+          "identical_to_baseline": false
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 16.67,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 83.33,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 83.33,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 30,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 16.67,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 16.67,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 83.33,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 83.33,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 60,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 60,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 60,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 120,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 120,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 120,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 5,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 25,
+          "reduction_pct": 54.55,
+          "T_cmd_min": 25.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 5,
+          "reduction_pct": 90.91,
+          "T_cmd_min": 5.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 30,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 13.33,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 66.67,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 80.0,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 30,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 13.33,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 66.67,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 80.0,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 30,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 66.67,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 66.67,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 60,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 60,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 60,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 120,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 120,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 120,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 10,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 30,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 13.33,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 50.0,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 80.0,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 30,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 13.33,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 50.0,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 80.0,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 30,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 50.0,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 66.67,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 60,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 60,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 60,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 120,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 120,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 120,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 15,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 15,
+          "reduction_pct": 72.73,
+          "T_cmd_min": 15.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 30,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 13.33,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 80.0,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 30,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 13.33,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 80.0,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 30,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 30,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_none": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 66.67,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 60,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 60,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 60,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 120,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 120,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 120,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 30,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 30,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 30,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 30,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 60,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 60,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 60,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 120,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 120,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 120,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 10,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 60,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 26,
+          "reduction_pct": 52.73,
+          "T_cmd_min": 26.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 6,
+          "reduction_pct": 89.09,
+          "T_cmd_min": 6.0,
+          "identical_to_baseline": false
+        }
+      }
+    },
+    {
+      "command_duration_min": 60,
+      "session_age_min": 1440,
+      "cleanup_latency_s": 300,
+      "baseline_effect_min": 55,
+      "arms": {
+        "mech_S0": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S1": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S2": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "mech_S3": {
+          "effect_min": 30,
+          "reduction_pct": 45.45,
+          "T_cmd_min": 30.0,
+          "identical_to_baseline": false
+        },
+        "deny_none": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session": {
+          "effect_min": 55,
+          "reduction_pct": 0.0,
+          "T_cmd_min": 55.0,
+          "identical_to_baseline": true
+        },
+        "deny_denylist+session+cancel": {
+          "effect_min": 10,
+          "reduction_pct": 81.82,
+          "T_cmd_min": 10.0,
+          "identical_to_baseline": false
+        }
+      }
+    }
+  ]
+}
