@@ -48,38 +48,25 @@ IEEE~2030.5 DER Systems}
              city={Charlotte}, state={NC}, country={USA}}
 
 \begin{abstract}
-IEEE~2030.5 binds a distributed energy resource's long-lived bootstrap identity to its
-operational authorization and forbids online certificate revocation. A stolen credential
-therefore retains control authority indefinitely, and no online mechanism can withdraw it. We
-present CONTAINDER, which replaces the conflated device credential with attested, short-lived,
-scope-bound operational credentials and uses non-renewal rather than revocation as the
-containment mechanism, deployable incrementally through native and gateway-proxy tiers. Because
-reachability alone does not distinguish these designs, we measure impact along four dimensions
---- cyber reach, state-dependent commandable flexibility, retained authority, and feeder
-consequence --- and give a worked example of two compromises with identical reach but divergent
-flexibility, persistence, and feeder outcome. We implement a credential service with real X.509
-and mutual TLS and a real OpenDSS feeder pipeline. On the IEEE~8500-node feeder, ten implemented
-security invariants pass and attested issuance costs about $0.23$\,ms. Our central physical
-finding is that whether authorization narrowing contains a compromise depends on the \emph{shape}
-of the authorized set, not on how tightly it is drawn. An adversary need inject nothing: at zero
-authorized reactive setpoint the induced overvoltage area still rises --- by $31.2$ p.u.-node under
-a fixed-setpoint override and $31.4$ under a bounded volt-var curve --- with every seed tripping
-the IEEE~1547 overvoltage screen, because merely withdrawing the reactive absorption the feeder
-relies on is itself sufficient to breach the band. A bound of the form $|q| \le q_{\max}$ admits
-zero at every width and therefore cannot contain, however tight; an authorization that instead
-holds the DER to at least about three quarters of the conformant Category~B absorption trips no
-seed while still delivering volt-var. Both control primitives behave the same way on this band, so
-the design consequence is about the bound rather than the function set that carries it --- authorize
-a reactive band that excludes zero absorption. Scope alone is still not sufficient
-at the envelope operators actually grant, so lifetime is the second control:
-across twenty paired seeds a compromise at the conformant envelope holds the feeder in violation
-for the whole horizon under a long-lived credential, whereas under CONTAINDER the feeder returns
-to its pre-attack baseline within one minute of expiry in $17$ of $20$ seeds under light load ---
-though our fixed recovery threshold is too coarse to resolve the same question under normal load,
-and we report that. We show that integrated harm is the product of a measured accrual rate and the
-credential lifetime, so the containment factor is a lifetime the operator chooses rather than an
-effect size we measured, and we report its cost: a $51.5\%$ rise in regulator tap operations. These are reduced-scale pilot
-results, reported as exploratory; the pre-registered confirmatory sweep is future work.
+IEEE~2030.5 authenticates distributed energy resources with device certificates that do not
+expire and cannot be revoked; the standard's sanctioned substitute is a local allow/deny list. We
+show by measurement that denying a compromised identity reduces integrated feeder harm by exactly
+zero. It refuses new sessions, while the adversary's established session keeps issuing commands
+and its scheduled control keeps acting. We present CONTAINDER, which separates bootstrap identity
+from short-lived attested operational authority and enforces expiry at the credential, session and
+command-effect layers, deployable through a gateway proxy. Across two public feeders, twenty
+paired seeds and $2520$ authorization arms on a corrected OpenDSS harness we find that adding
+session termination to identity denial removes $48.8$--$54.4\%$ of integrated harm and adding
+command cancellation $70.6$--$76.3\%$; that credential expiry alone removes none; and that command
+cleanup alone also removes none, because the adversary simply re-issues over its still-open
+session. Only both mechanisms together bound the residual effect at the cleanup latency. On the
+authorization side, a reactive bound admitting zero absorption fails to contain where an
+absorption floor of identical width contains, at negligible cost to volt-var service. The
+consequence of withdrawing support, however, scales with the absorption the feeder is actually
+drawing rather than with PV penetration, and at a compliant operating point it is an order of
+magnitude smaller than at an overstressed one. Bounded lifetime truncates exposure rather than
+attenuating it, at a measured cost in regulator operations. All cryptographic timings are
+software-path; no hardware-backed key measurement was obtained.
 \end{abstract}
 
 \begin{keyword}

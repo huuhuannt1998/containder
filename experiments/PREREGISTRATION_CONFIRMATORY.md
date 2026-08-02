@@ -144,6 +144,28 @@ inspected**, and its partial output was discarded rather than merged. Both remov
 beyond their feeder's compliance transition and support no primary claim; the 20-seed count and
 the retry policy are unchanged. This paragraph is the record of the change.
 
+### Amendment A2 (recorded **after** seeing the first shape results — a defect correction)
+
+Unlike A1, this change was made with results in hand, and it is disclosed as such.
+
+The IEEE 123 fleet was set to 91, which is exactly that feeder's load-bus count. `place_pv` draws
+`rng.sample(buses, min(n, len(buses)))`, so at n = 91 every seed selects *the same 91 buses* and
+merely permutes their order. All twenty IEEE 123 seeds were therefore the identical circuit: the
+first run's IEEE 123 arms return **one distinct value across twenty seeds** at every rung
+(standard deviation exactly 0), and their bootstrap intervals are degenerate — `[0.004, 0.004]`
+and the like. The nominal n = 20 was an n = 1. IEEE 8500, whose fleet of 600 is drawn from 1177
+load buses, shows genuine variation (20 distinct values per rung, standard deviations 1.9 to 99).
+
+This is the same class of error the pilot made in its withdrawn ablations — reporting replication
+where the harness produced none — and it is corrected the same way: the IEEE 123 fleet is reduced
+to 46, half its load-bus population, so placement genuinely varies with the seed. **The IEEE 123
+arms are re-run and the first run's IEEE 123 arms are discarded.** The IEEE 8500 arms are
+unaffected by the fleet change and are retained.
+
+No hypothesis, endpoint, ladder, set family, interpretation rule or seed count changed. The change
+is confined to a sampling parameter that had silently disabled replication on one feeder, and the
+inferences drawn from the discarded arms were void for that reason rather than unfavourable.
+
 The ladder is the independent variable in place of a compliant/non-compliant dichotomy, because
 the calibration showed the governing quantity to be continuous: how much reactive absorption the
 fleet is actually delivering under the conformant characteristic. That quantity is reported for

@@ -65,7 +65,7 @@ STATES = {
     "ieee8500_stress": {"feeder": "ieee8500", "load_mult": 0.50, "penetration": 1.50,
                         "fleet": 600},
     "ieee123_stress": {"feeder": "ieee123", "load_mult": 1.00, "penetration": 10.0,
-                       "fleet": 91},
+                       "fleet": 46},
 }
 
 #: Command duration and session cache, in seconds. A 15-minute DERControl is the overhang that

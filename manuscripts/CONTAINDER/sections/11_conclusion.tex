@@ -1,45 +1,37 @@
-\section{Limitations and Conclusion}
-% provenance: OUTLINE.md status column; jrn_01KXT4NN8Z8EG0SZYGB65H2T5J (venue); chk T1.1 open item.
+\section{Conclusion}
 
-\paragraph{Limitations.}
-The boundaries of the evaluation are stated next to the results they bound, at the end of
-Section~\ref{sec:prelim}: one feeder and a single solver, one PV penetration level at the
-conformant scope envelope, modeled rather than measured retained authority, workstation-only
-overhead, in-process availability injection, untested interoperability, an unmeasured
-stealth-constrained attacker, and no access to the 2023 edition of the standard. Two further
-boundaries belong to the model. The authorization graphs used by the engine are synthetic, because
-real utility authorization graphs are not public; we mitigate this with a released parameterized
-generator and by ablating access-model permissiveness rather than fixing it. And our claims about
-revocation rest on the Sandia analysis rather than a clause-level reading of the edition in force.
+IEEE~2030.5 device certificates do not expire and cannot be revoked, and the mechanism the
+standard sanctions in their place is a local allow or deny list. The assumption that this suffices
+is the one this paper tests, and it fails: denying the identity of an adversary who is already
+connected removes \emph{no} integrated feeder harm on either feeder we evaluate. The denial
+refuses new sessions and does nothing else, while the established session keeps issuing commands
+and the installed control keeps acting. Containment of a DER compromise is therefore not a
+property of withdrawing a credential. It is a property of withdrawing authority at every layer
+that can carry it.
 
-\paragraph{Conclusion.}
-Credential compromise in IEEE~2030.5 is not well described by how many nodes an adversary reaches.
-It is described by how much physical capacity those nodes command, how long the adversary keeps
-it, and what the feeder does in response. Our central empirical finding is about the \emph{shape} of the
-authorization an operator grants, not about how tightly it is drawn. \textbf{On the
-IEEE~8500-node feeder, a reactive authorization that permits zero absorption does not contain a
-credential compromise, and one that mandates a floor on absorption does.} An adversary needing no
-injection authority at all --- commanding zero, which sits inside any magnitude bound --- drives
-the feeder past an overvoltage trip threshold in every seed, because withdrawing the volt-var
-absorption is itself the attack. An adversary confined instead to a band holding at least about
-three quarters of the conformant Category~B absorption trips no seed. Least privilege works here,
-but only when the bound is a floor rather than a ceiling.
+Two results follow. On \emph{duration}, the containment layers are separately necessary and fail
+alone for different reasons: credential expiry with no further enforcement removes no harm at all,
+command cleanup without session enforcement removes none either because the adversary re-issues
+over its still-open session, and only both together bound the residual effect at the cleanup
+latency. Against a long-lived credential, session termination on detection removes about half the
+integrated harm and command cancellation about three quarters. Bounded lifetime truncates the
+exposure window rather than attenuating the excursion inside it, so the benefit is a lifetime the
+operator chooses against the exposure their detection and response leaves open, and it is paid for
+in regulator operations.
 
-We expected the control primitive to be what separated these cases and it is not: we ran the sweep
-under both a fixed-setpoint override and a bounded volt-var curve, and over the band an operator
-would authorize the two are indistinguishable on the trip outcome. Reporting a primitive-level
-separation would have described the shape of the two authorized sets we chose rather than anything
-the feeder did, so we do not. Whether the standard's function sets can express an absorption floor
-for a fixed setpoint is a question about IEEE~2030.5 that we could not answer without the edition
-in force, and we leave it flagged as a conjecture in Section~\ref{sec:prelim}.
+On \emph{shape}, an authorization is a set and an adversary plays its worst admissible point. A
+reactive bound that admits zero absorption fails to contain where an absorption floor of identical
+width contains, at negligible cost to volt-var service, because withdrawing the reactive support a
+feeder relies on requires the adversary to inject nothing. That effect is conditional, and the
+condition is measurable: it scales with the reactive absorption the fleet is actually delivering,
+not with PV penetration. A feeder can carry ten times its load in PV and be untouched by this
+attack if its voltages stay inside the characteristic's deadband, while a feeder at half its load
+in PV is exposed if they do not.
 
-Two things follow. The concrete one is a recommendation to the standard's users: authorize a
-reactive band that excludes zero absorption, by whichever function set carries it. The
-second is that scope discipline remains insufficient on its own at the envelopes deployments
-actually grant today, so bounding the \emph{duration} of retained authority still matters, and
-that is what attested short-lived credentials with session and command-effect enforcement
-provide. The price is stated rather than hidden: containment latency is the credential
-lifetime divided by the per-cycle attestation detection probability, not the lifetime itself, and a
-gateway-proxy tier is the only one of our three deployment tiers that resolves the secure-time and
-constrained-hardware constraints the mechanism inherits from the problem it addresses. These are
-pilot results on one feeder; the pre-registered confirmatory sweep is what would generalise them.
+The recommendation is correspondingly narrow. Authorize a reactive band that excludes zero
+absorption where the fleet's measured absorption shows the feeder depends on it; enforce credential
+expiry at the session and at the command, because enforcing it at the credential alone accomplishes
+nothing; and place both at a gateway that terminates the operational credential upstream of
+unmodified endpoints. What remains open is what we could not measure: hardware-backed key storage,
+third-party interoperability, a second power-flow solver, and the clause-level content of the
+standard's edition in force.

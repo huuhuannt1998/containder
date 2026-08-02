@@ -7,7 +7,7 @@ authorized-control reach from the analysis engine into a malicious dispatch prog
 it on a public distribution feeder. We take the IEEE 8500-node feeder~\cite{arritt2010ieee8500}
 as the primary benchmark and the PNNL 9500-node system~\cite{anderson2022ninethousand} as an
 advanced validation tier --- the latter did not converge in our build and contributes no reported
-number, a failure mode we name in Section~\ref{sec:prelim}. Time-series inputs
+number, a failure mode we name in Section~\ref{sec:results}. Time-series inputs
 come from public solar and load datasets. This part of the work is methodologically routine
 relative to the false-data-injection literature on distribution systems, so we build it to be
 unimpeachable rather than novel.
@@ -15,7 +15,7 @@ unimpeachable rather than novel.
 This is a single-solver study, and we state the consequence rather than the aspiration: the
 authorization envelope is applied directly in the OpenDSS driver, so the constraint a credential
 expresses is enforced on the dispatch that actually reaches the feeder, but no second solver
-corroborates the result. Section~\ref{sec:prelim} reports what that costs. The attack families are
+corroborates the result. Section~\ref{sec:results} reports what that costs. The attack families are
 volt-var curve distortion, volt-watt curve distortion, export-limit distortion, and curtailment
 spam; the metrics are those of Section~\ref{sec:formalism}, with the per-unit voltage excursion as
 the primary continuous measure and a protection-trip flag as the discrete outcome.
@@ -35,12 +35,12 @@ fixed $P,Q$ --- no inverter, no curve --- against a counterfactual with every un
 $P{=}Q{=}0$, so its $\Delta J_V$ conflates ``connect this much generation'' with ``a credential
 was stolen'', and a ``volt-var curve distortion'' attack under it was really a static setpoint
 delta. The PV-penetration, attack-family, IEEE~123 and retained-authority sweeps were run under
-it and are reported in Section~\ref{sec:prelim} with that provenance attached. \textbf{$\Delta
+it and are reported in Section~\ref{sec:results} with that provenance attached. \textbf{$\Delta
 J_V$ is therefore not on a common footing across every table}, and each table states which
 counterfactual its numbers use.
 
 \emph{How the adversary acts on the reactive axis.} Two distinct models appear, and the
-distinction turns out to matter (Section~\ref{sec:prelim}). Under \emph{setpoint override} the
+distinction turns out to matter (Section~\ref{sec:results}). Under \emph{setpoint override} the
 autonomous controller is switched off and a fixed reactive setpoint is written, which is how a
 \texttt{opModFixedVar} command supersedes an active volt-var curve. Under \emph{curve
 modification} the controller stays enabled and the adversary rewrites the characteristic within

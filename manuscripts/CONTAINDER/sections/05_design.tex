@@ -43,6 +43,23 @@ evidence. The issuer signs only the attested public key, refuses renewal that pr
 prior certificate, rejects replayed evidence and reused nonces, and rotates the key even when the
 device stays healthy. This is what contains a copied key across the next epoch.
 
+\subsection{Value-constrained authorization, and where it is enforced}
+% provenance: STANDARDS_CLAIM_MATRIX.md S7.
+The physical result of Section~\ref{sec:results} is a statement about the \emph{set} of reactive
+operating points an authorization admits, so the design is only actionable if that set can be
+expressed and enforced. \texttt{FunctionSetAssignments} scopes which \emph{functions} an identity
+may invoke. No accessible source establishes that IEEE~2030.5 or CSIP can attach a bound on the
+\emph{value} a control may take, such as ``reactive output must remain at or below
+$-\varphi$\,kvar'' (row S7, Table~\ref{tab:standards}).
+
+We therefore make the weaker and checkable claim. CONTAINDER's numeric authorization is a
+\textbf{layer above \texttt{FunctionSetAssignments}, enforced by the DERMS or the gateway proxy},
+not a native protocol capability. The enforcement point holds the bound, rejects or clamps an
+out-of-set command before forwarding it, and emits only conformant IEEE~2030.5 downstream, so
+protocol compatibility is preserved and the constraint is applied where the credential is
+terminated. Whether a future profile could carry the bound natively is a question for the working
+group, and we do not assume the answer.
+
 \subsection{Session and command-effect enforcement}
 Certificate expiry does not end an open TLS session or an already-issued long-duration control.
 CONTAINDER closes sessions at credential expiry (or bounds session age to the credential TTL) and
@@ -84,7 +101,7 @@ We separate three compatibility levels --- \emph{protocol} (2030.5 messages stay
 \emph{implementation} (unmodified client or server software can participate), and \emph{deployment}
 (legacy and upgraded devices coexist) --- and claim none of them without a passing interoperability
 test rather than asserting ``backward compatible.'' None has yet been tested;
-Section~\ref{sec:prelim} reports interoperability as untested. Three tiers realize this: a
+Section~\ref{sec:results} reports interoperability as untested. Three tiers realize this: a
 bootstrap-only legacy tier, a gateway-attested proxy tier where an edge gateway holds the
 operational credential for downstream legacy devices, and a native device-attested tier.
 
@@ -113,12 +130,18 @@ in-process injection, not networked outages, and renewal storms are untested.
 
 \emph{Who reports compromise.} Attestation detects only what it measures. Firmware integrity is
 measurable; \textbf{a stolen operational key on a device with intact firmware passes
-attestation}. Per-epoch fresh-key binding answers this, but containment latency is then not the
-lifetime: with per-cycle detection probability $p$ and lifetime $T$, expected retention is $T/p$
---- twelve hours at $T{=}6$\,h, $p{=}0.5$, and equal to $T$ only at $p{=}1$. \textbf{We report
-$T/p$ as the containment-latency figure of merit.} The alternative, a narrow access list on a
-long-lived credential, contains a copied key only when someone notices and edits the list, which
-has no bounded latency at all. Bounded beats unbounded; it does not beat instant.
+attestation}. Per-epoch fresh-key binding answers exactly that class, and it answers it
+\emph{without} attestation: because renewal mints a fresh key whether or not anything is
+detected, a copied key is inert after the epoch regardless of the detection probability, and
+expected retention is $T/2$ under uniform arrival. What attestation bounds is the different class
+in which the adversary remains resident on the device and re-attests successfully; there
+retention is $T(1/p - 1/2)$ for uniform arrival, and the familiar $T/p$ only when the compromise
+lands immediately after an issuance. Table~\ref{tab:classes} separates them, because reporting one
+figure for both --- as an earlier version of this paper did --- credits attestation with a bound
+key rotation already supplies and, at $T{=}6$\,h and $p{=}0.2$, overstates copied-key retention
+tenfold. The alternative, a narrow access list on an indefinitely valid credential, contains a
+copied key only when someone notices and edits the list, which has no bounded latency at all.
+Bounded beats unbounded; it does not beat instant.
 
 \emph{Which tier is deployable.} Presenting three tiers evenhandedly would mislead: only one is
 deployable within the next standards cycle. The native tier needs attestation and a trusted clock
@@ -133,5 +156,5 @@ it as the deployment path.
 The design is realized as an issuance and renewal service using real X.509 certificates and mutual
 TLS, with a Python IEEE~2030.5-style client in place of the EPRI C client and structured event
 logging for every credential, session, and command transition. Its security invariants and
-workstation overhead are reported in Section~\ref{sec:prelim}; a native EPRI-client integration and
+workstation overhead are reported in Section~\ref{sec:results}; a native EPRI-client integration and
 constrained-hardware measurements remain future work.

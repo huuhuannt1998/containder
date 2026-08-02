@@ -12,12 +12,12 @@ timestamp.} It was computed by the same party who could have edited the file, so
 that the matrix has not changed since the hash was written; it cannot show \emph{when} the matrix
 was fixed relative to seeing any outcome. The repository's version-control anchor does not repair
 this: the initial commit capturing the pre-registration is dated 2026-07-30, which
-\textbf{postdates every pilot result reported in Section~\ref{sec:prelim}}. We therefore make no
+\textbf{postdates every pilot result reported in Section~\ref{sec:results}}. We therefore make no
 claim that the design could not have been adjusted after seeing pilot outcomes. It could have
 been, and no artifact in this repository proves otherwise.
 
 The consequence follows directly, and we adopt it without qualification: the measured results in
-Section~\ref{sec:prelim} are reported as \textbf{exploratory}, not confirmatory, and are excluded
+Section~\ref{sec:results} are reported as \textbf{exploratory}, not confirmatory, and are excluded
 from the confirmatory tests.
 
 \paragraph{Baselines and mechanism ablations.}
@@ -35,7 +35,7 @@ mechanism attributes.
 \caption{Credential-lifecycle baselines \emph{as pre-registered}. FK = fresh key per epoch;
 Sess = session enforcement; Cmd = command-effect cleanup. ``Narrow'' here is a design
 category, not a value: the executed pilot instantiated it at two different envelopes, and
-Section~\ref{sec:prelim} reports every result by the commanded kvar rather than by this
+Section~\ref{sec:results} reports every result by the commanded kvar rather than by this
 label.}
 \label{tab:baselines}
 \small
@@ -75,6 +75,6 @@ analysis. Effect sizes are the median paired difference, ratio of geometric mean
 rank-biserial correlation, and odds ratios, each with bootstrap confidence intervals, with Holm
 correction within rather than across hypothesis families. A five-seed pilot and a power analysis
 set the production seed count before final comparisons are viewed. These procedures apply to the
-confirmatory sweep. The pilot in Section~\ref{sec:prelim} reports paired per-seed contrasts with
+confirmatory sweep. The pilot in Section~\ref{sec:results} reports paired per-seed contrasts with
 bootstrap intervals, which its stored data do support, and does not report the mixed-effects
 estimates, which they do not.

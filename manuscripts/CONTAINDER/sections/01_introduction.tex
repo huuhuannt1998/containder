@@ -3,80 +3,71 @@
 % provenance: dec_01KXT240A70R8N104BPN5G07CJ (RQ1) motivates the reach/scope question.
 Distributed energy resources now participate in grid operations at a scale that makes their
 control interface a systemic concern. IEEE~2030.5 (Smart Energy Profile~2.0), profiled for
-distribution use by the Common Smart Inverter Profile (CSIP), is the application protocol
-through which utilities and aggregators dispatch inverter-based resources. An adversary who
-obtains a credentialed identity in this ecosystem does not merely read data; it can command
-real and reactive power on physical hardware connected to the grid.
+distribution use by the Common Smart Inverter Profile (CSIP), is the application protocol through
+which utilities and aggregators dispatch inverter-based resources. An adversary who obtains a
+credentialed identity in this ecosystem does not merely read data; it commands real and reactive
+power on physical hardware connected to the grid.
 
-% provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE (SAND2019-1490 4.1) supports the two facts in this paragraph.
-Two properties of the IEEE~2030.5 trust model make this worse than a conventional
-credential-theft problem. First, the device's bootstrap identity and its operational
-authorization are the same long-lived certificate: there is no separate, short-lived
-operational credential to lose. Second, the standard forbids certificate revocation; it
-directs that certificate authorities not maintain revocation lists or run status responders,
-and that clients and servers not check them~\cite{obert2019recommendations}. A stolen
-credential is therefore valid until it expires, and its lifetime may be indefinite.
+% provenance: jrn_01KXT3JPAZ8RSGZK99X4G3HWPE (SAND2019-1490 4.1) supports the two facts here.
+Two properties of the trust model make this harder than a conventional credential-theft problem.
+The device's bootstrap identity and its operational authorization are the same certificate, so
+there is no separate short-lived credential to lose. And that certificate does not expire and
+cannot be revoked: the analysis of record for these standards states that the PKI is distinguished
+by ``the use of non-expiring certificates and the explicit prohibition of CRL and OCSP'', and that
+``if the device's private key is compromised, the device certificate cannot be
+revoked''~\cite{obert2019recommendations}. What the standard offers instead is a local allow or
+deny list.
 
-% provenance: jrn_01KXT49DNW5ZK6CEFDJW7CCK5M (separation) + jrn_01KXT3PV68YXCN68ZT7JYCCQB3 (mapping table).
-A natural objection is that this is a solved problem: model the DER authorization surface as
-a privilege graph and measure blast radius as reachability, as a mature line of work does
-for enterprise networks~\cite{ou2005mulval,wang2008attackgraph,wang2014kzero}. We argue
-this reduction is insufficient as ordinarily applied. What determines the damage of a DER compromise is not only which nodes
-an adversary can reach, but how much physical capacity those nodes command, how long the
-adversary retains that capacity, and what the feeder does in response under the grid state at
-the time. Reachability over a static privilege graph is a function of the attack locus and
-the graph alone; the quantities that matter are functions of the defensive policy and of
-exogenous physical state, and neither is topological.
+The obvious objection is that a denylist is enough --- the operator refuses the compromised
+identity and the incident is over. \textbf{We measure that assumption and it does not hold.}
+Denying the identity of an adversary who is already connected reduces integrated feeder harm by
+\emph{exactly zero} on both feeders we evaluate. It refuses new sessions, which is all it claims
+to do; the adversary's established session continues to issue commands, and the scheduled control
+it has already installed continues to act on the inverter. Containment fails not because authority
+cannot be withdrawn but because withdrawing it at one layer leaves two others running.
+
+That observation organises the paper. Bounding a DER compromise requires controlling two
+independent quantities: the \emph{set of physical actions} an authorization admits, and the
+\emph{duration} for which authority remains effective at every layer that can carry it --- the
+credential, the open session, and the issued command.
+
+CONTAINDER separates bootstrap identity from short-lived, attested, scope-bound operational
+authority, and enforces expiry at all three layers. Because grid actuation persists in a way
+computation does not, expiry that stops at the credential is not containment: we show that a
+credential lifetime with neither session nor command enforcement removes no harm at all, and that
+command cleanup without session enforcement removes none either, because the adversary re-issues
+over the session that is still open.
 
 \subsection*{Contributions}
-% provenance: this list is the contribution map; each item cites its RKA anchor.
 \begin{itemize}
-\item \emph{CONTAINDER}, an incrementally deployable credential redesign for IEEE~2030.5 using
-attested, short-lived, scope-bound operational credentials, with non-renewal as containment and
-explicit session- and command-effect enforcement, deployable through native and gateway-proxy
-tiers.
-% provenance: dec_01KXT28WTZ92PJ7S8D3MME78D4 (novelty framing); dec_01KXT25BXRB50HY38SZ8P9ADFD (RQ4).
-\item A \emph{working prototype} --- a credential service with real X.509 issuance, mutual TLS,
-and renewal, plus an OpenDSS feeder pipeline --- with ten implemented security invariants
-verified and containment timing measured.
-% provenance: M2 report (mis_01KXT2BS2S584NBFQAN2P4D6SK); jrn_01KXTX3PH43VR78AM1GZHC27T1 (measured results).
-\item A \emph{result about the shape a reactive authorization must have}: on the IEEE~8500-node
-feeder~\cite{arritt2010ieee8500}, an authorization that permits zero reactive absorption does not
-contain a compromise, because withdrawing the absorption the feeder depends on is by itself enough
-to breach the band and trip every seed --- the adversary need inject nothing. A magnitude cap
-$|q| \le q_{\max}$ admits zero at every width and so cannot contain, while a band holding the DER
-to roughly three quarters of the conformant Category~B absorption trips no seed and still delivers
-volt-var. We measured this under both a fixed-setpoint override and a bounded volt-var curve and
-report that it does \emph{not} separate them, against our own prior expectation that the primitive
-would matter. The apparent adequacy of a narrow access list in our earlier configuration was an
-artifact of an envelope too small to deliver the service at all.
-% provenance: jrn_01KY13EQJ6V8AZCRHB944ZAZJY (time-series); jrn_01KXWJ4TPTK2DGSBKY5YCF50T5 (baseline sweep).
-\item A \emph{pilot evaluation} with paired per-seed contrasts over twenty seeds showing that, at
-that conformant scope, bounding the \emph{duration} of retained authority is the only remaining
-control, and characterising it honestly: the mechanism truncates the exposure window rather than
-attenuating the excursion, so integrated harm is a measured accrual rate multiplied by the
-lifetime and the containment factor is a lifetime the operator chooses, not an effect size we
-measured. We report what it costs --- a $51.5\%$ rise in regulator tap operations --- and where it
-does not pay, and we quantify the containment latency it buys: expected retention is the
-credential lifetime divided by the per-cycle attestation detection probability, not the lifetime
-itself.
+\item \emph{A DER credential and enforcement architecture} that separates bootstrap identity,
+operational credential and value-constrained authorization, and enforces expiry at the credential,
+session and command-effect layers, deployable through a gateway proxy that leaves downstream
+IEEE~2030.5 endpoints unmodified.
+
+\item \emph{A measurement of what each containment layer is worth.} Identity denial alone removes
+$0\%$ of integrated harm; adding session termination removes $48.8$--$54.4\%$; adding command
+cancellation removes $70.6$--$76.3\%$. The two enforcement mechanisms fail alone for different
+reasons and are separately necessary --- a claim an earlier version of this work asserted from a
+harness that could not identify it, and which is here earned from a lifecycle model that
+distinguishes the three layers.
+
+\item \emph{An authorization-shape result, with the condition under which it matters.} At
+identical width, a reactive bound that admits zero absorption fails to contain where an absorption
+floor contains, at negligible cost to volt-var service. The magnitude of that effect scales with
+the reactive absorption the feeder is actually drawing rather than with PV penetration; it
+survives at an operating point where legitimate operation is compliant, but is an order of
+magnitude smaller there than at an overstressed one.
+
+\item \emph{A corrected, released evaluation harness} on two public feeders, with a
+pre-registration committed to version control before any treatment arm ran, every departure from
+it disclosed, and two defects in the predecessor harness identified and repaired.
 \end{itemize}
 
-The threat model separates bootstrap identity, operational credential, and authorization scope,
-and names the standard's conflation of the first two as the driver of unbounded persistence.
-% provenance: jrn_01KXT490ZD4444AWMRG5296GJA.
-
-We deliberately do \emph{not} claim the four-dimension accounting of
-Section~\ref{sec:formalism} as a contribution. Adding resource-by-scope product nodes, a time
-index, and attached state and policy to a classical attack graph yields it, and the separation
-propositions it supports are true by construction, since a reachability-only measure cannot depend
-on variables that are not among its arguments. We keep the notation because the paper needs a
-vocabulary for how much, for how long, and under which grid conditions. It is not a theoretical
-advance, and the load-bearing claims here are empirical.
-
-We state scope plainly. The engine, credential service, and feeder pipeline are implemented and
-covered by a regression suite. The evaluation is a pilot: one feeder, one solver, one
-workstation, and --- at the conformant scope envelope where the central result lies --- one
-penetration level and two operating states. The pre-registered confirmatory sweep, with a
-cross-solver check, constrained hardware, a stealth-constrained attacker, and the full seed
-budget, is future work.
+We claim no novelty for short-lived certificates or for expiry-based containment. The Web PKI
+ratified that trade in 2023~\cite{cabf-sc063v4}, and the Sandia analysis of these very standards
+recommends limited-life certificates and records that manufacturers are ``not required to limit
+the life of a device certificate''~\cite{obert2019recommendations} --- which makes a short-lived
+operational credential permitted rather than new. What is new here is the mapping onto DER
+authorization: which layers expiry must reach before it contains anything, which control point an
+authorization must withhold, and the operating condition that decides whether either matters.

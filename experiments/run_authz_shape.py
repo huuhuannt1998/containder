@@ -67,7 +67,7 @@ LADDER = {
                 "calibrated_limit": None},   # right-censored above 12.0
 }
 
-FLEET = {"ieee8500": 600, "ieee123": 91}
+FLEET = {"ieee8500": 600, "ieee123": 46}
 
 PRIMITIVES = ["setpoint", "curve"]
 
@@ -248,14 +248,27 @@ def summarize(rows):
     return summary
 
 
-def main(n_seeds: int = 20):
+def main(n_seeds: int = 20, only_feeder: str = None):
+    """``only_feeder`` re-runs one feeder's arms and merges them over the stored rows.
+
+    Used by Amendment A2: the IEEE 123 arms had to be re-run after a fleet-size defect disabled
+    seed variation on that feeder, while the IEEE 8500 arms were unaffected and are retained.
+    """
     if not CAL.exists():
         sys.exit(f"calibration not found: {CAL}. Run run_hosting_capacity.py first.")
     cal = json.loads(CAL.read_text())
     limits = {k: v["limits"] for k, v in cal["feeders"].items()}
 
     tasks = expand_sets(build_tasks(n_seeds))
+    if only_feeder:
+        tasks = [t for t in tasks if t["feeder"] == only_feeder]
     rows = run_tasks(one_arm, tasks, label="authz-shape", every=100)
+
+    if only_feeder and OUT.exists():
+        prior = json.loads(OUT.read_text())["rows"]
+        kept = [r for r in prior if r.get("feeder") != only_feeder]
+        print(f"merging: {len(kept)} retained arms + {len(rows)} re-run {only_feeder} arms")
+        rows = kept + rows
 
     out = {"status": "confirmatory",
            "hypotheses": ["H1 shape-not-width", "H2 reliance conditionality (not blind)",
@@ -278,4 +291,5 @@ def main(n_seeds: int = 20):
 
 
 if __name__ == "__main__":
-    main(int(sys.argv[1]) if len(sys.argv) > 1 else 20)
+    main(int(sys.argv[1]) if len(sys.argv) > 1 else 20,
+         sys.argv[2] if len(sys.argv) > 2 else None)

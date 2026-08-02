@@ -55,7 +55,7 @@ STATES = {
     "ieee8500_compliant": {"feeder": "ieee8500", "load_mult": 0.50, "penetration": 0.50,
                            "fleet": 600},
     "ieee123_stress": {"feeder": "ieee123", "load_mult": 1.00, "penetration": 10.0,
-                       "fleet": 91},
+                       "fleet": 46},
 }
 
 #: Nodes above 1.05 p.u. an attacker may add over the legitimate baseline before an
