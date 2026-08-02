@@ -34,8 +34,10 @@ voltage telemetry, and against it no voltage-based response will ever fire, so c
 expiry is the only bound. But it is not invisible to generation telemetry, which aggregators
 already collect for settlement, and against that instrument a full-curtailment compromise is
 flagged immediately. The regime in which lifetime is the binding mechanism is therefore real but
-narrower than a voltage-only analysis suggests: it is the partial-curtailment adversary, which
-evaded both detectors in a quarter of our seeds.
+narrower than a voltage-only analysis suggests. An adversary optimising against both instruments
+retains only $1.5\%$ of the oracle's voltage harm on our stressed feeder and none at all on the
+compliant one. Bounded lifetime is the binding mechanism where an operator watches voltage and not
+generation; where they reconcile both, it is largely redundant, and we say so.
 
 The recommendation is correspondingly narrow. Authorize a reactive band that excludes zero
 absorption where the fleet's measured absorption shows the feeder depends on it; enforce credential

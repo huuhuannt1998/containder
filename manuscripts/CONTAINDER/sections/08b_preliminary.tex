@@ -386,14 +386,24 @@ data an aggregator already collects for settlement.
 
 Under it the strongest form of the claim collapses. The wear and curtailment attackers are flagged
 in \textbf{every seed on every feeder}: an adversary that switches off the entire fleet is not
-stealthy in any operational sense, only invisible to the wrong instrument. What survives is
-narrower and still material. The stealth-constrained attacker A3, which trades curtailment against
-reactive withdrawal, evades \emph{both} detectors in $25\%$ of seeds on IEEE~8500 at $150\%$
-penetration while accruing $\Delta J_{\mathrm{band}} = 14.1$, and in $15\%$ at the compliant rung.
-The honest statement of the lifetime argument is therefore conditional on instrumentation: against
-an operator with voltage telemetry alone, a curtailment compromise runs until the credential
-expires; against one who also reconciles generation against forecast, only a partial-curtailment
-adversary retains that property, and only in a minority of seeds.
+stealthy in any operational sense, only invisible to the wrong instrument.
+
+We then asked what is left for an adversary that optimises against \emph{both} detectors, by
+re-searching the same stored action space under the conjunction. The answer is little. On
+IEEE~8500 at $150\%$ penetration the best dual-evading point accrues
+$\Delta J_{\mathrm{band}} = 6.0$ p.u.-node --- $1.5\%$ of what the oracle achieves --- and it
+curtails \emph{nothing}, because any curtailment large enough to matter trips the generation
+detector. At the compliant IEEE~8500 rung and on IEEE~123 the best dual-evading point accrues
+$0.0$; in two of twenty seeds on the stressed feeder, and in most seeds elsewhere, no admissible
+dual-evading point exists at all.
+
+The honest statement of the lifetime argument is therefore sharply conditional on
+instrumentation. Against an operator with voltage telemetry alone, a curtailment compromise does
+its damage unseen and runs until the credential expires --- there, bounded lifetime is the only
+mechanism that ends it. Against an operator who also reconciles fleet generation against forecast,
+the undetectable residue is small enough that the lifetime argument largely dissolves. We report
+the second case as well as the first because reporting only the first would make the design look
+better than the evidence supports.
 
 \begin{table}[t]
 \centering
@@ -402,7 +412,9 @@ the confirmatory voltage detector (screen crossing, or more than ten nodes added
 $1.05$\,p.u.); \emph{D2} is the post-hoc generation detector ($>10\%$ of available active power
 withheld). \emph{Evades both} is the fraction of seeds flagged by neither. Negative
 $\Delta J_{\mathrm{band}}$ means the attack left the feeder with \emph{less} voltage violation than
-legitimate operation while doing economic harm.}
+legitimate operation while doing economic harm. The final row is not an attacker model but the
+best point available under the conjunction of both detectors, re-searched over the same stored
+action space; it exists in $18$ of $20$ seeds.}
 \label{tab:attackers}
 \small
 \begin{tabular}{@{}lrrrrr@{}}
@@ -414,6 +426,8 @@ A2 telemetry-limited   & $306.4$  & $0\%$   & $1.00$ & $0.00$ & $0.00$ \\
 A3 stealth-constrained & $14.1$   & $25\%$  & $0.00$ & $0.75$ & $0.25$ \\
 A4 wear                & $-24.5$  & $100\%$ & $0.00$ & $1.00$ & $0.00$ \\
 A5 curtailment         & $-24.5$  & $100\%$ & $0.00$ & $1.00$ & $0.00$ \\
+\midrule
+\emph{best dual-evading} & $6.0$ & $0\%$ & $0.00$ & $0.00$ & $1.00$ \\
 \bottomrule
 \end{tabular}
 \end{table}

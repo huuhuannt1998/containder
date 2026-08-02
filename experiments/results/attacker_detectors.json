@@ -52,7 +52,13 @@
           "frac_evading_both": 0.0
         }
       },
-      "dual_evading_best": null
+      "scan_missing_for_n_arms": 0,
+      "dual_evading_best": {
+        "n": 4,
+        "median_dJ_band": 0.0,
+        "median_curtailed_frac": 0.0,
+        "median_tap_ops": 12.0
+      }
     },
     "ieee8500_compliant": {
       "attackers": {
@@ -102,7 +108,13 @@
           "frac_evading_both": 0.0
         }
       },
-      "dual_evading_best": null
+      "scan_missing_for_n_arms": 0,
+      "dual_evading_best": {
+        "n": 11,
+        "median_dJ_band": 0.0001,
+        "median_curtailed_frac": 0.0,
+        "median_tap_ops": 9
+      }
     },
     "ieee8500_stress": {
       "attackers": {
@@ -152,7 +164,13 @@
           "frac_evading_both": 0.0
         }
       },
-      "dual_evading_best": null
+      "scan_missing_for_n_arms": 0,
+      "dual_evading_best": {
+        "n": 18,
+        "median_dJ_band": 6.0234,
+        "median_curtailed_frac": 0.0,
+        "median_tap_ops": 14.0
+      }
     }
   }
 }
