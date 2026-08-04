@@ -1,0 +1,99 @@
+{
+  "implementation": "GridAPPS-D IEEE 2030.5 server (open-source CSIP implementation)",
+  "transport": "real mutual TLS, certificate-derived LFDI identity",
+  "withdrawal_mechanism": "removal from the server's device registry; the implementation provides no allow/deny list",
+  "connection_reused_across_requests": true,
+  "established_session_survives_withdrawal": false,
+  "new_session_survives_withdrawal": false,
+  "steps": [
+    {
+      "phase": "established_session",
+      "path": "/dcap",
+      "status": 200,
+      "bytes": 290,
+      "ms": 9.0,
+      "socket": null,
+      "error": null,
+      "snippet": "<DeviceCapability xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/dcap\" pollRate=\"60\">   <ResponseSetListLink href=\"/rsps\" all=\"0\""
+    },
+    {
+      "phase": "established_session",
+      "path": "/edev",
+      "status": 200,
+      "bytes": 144,
+      "ms": 8.58,
+      "socket": null,
+      "error": null,
+      "snippet": "<EndDeviceList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/edev\" subscribable=\"0\" all=\"1\" results=\"1\" pollRate=\"900\">   <EndDe"
+    },
+    {
+      "phase": "established_session",
+      "path": "/dcap",
+      "status": 200,
+      "bytes": 290,
+      "ms": 8.62,
+      "socket": null,
+      "error": null,
+      "snippet": "<DeviceCapability xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/dcap\" pollRate=\"60\">   <ResponseSetListLink href=\"/rsps\" all=\"0\""
+    },
+    {
+      "phase": "withdrawal",
+      "action": "removed identity from server registry",
+      "files": {
+        "04.pem": "04.pem.withdrawn",
+        "der_adversary.pem": "der_adversary.pem.withdrawn",
+        "der_adversary-combined.pem": "der_adversary-combined.pem.withdrawn"
+      }
+    },
+    {
+      "phase": "after_withdrawal_same_connection",
+      "path": "/dcap",
+      "status": null,
+      "bytes": 0,
+      "ms": 70.66,
+      "socket": null,
+      "error": "RemoteDisconnected: Remote end closed connection without response",
+      "snippet": null
+    },
+    {
+      "phase": "after_withdrawal_new_connection",
+      "path": "/dcap",
+      "status": null,
+      "bytes": 0,
+      "ms": 38.24,
+      "socket": null,
+      "error": "RemoteDisconnected: Remote end closed connection without response",
+      "snippet": null
+    },
+    {
+      "phase": "content_survival_other_identity",
+      "path": "/dcap",
+      "status": 200,
+      "bytes": 290,
+      "ms": 7.63,
+      "socket": null,
+      "error": null,
+      "snippet": "<DeviceCapability xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/dcap\" pollRate=\"60\">   <ResponseSetListLink href=\"/rsps\" all=\"0\""
+    },
+    {
+      "phase": "content_survival_other_identity",
+      "path": "/edev",
+      "status": 200,
+      "bytes": 144,
+      "ms": 12.65,
+      "socket": null,
+      "error": null,
+      "snippet": "<EndDeviceList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/edev\" subscribable=\"0\" all=\"1\" results=\"1\" pollRate=\"900\">   <EndDe"
+    },
+    {
+      "phase": "content_survival_other_identity",
+      "path": "/derp",
+      "status": 200,
+      "bytes": 114,
+      "ms": 19.3,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERProgramList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp\" subscribable=\"0\" all=\"0\" results=\"0\" pollRate=\"900\"/> "
+    }
+  ]
+}
