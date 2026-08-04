@@ -33,3 +33,8 @@ venv/
 # NOTE: experiments/results/*.json are DELIBERATELY tracked.
 # They are the paper's evidence base and were once lost to an
 # overwrite with no history to restore from. Do not ignore them.
+
+# Ad-hoc result backups. The authoritative archive of superseded runs is
+# experiments/results/superseded/, which carries a README explaining each.
+experiments/results.bak-*/
+experiments/results_backup/
