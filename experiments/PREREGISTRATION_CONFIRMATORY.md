@@ -15,9 +15,19 @@ the repository itself.
 
 It is still **not** an independent timestamp. The commit is authored by the same party who could
 rewrite history, so it establishes ordering to a reader who trusts the repository, not to one who
-does not. Converting it into an independent guarantee requires a deposit on OSF or Zenodo whose
-timestamp is issued by a third party. **That deposit has not been made**; it is a PI action, and
-until it is made this document claims repository-internal ordering only.
+does not.
+
+**No deposit can repair this after the fact, and an earlier version of this section wrongly implied
+one could.** A deposit on Zenodo or OSF carries the timestamp of the deposit, so a deposit made now
+would certify only that this document existed on the deposit date — which is *after* the results it
+governs. It would add nothing to the ordering question. The evidence for ordering is the git
+history and nothing else, and a reader who does not trust the repository has no independent
+recourse.
+
+What a deposit *does* provide is a persistent identifier and archival permanence for the artifact,
+which is why the manuscript's data-availability statement stages one. That is a different property
+from pre-registration and this document does not conflate them. A third-party timestamp would have
+been worth having; it needed to be obtained before the confirmatory runs, and it was not.
 
 ### What was seen before this document was frozen
 
