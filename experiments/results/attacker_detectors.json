@@ -172,5 +172,607 @@
         "median_tap_ops": 14.0
       }
     }
-  }
+  },
+  "threshold_sensitivity": [
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0385
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0385
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0385
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 11,
+      "n_seeds": 20,
+      "median_best_dJ_band": -2.3778
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": -3.1192
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 11,
+      "n_seeds": 20,
+      "median_best_dJ_band": -2.3778
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": -3.1192
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 4,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 12,
+      "n_seeds": 20,
+      "median_best_dJ_band": -2.0366
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": -3.1192
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 12,
+      "n_seeds": 20,
+      "median_best_dJ_band": -2.0366
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": -3.1192
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 12,
+      "n_seeds": 20,
+      "median_best_dJ_band": -2.0366
+    },
+    {
+      "state": "ieee123_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": -3.1192
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.003
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.003
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 5,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.003
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 10,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0022
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0025
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 9,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0006
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 9,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0006
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 9,
+      "n_seeds": 20,
+      "median_best_dJ_band": -0.0006
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0007
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0018
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 11,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0001
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 11,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0001
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 11,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0001
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0031
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0032
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 13,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0091
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 13,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0091
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 13,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0091
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0137
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0137
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 15,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0161
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 15,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0161
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 15,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0161
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0212
+    },
+    {
+      "state": "ieee8500_compliant",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 0.0307
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 0,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 5,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 10,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.0234
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 25,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.02,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.4493
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.05,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.4493
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.1,
+      "n_seeds_with_evading_point": 18,
+      "n_seeds": 20,
+      "median_best_dJ_band": 6.4493
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.25,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    },
+    {
+      "state": "ieee8500_stress",
+      "voltage_margin_nodes": 50,
+      "generation_tol": 0.5,
+      "n_seeds_with_evading_point": 20,
+      "n_seeds": 20,
+      "median_best_dJ_band": 9.8509
+    }
+  ]
 }

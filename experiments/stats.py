@@ -16,20 +16,91 @@ because both arms see the identical fleet placement. Pairing removes the former 
 """
 from __future__ import annotations
 
+import math
 import random
 import statistics
 from math import comb
 
 
+def _norm_cdf(z):
+    return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+
+
+def _norm_ppf(p):
+    """Inverse standard normal CDF (Acklam's rational approximation, |err| < 1.15e-9)."""
+    if not 0.0 < p < 1.0:
+        return -math.inf if p <= 0.0 else math.inf
+    a = [-3.969683028665376e+01, 2.209460984245205e+02, -2.759285104469687e+02,
+         1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00]
+    b = [-5.447609879822406e+01, 1.615858368580409e+02, -1.556989798598866e+02,
+         6.680131188771972e+01, -1.328068155288572e+01]
+    c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00,
+         -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00]
+    d = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00,
+         3.754408661907416e+00]
+    pl, ph = 0.02425, 1 - 0.02425
+    if p < pl:
+        q = math.sqrt(-2 * math.log(p))
+        return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)
+    if p > ph:
+        q = math.sqrt(-2 * math.log(1 - p))
+        return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)
+    q = p - 0.5
+    r = q * q
+    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)
+
+
 def boot_ci(xs, n=10000, seed=20260801, stat=statistics.median, alpha=0.05):
-    """Percentile bootstrap interval for ``stat`` over ``xs``."""
+    """Bias-corrected and accelerated (BCa) bootstrap interval for ``stat`` over ``xs``.
+
+    BCa rather than a plain percentile interval because these distributions are skewed --
+    integrated harm is bounded below and has a long upper tail -- and a percentile interval is
+    then biased. The bias-correction term ``z0`` is estimated from the proportion of bootstrap
+    replicates below the observed statistic, and the acceleration ``a`` from the jackknife
+    skewness. An earlier version of this module computed a plain percentile interval while the
+    manuscript described it as bias-corrected; that discrepancy is what this implementation
+    removes.
+
+    Falls back to the percentile interval in the degenerate cases -- all values
+    identical, or fewer than three observations -- where BCa is undefined rather than merely
+    imprecise.
+    """
     if not xs:
         return (None, None)
-    rng = random.Random(seed)
     k = len(xs)
-    vals = sorted(stat([xs[rng.randrange(k)] for _ in range(k)]) for _ in range(n))
-    lo = vals[int((alpha / 2) * n)]
-    hi = vals[int((1 - alpha / 2) * n) - 1]
+    theta = stat(xs)
+    if k < 3 or all(x == xs[0] for x in xs):
+        return (round(theta, 4), round(theta, 4))
+
+    rng = random.Random(seed)
+    reps = sorted(stat([xs[rng.randrange(k)] for _ in range(k)]) for _ in range(n))
+
+    # Bias correction: how far the bootstrap distribution sits from the observed statistic.
+    n_below = sum(1 for r in reps if r < theta)
+    if n_below in (0, n):
+        lo = reps[int((alpha / 2) * n)]
+        hi = reps[int((1 - alpha / 2) * n) - 1]
+        return (round(lo, 4), round(hi, 4))
+    z0 = _norm_ppf(n_below / n)
+
+    # Acceleration: jackknife skewness of the statistic.
+    jack = [stat(xs[:i] + xs[i + 1:]) for i in range(k)]
+    jbar = statistics.fmean(jack)
+    num = sum((jbar - j) ** 3 for j in jack)
+    den = 6.0 * (sum((jbar - j) ** 2 for j in jack) ** 1.5)
+    a = num / den if den else 0.0
+
+    def endpoint(pz):
+        z = z0 + pz
+        adj = z0 + z / (1.0 - a * z)
+        return min(max(_norm_cdf(adj), 0.0), 1.0)
+
+    p_lo = endpoint(_norm_ppf(alpha / 2))
+    p_hi = endpoint(_norm_ppf(1 - alpha / 2))
+    lo = reps[min(n - 1, max(0, int(p_lo * n)))]
+    hi = reps[min(n - 1, max(0, int(p_hi * n) - 1))]
+    if lo > hi:
+        lo, hi = hi, lo
     return (round(lo, 4), round(hi, 4))
 
 

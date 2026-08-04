@@ -39,32 +39,13 @@ import statistics
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from experiments.stats import boot_ci, sign_test_p, holm
+
 RES = Path(__file__).resolve().parent / "results"
 OUT = RES / "shape_contrasts.json"
 
 DEFICIT_LIMIT = 0.25
-
-
-def boot_ci(xs, n=10000, seed=20260801, stat=statistics.median):
-    if not xs:
-        return (None, None)
-    rng = random.Random(seed)
-    k = len(xs)
-    vals = sorted(stat([xs[rng.randrange(k)] for _ in range(k)]) for _ in range(n))
-    return (round(vals[int(0.025 * n)], 4), round(vals[int(0.975 * n) - 1], 4))
-
-
-def sign_test_p(diffs):
-    """Two-sided exact binomial sign test on non-zero paired differences."""
-    pos = sum(1 for d in diffs if d > 0)
-    neg = sum(1 for d in diffs if d < 0)
-    n = pos + neg
-    if n == 0:
-        return 1.0
-    from math import comb
-    k = min(pos, neg)
-    tail = sum(comb(n, i) for i in range(0, k + 1)) / (2 ** n)
-    return min(1.0, 2 * tail)
 
 
 def index(rows):
@@ -223,6 +204,8 @@ def main():
                 lo, hi = boot_ci(diffs)
                 report["h3_primitive"].append({
                     "feeder": f, "penetration": pen, "set_label": label, "n": len(pr),
+                    "sign_test_p": round(sign_test_p(diffs), 6),
+                    "identical_to_base": all(d == 0.0 for d in diffs),
                     "median_setpoint": round(statistics.median([a for a, _ in pr]), 4),
                     "median_curve": round(statistics.median([b for _, b in pr]), 4),
                     "median_paired_diff": round(statistics.median(diffs), 4),
@@ -230,6 +213,10 @@ def main():
                     "ci_excludes_zero": bool(lo is not None and hi is not None
                                              and (lo > 0 or hi < 0)),
                 })
+
+    # Holm within each declared family, matching the methodology. H2 is descriptive (no test).
+    holm(report["h1_matched_width"], key="sign_test_p")
+    holm(report["h3_primitive"], key="sign_test_p")
 
     OUT.write_text(json.dumps(report, indent=2))
     print(f"wrote {OUT}\n")

@@ -75,15 +75,26 @@ def fig_reliance():
         for r in conf:
             if r["feeder"] == key:
                 pts.append((abs(r["legit_q_fleet_kvar"] or 0) / 1000.0,
-                            r["median_dJ_band_widest_Q1"], r["legit_compliant"], True))
+                            r["median_dJ_band_widest_Q1"], r["legit_compliant"], True,
+                            r.get("ci_lo"), r.get("ci_hi")))
         for r in extra:
             if r["feeder"] == key:
                 pts.append((abs(r["legit_q_fleet_kvar"] or 0) / 1000.0,
-                            r["median_dJ_band"], r["legit_compliant"], False))
+                            r["median_dJ_band"], r["legit_compliant"], False, None, None))
         pts.sort()
         ax.plot([p[0] for p in pts], [max(p[1], 1e-3) for p in pts], "-",
                 color=col, lw=1.0, alpha=0.75, label=lab, zorder=2)
-        for x, y, compliant, is_conf in pts:
+        # Intervals are drawn only where they exist: the confirmatory rungs carry bootstrap CIs,
+        # the resolution rungs are single medians. Drawing nothing where there is nothing is why
+        # the caption can state which points have intervals.
+        cx = [p[0] for p in pts if p[4] is not None]
+        cy = [max(p[1], 1e-3) for p in pts if p[4] is not None]
+        clo = [max(1e-4, max(p[1], 1e-3) - p[4]) for p in pts if p[4] is not None]
+        chi = [max(1e-4, p[5] - max(p[1], 1e-3)) for p in pts if p[4] is not None]
+        if cx:
+            ax.errorbar(cx, cy, yerr=[clo, chi], fmt="none", ecolor=col,
+                        elinewidth=0.9, capsize=2.2, zorder=3)
+        for x, y, compliant, is_conf, _lo, _hi in pts:
             y = max(y, 1e-3)
             ax.plot([x], [y], marker=mark, ms=5 if is_conf else 4.2,
                     mfc=col if is_conf else "white", mec=col,

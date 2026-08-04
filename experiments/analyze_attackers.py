@@ -105,6 +105,31 @@ def main():
             } if best else None),
         }
 
+    # --- Detector-threshold sensitivity ------------------------------------------------------
+    # Both detectors are proxies with declared thresholds. The crossover between lifetime-bound
+    # and detection-bound containment moves with them, so the thresholds are swept rather than
+    # asserted. Computed from the same stored scan; no re-simulation.
+    sens = []
+    for state in sorted({r["state"] for r in rows}):
+        g = [r for r in rows if r["state"] == state and r.get("points")]
+        if not g:
+            continue
+        for vmargin in (0, 5, 10, 25, 50):
+            for gtol in (0.02, 0.05, 0.10, 0.25, 0.50):
+                best = []
+                for r in g:
+                    cands = [p for p in r["points"]
+                             if not (p["screen"] or p["d_n_over"] > vmargin)
+                             and p["curtailed_kw"] <= gtol * r["p_available_kw"]]
+                    if cands:
+                        best.append(max(c["dJ_band"] for c in cands))
+                sens.append({
+                    "state": state, "voltage_margin_nodes": vmargin, "generation_tol": gtol,
+                    "n_seeds_with_evading_point": len(best), "n_seeds": len(g),
+                    "median_best_dJ_band": round(statistics.median(best), 4) if best else None,
+                })
+    out["threshold_sensitivity"] = sens
+
     OUT.write_text(json.dumps(out, indent=2))
     print(f"wrote {OUT}\n")
     print("%-20s %-22s %9s %9s %9s %9s %9s" %
@@ -115,6 +140,15 @@ def main():
                   (state, a, s["median_dJ_band"], s["median_curtailed_frac"],
                    s["frac_flagged_d1_voltage"], s["frac_flagged_d2_generation"],
                    s["frac_evading_both"]))
+    print("\nThreshold sensitivity: best dJ_band for an adversary evading both detectors")
+    print("%-20s %8s %8s %10s %12s" % ("state","volt(N)","gen(tol)","seeds","med best dJ"))
+    for r in out["threshold_sensitivity"]:
+        if r["state"] != "ieee8500_stress":
+            continue
+        print("%-20s %8d %8.2f %5d/%-5d %12s" % (r["state"], r["voltage_margin_nodes"],
+              r["generation_tol"], r["n_seeds_with_evading_point"], r["n_seeds"],
+              "none" if r["median_best_dJ_band"] is None else f"{r['median_best_dJ_band']:.3f}"))
+
     print("\nBest harm available to an adversary evading BOTH detectors:")
     for state, v in out["states"].items():
         b = v["dual_evading_best"]
