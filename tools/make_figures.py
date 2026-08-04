@@ -128,11 +128,11 @@ def fig_layers():
     arms = [("legacy", "long-lived baseline"),
             ("mech_S0", "expiry only"),
             ("mech_S2", "cleanup only"),
-            ("mech_S1", "session only"),
-            ("mech_S3", "session + cleanup"),
-            ("deny_denylist_d5", "identity denial"),
-            ("deny_denylist+session_d5", "denial + session"),
-            ("deny_denylist+session+cancel_d5", "denial + session + cancel")]
+            ("mech_S1", "session only (S1)"),
+            ("mech_S3", "session + cleanup (S3)"),
+            ("deny_denylist_d5", "deny new sessions only"),
+            ("deny_denylist+session_d5", "+ session termination"),
+            ("deny_denylist+session+cancel_d5", "+ session + cancellation")]
     vals, los, his, labs = [], [], [], []
     for a, lab in arms:
         r = S.get((st, a))
@@ -153,10 +153,10 @@ def fig_layers():
     ax.axvline(base, color="black", ls=":", lw=0.8)
     # Place each label clear of its own error bar, not at the bar end, or the two overlap.
     for y, v, h in zip(ypos, vals, his):
-        ax.text(v + h + base * 0.025, y, f"{100*(v-base)/base:+.0f}%", va="center",
+        ax.text(v + h + base * 0.045, y, f"{100*(v-base)/base:+.0f}%", va="center",
                 fontsize=5.8, color="#333333")
     ax.set_xlabel("integrated harm (p.u.-node-min)")
-    ax.set_xlim(0, base * 1.30)
+    ax.set_xlim(0, base * 1.42)
     ax.grid(True, axis="x", lw=0.3, alpha=0.5)
     fig.savefig(HERE / "fig_layers.pdf")
     plt.close(fig)
