@@ -38,3 +38,8 @@ venv/
 # experiments/results/superseded/, which carries a README explaining each.
 experiments/results.bak-*/
 experiments/results_backup/
+
+# Manuscript sources are not published in this repository. The released archive
+# (Zenodo) carries them; the verification tooling that the paper cites lives in
+# tools/ so it survives this exclusion.
+manuscripts/

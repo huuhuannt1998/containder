@@ -125,3 +125,54 @@ commit `a78264d` and after.
 The authorization model is deliberately parameterized (four ACL realism levels spanning
 single-device through whole-aggregator-fleet scope); a hardcoded permissive ACL would
 overstate what a stolen certificate can do. Vary `Policy.acl_realism_level` in ablation.
+
+## Repository layout, and what is not here
+
+| Path | Contents |
+|---|---|
+| `pkimodel/` | cyber-side impact-dimension engine and the retention model |
+| `credsvc/` | attested X.509 / mutual-TLS credential service and the three-layer lifecycle model |
+| `power/` | OpenDSS harness, metrics, horizon profiles, and the two test feeders |
+| `experiments/` | every experiment driver, the pre-registration, and all result files |
+| `tools/` | numeral, Highlights and figure verification cited by the paper |
+| `tests/` | regression suite |
+
+**The manuscript sources are not in this repository.** They are carried by the archived release,
+which is the citable artifact. The verification tooling lives in `tools/` so that it is public
+even though the manuscript it checks is not; point it at the sources with
+
+```
+CONTAINDER_MANUSCRIPT=/path/to/manuscripts/CONTAINDER python3 tools/check_numbers.py
+```
+
+Without that variable the checks report what they could not find and exit cleanly, rather than
+failing on an absence that is by design.
+
+## Reproducing the results
+
+```
+python3 -m pip install -e . && python3 -m pip install "opendssdirect.py" matplotlib
+python3 -m pytest tests/ -q                              # 38 regression tests
+
+python3 experiments/run_hosting_capacity.py 5            # calibration: operating ladder
+python3 experiments/run_authz_shape.py 20                # RQ2: authorization sets  (~40 min)
+python3 experiments/run_lifecycle_physical.py 20         # RQ3/5/6: containment layers (~35 min)
+python3 experiments/run_attackers.py 20                  # RQ4: five attacker models  (~25 min)
+python3 experiments/run_reliance_resolution.py 20        # post-hoc: curve resolution
+python3 experiments/run_lifecycle_sensitivity.py         # post-hoc: parameter sensitivity
+
+python3 experiments/analyze_shape.py                     # H1/H2/H3 paired contrasts
+python3 experiments/analyze_lifecycle.py                 # paired contrasts, Holm-corrected
+python3 experiments/analyze_attackers.py                 # dual-detector analysis
+python3 experiments/build_inventory.py                   # run inventory
+```
+
+Runtimes are for eight workers on a ten-core machine. Every driver writes to
+`experiments/results/`, and every number in the paper is traceable to a file there.
+
+## Pre-registration
+
+`experiments/PREREGISTRATION_CONFIRMATORY.md` was committed before any confirmatory arm ran; the
+ordering is checkable in `git log`. Section 0 of that document states precisely what the ordering
+guarantee is worth and what it is not, and records every amendment, including two made after
+results were seen.

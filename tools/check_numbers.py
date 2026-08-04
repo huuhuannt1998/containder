@@ -10,12 +10,17 @@ corresponds to anything in the artifact.
 Usage: python3 manuscripts/CONTAINDER/check_numbers.py
 """
 import json
+import os
 import re
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
+RESULTS = ROOT / "experiments" / "results"
+#: Manuscript sources are not part of the public repository, which ships code and results only.
+#: Override with CONTAINDER_MANUSCRIPT to point at them wherever they live.
+HERE = Path(os.environ.get("CONTAINDER_MANUSCRIPT",
+                           ROOT / "manuscripts" / "CONTAINDER")).resolve()
 SECTIONS = HERE / "sections"
-RESULTS = HERE.parent.parent / "experiments" / "results"
 
 #: Numerals that are definitional, structural, or cited from a standard rather than measured.
 #: Each needs a stated source, so the whitelist is documented rather than a silencer.
@@ -86,6 +91,12 @@ def harvest_results():
 
 
 def main():
+    if not SECTIONS.is_dir():
+        print(f"manuscript sources not found at {HERE}.\n"
+              "The public repository ships code and results; the manuscript sources are in the\n"
+              "archived release. Set CONTAINDER_MANUSCRIPT to their location to run this check.")
+        return 0
+
     pool = harvest_results()
     print(f"harvested {len(pool)} distinct numeric literals from {len(list(RESULTS.glob('*.json')))} result files\n")
     unmatched, escaped = [], []

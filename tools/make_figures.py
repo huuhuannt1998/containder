@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate publication figures from the real experiment results (JSON in experiments/results)."""
 import json
+import os
 import statistics
 from pathlib import Path
 
@@ -9,9 +10,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
-HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "experiments" / "results"
+#: Figures are written into the manuscript tree, which is not part of the public repository.
+HERE = Path(os.environ.get("CONTAINDER_MANUSCRIPT",
+                           ROOT / "manuscripts" / "CONTAINDER")).resolve() / "figures"
 
 plt.rcParams.update({"font.size": 8, "axes.linewidth": 0.6, "figure.dpi": 300,
                      "savefig.bbox": "tight", "legend.frameon": False})
