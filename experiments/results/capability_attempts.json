@@ -1,0 +1,42 @@
+{
+  "status": "documented negative results: capabilities attempted and not obtained",
+  "hardware_attestation": {
+    "goal": "TPM 2.0 key creation, non-exportability, quote generation, end-to-end renewal timing",
+    "attempts": [
+      {
+        "path": "Apple Secure Enclave via Swift",
+        "outcome": "failed",
+        "reason": "SDK/compiler version mismatch in the Command Line Tools toolchain prevents building against Security.framework"
+      },
+      {
+        "path": "Apple Secure Enclave via ctypes",
+        "outcome": "failed",
+        "reason": "SecKeyCreateRandomKey returns NULL: Secure Enclave key creation requires a code-signing entitlement a plain binary cannot carry"
+      },
+      {
+        "path": "software TPM 2.0 (swtpm)",
+        "outcome": "partial",
+        "reason": "swtpm and swtpm_setup install successfully via Homebrew, but no TPM 2.0 command-layer toolchain is available on macOS: neither tpm2-tools nor tpm2-tss has a Homebrew formula, and tpm2-pytss requires the tpm2-tss C library to build. The emulator is present with nothing able to drive it."
+      }
+    ],
+    "swtpm_installed": true,
+    "tpm2_tools_installed": false,
+    "conclusion": "No hardware-backed or TPM-protocol measurement is reported. Every cryptographic figure in the paper is a software-path timing, and fresh-key containment assumes non-exportable storage rather than demonstrating it. The experiment is straightforward on a Linux host with tpm2-tools."
+  },
+  "cross_solver": {
+    "goal": "independent power-flow validation of selected cases",
+    "attempts": [
+      {
+        "path": "GridLAB-D",
+        "outcome": "failed",
+        "reason": "no Homebrew formula on macOS arm64"
+      },
+      {
+        "path": "pandapower",
+        "outcome": "not pursued",
+        "reason": "installable, but no converter exists from the OpenDSS models used here (IEEE 8500 and IEEE 123 as distributed). Rebuilding either feeder by hand in a second tool would validate the transcription rather than the solver, and a check on a different simplified system would not address the concern, which is whether OpenDSS-specific modelling drives the result."
+      }
+    ],
+    "conclusion": "Single-solver study. Both feeders agree in the direction of every primary contrast, which is evidence across feeders but not across solvers."
+  }
+}
