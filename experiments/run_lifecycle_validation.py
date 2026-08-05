@@ -60,7 +60,15 @@ STATES = {
 }
 
 RELAX = 0.1
-MAX_ITER = 150
+#: Per-step iteration cap. Warm-starting from the previous minute means the gap to the new fixed
+#: point is small, and thirty damped steps at RELAX close 96% of whatever gap remains. An earlier
+#: cap of 150 let one arm spend over three hours on a single seed, oscillating rather than
+#: converging at a few steps and burning the full budget at each of them, for no fidelity a
+#: comparison against a controller with a 5%-of-kvarmax tolerance could use.
+MAX_ITER = 30
+#: A volt-var loop on a stiff feeder oscillates rather than diverging. When the iterate stops
+#: improving there is nothing left to gain, so the step ends and records that it stalled.
+STALL_WINDOW = 8
 #: Convergence tolerance on the per-iteration reactive change, in kvar. The comparison here is
 #: against OpenDSS's ``InvControl``, which stops at its own declared ``varchangetolerance=0.05``
 #: -- five per cent of kvarmax, about 0.3 kvar for these units. An earlier version of this file
@@ -139,7 +147,7 @@ def one_seed(task):
     # ---------- path B: the characteristic re-implemented, driven by hand -------------------
     def step_independent(effect):
         C.reset_convergence_counters()
-        iters, unconverged = [], 0
+        iters, unconverged, residuals = [], 0, []
         with C.Session(spec, seed=seed, n_pv=n, load_mult=lm, der=der) as s:
             dss.Command("Edit InvControl.der1547 enabled=no")
             names = list(s.names)
@@ -150,7 +158,7 @@ def one_seed(task):
                 irr = prof[k]["irradiance"]
                 s.set_active_power(der.p_kw * irr)
                 q_pts = q_attack if (effect is not None and effect[k]) else q_legit
-                it = 0
+                it, best, stall, delta = 0, float("inf"), 0, None
                 for it in range(1, MAX_ITER + 1):
                     C.solve()
                     delta = 0.0
@@ -163,11 +171,18 @@ def one_seed(task):
                         dss.Command(f"Edit PVSystem.{nm} kvar={q_now[nm]:.6f}")
                     if delta < Q_TOL_KVAR:
                         break
+                    if delta < best * 0.99:
+                        best, stall = delta, 0
+                    else:
+                        stall += 1
+                        if stall >= STALL_WINDOW:
+                            break
+                residuals.append(round(delta, 6) if delta is not None else None)
                 C.solve()
                 iters.append(it)
                 unconverged += int(it >= MAX_ITER)
                 j.append(s.state()["j_band"])
-            return j, dict(C.NONCONVERGED), iters, unconverged
+            return j, dict(C.NONCONVERGED), iters, unconverged, residuals
 
     t0 = COMPROMISE_MIN * 60.0
     arms = {"legacy": L.Incident(t_compromise_s=t0)}
@@ -177,13 +192,13 @@ def one_seed(task):
 
     pol = L.legacy_policy(**LC_KW)
     legit_inv, _ = step_invcontrol(None)
-    legit_ind, _, it_legit, unconv_legit = step_independent(None)
+    legit_ind, _, it_legit, unconv_legit, _res_legit = step_independent(None)
 
     res = {}
     for arm, inc in arms.items():
         sim = L.simulate(pol, inc, HORIZON_MIN * 60.0, STEP_S)
         j_inv, nc_i = step_invcontrol(sim["effect"])
-        j_ind, nc_d, its, unconv = step_independent(sim["effect"])
+        j_ind, nc_d, its, unconv, step_res = step_independent(sim["effect"])
         res[arm] = {
             "integral_inv": round(sum(j_inv[k] - legit_inv[k] for k in range(HORIZON_MIN)), 6),
             "integral_ind": round(sum(j_ind[k] - legit_ind[k] for k in range(HORIZON_MIN)), 6),
@@ -191,6 +206,8 @@ def one_seed(task):
             "median_fixed_point_iters": statistics.median(its),
             "max_fixed_point_iters": max(its),
             "steps_hitting_iter_cap": unconv,
+            "median_step_residual_kvar": statistics.median(step_res) if step_res else None,
+            "max_step_residual_kvar": max(step_res) if step_res else None,
         }
 
     base_i = res["legacy"]["integral_inv"]

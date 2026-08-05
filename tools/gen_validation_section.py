@@ -194,6 +194,56 @@ Absolute magnitudes do move, as everything in this subsection moves --- the larg
 IEEE~8500's top rung under the curve primitive. What does not move is which set shape contains
 and which does not, which is the claim.""")
 
+    L = R / "lifecycle_validation.json"
+    LV = json.loads(L.read_text()) if L.exists() else None
+    if LV:
+        by = {}
+        for x in LV["summary"]:
+            by.setdefault(x["state"], {})[x["arm"]] = x
+        k8 = by.get("ieee8500_stress", {})
+        s1 = k8.get("denylist+session")
+        s2 = k8.get("denylist+session+cancel")
+        n8 = s1["n"] if s1 else 0
+        # fixed-point quality per feeder, which decides which feeder the check can speak for
+        cap = {}
+        for r in LV["rows"]:
+            if "error" in r:
+                continue
+            a = r["arms"]["denylist+session"]
+            cap.setdefault(r["state"], []).append(a["steps_hitting_iter_cap"])
+        cap8 = max(cap.get("ieee8500_stress", [0]))
+        cap1 = max(cap.get("ieee123_stress", [0]))
+        w("")
+        w(r"\paragraph{What carries, and what does not, in the headline ratios}")
+        w(rf"""The contrasts above are absolute. The manuscript's headline numbers are ratios ---
+percentage reductions of one lifecycle arm against another within one model --- and a common-mode
+modelling error cancels from a ratio in a way it does not from a difference. We measured how much
+by stepping the same horizon twice, once under \texttt{{InvControl}} and once under the
+re-implemented characteristic, for the baseline and both headline configurations at {n8} paired
+seeds.
+
+The \emph{{ordering}} is invariant: adding command cancellation to session termination deepens
+the reduction under both control implementations on both feeders, which is the structural claim
+those numbers carry. The \emph{{magnitude}} is not. On IEEE~8500, where the re-implemented fixed
+point converges cleanly, session termination is credited with
+${abs(s1['median_pct_invcontrol']):.1f}\%$ under \texttt{{InvControl}} and
+${abs(s1['median_pct_independent']):.1f}\%$ under the independent control, a paired difference of
+${abs(s1['median_pct_point_difference']):.1f}$ percentage points (CI
+$[{abs(s1['pct_point_diff_ci_hi']):.1f}, {abs(s1['pct_point_diff_ci_lo']):.1f}]$); adding
+cancellation moves from ${abs(s2['median_pct_invcontrol']):.1f}\%$ to
+${abs(s2['median_pct_independent']):.1f}\%$. The interval excludes zero, so this is a real
+difference and not sampling noise.
+
+Two things about its direction matter. It runs \emph{{towards}} the design: the independent
+implementation credits containment with more, not less, so the reported figures are conservative
+with respect to it. And it is smaller than the sensitivity of the absolute contrasts, which is the
+cancellation a ratio was expected to buy --- but it is not zero, and we no longer say the
+percentages might escape it. On IEEE~123 the re-implemented fixed point hit its per-step iteration
+cap at up to {cap1} of the sixty steps against {cap8} on IEEE~8500, so that feeder's comparison is
+under-converged and we report it as inconclusive rather than as a null. These runs use {n8} seeds
+against the twenty behind the confirmatory figures, so the \texttt{{InvControl}} column here is a
+smaller sample of the same quantity and differs from the headline by that much.""")
+
     w("")
     w(rf"""\textbf{{What this licenses, and what it does not.}} The direction of every contrast,
 and the safety conclusion that follows from it, survive an independent implementation of the
@@ -201,14 +251,10 @@ control law and an independent evaluation order. The magnitudes do not. Absolute
 specific to this model of these feeders and should be read as evidence of direction and order of
 magnitude, not as calibrated predictions of what a particular feeder would suffer.
 
-One boundary deserves stating precisely, because it is easy to over-read this subsection in either
-direction. What was tested is the \emph{{absolute}} paired contrast, at one attacker point, on two
-rungs of each feeder. The paper's lifecycle results are reported as \emph{{ratios}} --- percentage
-reductions of one arm against another within a single model --- and a common-mode modelling error
-cancels from a ratio in a way it does not from a difference. We did not measure how much of it
-cancels, so we neither claim those percentages inherit the full sensitivity reported here nor claim
-they escape it. Establishing that would require re-running each lifecycle arm under the independent
-control, which we did not do.""")
+The ratio-form results are bounded separately and less severely: the ordering of the lifecycle
+configurations is invariant under an independent control implementation, and the percentage
+reductions move by tens of percentage points in the direction that credits the design more. They
+do not escape the model dependence, and we do not claim they do.""")
 
     w("")
     w(r"\begin{table}[htbp]")

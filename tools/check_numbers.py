@@ -104,10 +104,17 @@ def harvest_ci_pairs():
 
     def walk(o):
         if isinstance(o, dict):
-            for lo, hi in (("ci_lo", "ci_hi"), ("rel_ci_lo", "rel_ci_hi")):
-                if o.get(lo) is not None and o.get(hi) is not None:
+            # Any key ending "_lo" whose "_hi" partner exists is an interval. Matching by suffix
+            # rather than by an enumerated list of names is what keeps a new experiment's
+            # differently-named bounds -- pct_point_diff_ci_lo, say -- from silently falling
+            # outside the gate the moment it is added.
+            for k in o:
+                if not k.endswith("_lo"):
+                    continue
+                partner = k[:-3] + "_hi"
+                if o.get(k) is not None and o.get(partner) is not None:
                     try:
-                        pairs.add((float(o[lo]), float(o[hi])))
+                        pairs.add((float(o[k]), float(o[partner])))
                     except (TypeError, ValueError):
                         pass
             for v in o.values():
