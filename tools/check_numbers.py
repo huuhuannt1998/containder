@@ -111,9 +111,12 @@ def main():
     for tex in targets:
         body = re.sub(r"(?m)^\s*%.*$", "", tex.read_text())
         # Structural notation that is not a measurement: thousands separators (100{,}000),
-        # ISO dates (2026-07-30), and LaTeX length/column specifiers (0.70\columnwidth).
+        # ISO dates (2026-07-30), DOIs, and LaTeX length/column specifiers (0.70\columnwidth).
         body = re.sub(r"(\d)\{,\}(\d)", r"\1\2", body)
         body = re.sub(r"\d{4}-\d{2}-\d{2}", " ", body)
+        # A DOI is an identifier, not a quantity: its registrant prefix (10.5281) would otherwise
+        # be demanded of the result files. The suffix is already excluded by the lookbehind.
+        body = re.sub(r"doi:\s*10\.\d{4,9}/\S+", " ", body)
         body = re.sub(r"0?\.\d+\\(?:column|text|line)width", " ", body)
         for m in re.finditer(r"(?<![\w.])(\d+(?:\.\d+)?)(?![\w])", body):
             n = m.group(1)

@@ -102,6 +102,11 @@ def main():
     args = ap.parse_args()
 
     tls = Path(args.tls)
+    # Any credential left withdrawn by an interrupted run is restored before starting, so the
+    # experiment is idempotent rather than destructive.
+    for stale in list((tls / "certs").glob("*.withdrawn")) + \
+                 list((tls / "combined").glob("*.withdrawn")):
+        stale.rename(stale.with_name(stale.name[:-len(".withdrawn")]))
     ctx = make_context(tls, args.identity)
     steps = []
 
@@ -116,6 +121,18 @@ def main():
     for path in ("/dcap", "/edev", "/dcap"):
         steps.append({"phase": "established_session", **request(conn, path)})
     reused = all(s["socket"] == str(first_port) for s in steps if s["socket"])
+
+    # --- 3b: snapshot the control tree with a second, uninvolved identity -------------------
+    control_paths_pre = ("/derp", "/derp_0", "/derp_0_derc", "/derp_0_derca", "/derp_0_dderc")
+    ctx_other = make_context(tls, "der_victim")
+    c_other = HTTPSConnection(args.host, args.port, context=ctx_other, timeout=15)
+    c_other.connect()
+    before, before_status = {}, {}
+    for path in control_paths_pre:
+        r = request(c_other, path)
+        steps.append({"phase": "control_before_withdrawal", **r})
+        before[path] = r.get("snippet")
+        before_status[path] = r.get("status")
 
     # --- 4: withdraw the identity by the only means the implementation offers ---------------
     # The registry the authorization gate consults is the TLS repository's device set. Removing
@@ -152,24 +169,29 @@ def main():
         steps.append({"phase": "after_withdrawal_new_connection", "path": "/dcap",
                       "status": None, "error": f"{type(exc).__name__}: {exc}"})
 
-    # --- 7: does previously published control content survive? -------------------------------
-    # Read the program/control tree with a *different* still-valid identity, to see whether the
-    # withdrawn identity's presence in the resource tree was affected at all.
-    try:
-        ctx2 = make_context(tls, "der_victim")
-        c3 = HTTPSConnection(args.host, args.port, context=ctx2, timeout=15)
-        c3.connect()
-        for path in ("/dcap", "/edev", "/derp"):
-            steps.append({"phase": "content_survival_other_identity", **request(c3, path)})
-        c3.close()
-    except Exception as exc:                                     # noqa: BLE001
-        steps.append({"phase": "content_survival_other_identity",
-                      "error": f"{type(exc).__name__}: {exc}"})
+    # --- 7: does an already-installed DERControl survive the withdrawal? ---------------------
+    # This is the half of the motivating claim the session result does not settle. The control
+    # tree is read with a *different* still-valid identity, so what is observed is the server's
+    # own state and not the withdrawn identity's access to it. The control bodies are compared
+    # before and after: if the scheduled control is still served, withdrawal did not retract it.
+    control_paths = ("/derp", "/derp_0", "/derp_0_derc", "/derp_0_derca", "/derp_0_dderc")
+    for path in control_paths:
+        steps.append({"phase": "control_after_withdrawal", **request(c_other, path)})
 
-    try:
-        conn.close()
-    except Exception:
-        pass
+    after = {s["path"]: s.get("snippet") for s in steps
+             if s["phase"] == "control_after_withdrawal"}
+    after_status = {s["path"]: s.get("status") for s in steps
+                    if s["phase"] == "control_after_withdrawal"}
+    control_survived = {
+        pth: {"before_status": before_status.get(pth), "after_status": after_status.get(pth),
+              "body_identical": before.get(pth) == after.get(pth)}
+        for pth in control_paths}
+
+    for c in (conn, c_other):
+        try:
+            c.close()
+        except Exception:
+            pass
 
     # --- restore, so the experiment is repeatable --------------------------------------------
     for orig, back in withdrawn.items():
@@ -187,6 +209,10 @@ def main():
         "connection_reused_across_requests": reused,
         "established_session_survives_withdrawal": bool(same and same[0].get("status") == 200),
         "new_session_survives_withdrawal": bool(new and new[0].get("status") == 200),
+        "installed_control_survives_withdrawal": all(
+            v["after_status"] == 200 and v["body_identical"]
+            for v in control_survived.values() if v["before_status"] == 200),
+        "control_resources": control_survived,
         "steps": steps,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -199,10 +225,16 @@ def main():
                   f"status={s.get('status')} {s.get('error') or ''}")
         else:
             print(f"  {s['phase']:38} {s.get('action','')}")
+    print("\ncontrol resources across withdrawal (read by a second valid identity):")
+    for k, v in control_survived.items():
+        print(f"  {k:18} before={v['before_status']} after={v['after_status']} "
+              f"body_identical={v['body_identical']}")
     print(f"\nestablished session survives withdrawal : "
           f"{out['established_session_survives_withdrawal']}")
     print(f"new session survives withdrawal         : "
           f"{out['new_session_survives_withdrawal']}")
+    print(f"installed control survives withdrawal   : "
+          f"{out['installed_control_survives_withdrawal']}")
 
 
 if __name__ == "__main__":

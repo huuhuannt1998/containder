@@ -1,0 +1,69 @@
+{
+  "platform": "swtpm 2.0 emulator driven through tpm2-tools",
+  "scope": "TPM 2.0 protocol path with an emulated root of trust; not silicon timings",
+  "tpm_reachable": true,
+  "srk_persistent_handle": "0x81010001",
+  "key_create": {
+    "n": 30,
+    "median_ms": 4.863,
+    "mean_ms": 5.038,
+    "min_ms": 4.675,
+    "p95_ms": 6.003,
+    "p99_ms": 7.358,
+    "max_ms": 7.358
+  },
+  "key_load": {
+    "n": 30,
+    "median_ms": 4.946,
+    "mean_ms": 4.955,
+    "min_ms": 4.723,
+    "p95_ms": 5.229,
+    "p99_ms": 5.229,
+    "max_ms": 5.229
+  },
+  "sign": {
+    "n": 30,
+    "median_ms": 4.751,
+    "mean_ms": 4.762,
+    "min_ms": 4.571,
+    "p95_ms": 4.985,
+    "p99_ms": 5.002,
+    "max_ms": 5.002
+  },
+  "quote": {
+    "n": 30,
+    "median_ms": 5.05,
+    "mean_ms": 5.17,
+    "min_ms": 4.765,
+    "p95_ms": 5.799,
+    "p99_ms": 5.919,
+    "max_ms": 5.919
+  },
+  "non_exportability": {
+    "method": "TPM2_CC_Duplicate policy session; two keys differing only in fixed attributes",
+    "duplicable_key": {
+      "attributes": "sensitivedataorigin|userwithauth|sign",
+      "returncode": 0,
+      "exported": true,
+      "stderr_last": ""
+    },
+    "fixed_key": {
+      "attributes": "fixedtpm|fixedparent|sensitivedataorigin|userwithauth|sign",
+      "returncode": 1,
+      "exported": false,
+      "stderr_last": "ERROR: Unable to run tpm2_duplicate"
+    },
+    "test_discriminates": true,
+    "interpretation": "the TPM exported the duplicable key and refused the fixed key, so non-exportability is attributable to fixedtpm|fixedparent"
+  },
+  "end_to_end_renewal": {
+    "n": 15,
+    "median_ms": 14.888,
+    "mean_ms": 15.018,
+    "min_ms": 14.554,
+    "p95_ms": 16.089,
+    "p99_ms": 16.089,
+    "max_ms": 16.089,
+    "note": "fresh operational key + load + quote, one credential epoch"
+  }
+}

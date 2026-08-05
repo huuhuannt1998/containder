@@ -1,0 +1,1296 @@
+{
+  "status": "post-hoc validation; tests no hypothesis",
+  "question": "does the reported paired contrast depend on the vendor controller or the solution algorithm?",
+  "checks": [
+    "power balance on every converged solution",
+    "IEEE 1547-2018 Cat B characteristic re-implemented and driven to a fixed point with InvControl disabled, both arms, contrast compared",
+    "OpenDSS Normal vs Newton solution algorithm",
+    "the same contrast with regulator taps pinned identically arm-by-arm, to attribute any residual disagreement to discrete device path-dependence"
+  ],
+  "attacker_point": "curve primitive, full reactive injection at the high-voltage breakpoint (worst admissible member of the widest set)",
+  "states": {
+    "ieee8500": {
+      "load_mult": 0.5,
+      "fleet": 600,
+      "penetrations": [
+        1.0,
+        1.5
+      ]
+    },
+    "ieee123": {
+      "load_mult": 1.0,
+      "fleet": 46,
+      "penetrations": [
+        6.0,
+        10.0
+      ]
+    }
+  },
+  "relaxation": 0.1,
+  "q_tol_kvar": 0.001,
+  "max_iter": 400,
+  "seeds": [
+    1001,
+    1009,
+    1013,
+    1019,
+    1021,
+    1031
+  ],
+  "rows": [
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "seed": 1021,
+      "balance": {
+        "p_source_kw": 594.3919,
+        "p_gen_kw": 5386.5854,
+        "p_load_kw": 5845.3173,
+        "p_loss_kw": 135.6594,
+        "residual_kw": 0.000716,
+        "residual_rel": 1.197e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 75.760248,
+      "delta_j_independent": 53.292049,
+      "delta_j_rel_err": 0.29657,
+      "delta_j_abs_err": 22.468199,
+      "j_leg_invcontrol": 0.886914,
+      "j_atk_invcontrol": 76.647162,
+      "j_leg_independent": 1.810661,
+      "j_atk_independent": 55.10271,
+      "j_leg_rel_offset": 1.041528,
+      "delta_j_frozen_taps": 290.215432,
+      "delta_j_frozen_rel_err": 2.830709,
+      "regulator_taps_differing": 11,
+      "regulator_taps_moved_by_attack": 32,
+      "independent_converged": true,
+      "independent_iters": [
+        46,
+        188
+      ],
+      "independent_final_dq": [
+        0.00091223,
+        0.00096909
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 179.350224,
+      "newton_rel_err": 1.367339,
+      "newton_max_dv_pu": 0.11760274,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "seed": 1009,
+      "balance": {
+        "p_source_kw": 608.4511,
+        "p_gen_kw": 5386.581,
+        "p_load_kw": 5851.8267,
+        "p_loss_kw": 143.2087,
+        "residual_kw": -0.003298,
+        "residual_rel": 5.501e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 137.640001,
+      "delta_j_independent": 33.307829,
+      "delta_j_rel_err": 0.758008,
+      "delta_j_abs_err": 104.332171,
+      "j_leg_invcontrol": 9.010447,
+      "j_atk_invcontrol": 146.650447,
+      "j_leg_independent": 1.471484,
+      "j_atk_independent": 34.779313,
+      "j_leg_rel_offset": 0.836691,
+      "delta_j_frozen_taps": 268.050504,
+      "delta_j_frozen_rel_err": 0.947475,
+      "regulator_taps_differing": 12,
+      "regulator_taps_moved_by_attack": 36,
+      "independent_converged": true,
+      "independent_iters": [
+        48,
+        158
+      ],
+      "independent_final_dq": [
+        0.00092668,
+        0.00073356
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 205.926347,
+      "newton_rel_err": 0.496123,
+      "newton_max_dv_pu": 0.0883857,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "seed": 1031,
+      "balance": {
+        "p_source_kw": 607.3903,
+        "p_gen_kw": 5386.5846,
+        "p_load_kw": 5850.0434,
+        "p_loss_kw": 143.9311,
+        "residual_kw": 0.000404,
+        "residual_rel": 6.74e-08
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 105.599631,
+      "delta_j_independent": 67.146769,
+      "delta_j_rel_err": 0.364138,
+      "delta_j_abs_err": 38.452861,
+      "j_leg_invcontrol": 5.960261,
+      "j_atk_invcontrol": 111.559892,
+      "j_leg_independent": 1.496877,
+      "j_atk_independent": 68.643647,
+      "j_leg_rel_offset": 0.748857,
+      "delta_j_frozen_taps": 258.718944,
+      "delta_j_frozen_rel_err": 1.449999,
+      "regulator_taps_differing": 11,
+      "regulator_taps_moved_by_attack": 40,
+      "independent_converged": true,
+      "independent_iters": [
+        58,
+        286
+      ],
+      "independent_final_dq": [
+        0.00096975,
+        0.00095311
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 102.258793,
+      "newton_rel_err": 0.031637,
+      "newton_max_dv_pu": 0.04459565,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "seed": 1001,
+      "balance": {
+        "p_source_kw": 611.3627,
+        "p_gen_kw": 5386.585,
+        "p_load_kw": 5853.0563,
+        "p_loss_kw": 144.892,
+        "residual_kw": -0.000619,
+        "residual_rel": 1.032e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 126.55715,
+      "delta_j_independent": 50.472444,
+      "delta_j_rel_err": 0.601189,
+      "delta_j_abs_err": 76.084707,
+      "j_leg_invcontrol": 8.404592,
+      "j_atk_invcontrol": 134.961742,
+      "j_leg_independent": 1.894539,
+      "j_atk_independent": 52.366982,
+      "j_leg_rel_offset": 0.774583,
+      "delta_j_frozen_taps": 268.501658,
+      "delta_j_frozen_rel_err": 1.121584,
+      "regulator_taps_differing": 12,
+      "regulator_taps_moved_by_attack": 43,
+      "independent_converged": true,
+      "independent_iters": [
+        48,
+        310
+      ],
+      "independent_final_dq": [
+        0.00095289,
+        0.00067081
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 128.965373,
+      "newton_rel_err": 0.019029,
+      "newton_max_dv_pu": 0.03152765,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "seed": 1019,
+      "balance": {
+        "p_source_kw": 607.2178,
+        "p_gen_kw": 5386.5853,
+        "p_load_kw": 5849.8382,
+        "p_loss_kw": 143.9642,
+        "residual_kw": 0.000604,
+        "residual_rel": 1.007e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 169.689589,
+      "delta_j_independent": 46.178481,
+      "delta_j_rel_err": 0.727865,
+      "delta_j_abs_err": 123.511108,
+      "j_leg_invcontrol": 5.820749,
+      "j_atk_invcontrol": 175.510338,
+      "j_leg_independent": 1.474798,
+      "j_atk_independent": 47.653279,
+      "j_leg_rel_offset": 0.746631,
+      "delta_j_frozen_taps": 282.493706,
+      "delta_j_frozen_rel_err": 0.664767,
+      "regulator_taps_differing": 11,
+      "regulator_taps_moved_by_attack": 33,
+      "independent_converged": true,
+      "independent_iters": [
+        49,
+        210
+      ],
+      "independent_final_dq": [
+        0.00096727,
+        0.00056412
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 157.344154,
+      "newton_rel_err": 0.072753,
+      "newton_max_dv_pu": 0.18429228,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "seed": 1001,
+      "balance": {
+        "p_source_kw": -15409.726,
+        "p_gen_kw": 20940.1901,
+        "p_load_kw": 3533.3259,
+        "p_loss_kw": 1997.2728,
+        "residual_kw": -0.134534,
+        "residual_rel": 2.43255e-05
+      },
+      "rated_base_ambiguous_units": 2,
+      "n_units": 46,
+      "delta_j_invcontrol": 18.489621,
+      "delta_j_independent": 17.851377,
+      "delta_j_rel_err": 0.034519,
+      "delta_j_abs_err": 0.638244,
+      "j_leg_invcontrol": 0.723789,
+      "j_atk_invcontrol": 19.21341,
+      "j_leg_independent": 1.092948,
+      "j_atk_independent": 18.944325,
+      "j_leg_rel_offset": 0.510037,
+      "delta_j_frozen_taps": 23.617306,
+      "delta_j_frozen_rel_err": 0.277328,
+      "regulator_taps_differing": 2,
+      "regulator_taps_moved_by_attack": 87,
+      "independent_converged": false,
+      "independent_iters": [
+        77,
+        400
+      ],
+      "independent_final_dq": [
+        0.0009709,
+        0.00105739
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 17.982455,
+      "newton_rel_err": 0.02743,
+      "newton_max_dv_pu": 0.16875483,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "seed": 1009,
+      "balance": {
+        "p_source_kw": -1952.9813,
+        "p_gen_kw": 8079.8761,
+        "p_load_kw": 5876.6512,
+        "p_loss_kw": 250.2445,
+        "residual_kw": -0.000893,
+        "residual_rel": 1.458e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 173.512356,
+      "delta_j_independent": 116.416785,
+      "delta_j_rel_err": 0.329058,
+      "delta_j_abs_err": 57.095572,
+      "j_leg_invcontrol": 26.271986,
+      "j_atk_invcontrol": 199.784343,
+      "j_leg_independent": 16.526834,
+      "j_atk_independent": 132.943619,
+      "j_leg_rel_offset": 0.370933,
+      "delta_j_frozen_taps": 360.602253,
+      "delta_j_frozen_rel_err": 1.078251,
+      "regulator_taps_differing": 12,
+      "regulator_taps_moved_by_attack": 58,
+      "independent_converged": true,
+      "independent_iters": [
+        57,
+        332
+      ],
+      "independent_final_dq": [
+        0.00090463,
+        0.00098763
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 312.968907,
+      "newton_rel_err": 0.803727,
+      "newton_max_dv_pu": 0.27282633,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "seed": 1009,
+      "balance": {
+        "p_source_kw": -15286.1486,
+        "p_gen_kw": 20939.9303,
+        "p_load_kw": 3583.997,
+        "p_loss_kw": 2069.7316,
+        "residual_kw": 0.053115,
+        "residual_rel": 9.3946e-06
+      },
+      "rated_base_ambiguous_units": 6,
+      "n_units": 46,
+      "delta_j_invcontrol": 10.75121,
+      "delta_j_independent": 8.181997,
+      "delta_j_rel_err": 0.23897,
+      "delta_j_abs_err": 2.569214,
+      "j_leg_invcontrol": 0.427973,
+      "j_atk_invcontrol": 11.179184,
+      "j_leg_independent": 0.069883,
+      "j_atk_independent": 8.25188,
+      "j_leg_rel_offset": 0.836712,
+      "delta_j_frozen_taps": 9.245852,
+      "delta_j_frozen_rel_err": 0.140018,
+      "regulator_taps_differing": 5,
+      "regulator_taps_moved_by_attack": 60,
+      "independent_converged": false,
+      "independent_iters": [
+        82,
+        400
+      ],
+      "independent_final_dq": [
+        0.00096281,
+        0.00267643
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 11.035195,
+      "newton_rel_err": 0.026414,
+      "newton_max_dv_pu": 0.16899917,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "seed": 1013,
+      "balance": {
+        "p_source_kw": 603.2976,
+        "p_gen_kw": 5386.5851,
+        "p_load_kw": 5846.6569,
+        "p_loss_kw": 143.2257,
+        "residual_kw": 0.000175,
+        "residual_rel": 2.92e-08
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 203.937859,
+      "delta_j_independent": 44.121887,
+      "delta_j_rel_err": 0.78365,
+      "delta_j_abs_err": 159.815971,
+      "j_leg_invcontrol": 2.703293,
+      "j_atk_invcontrol": 206.641152,
+      "j_leg_independent": 2.551301,
+      "j_atk_independent": 46.673189,
+      "j_leg_rel_offset": 0.056225,
+      "delta_j_frozen_taps": 268.117005,
+      "delta_j_frozen_rel_err": 0.3147,
+      "regulator_taps_differing": 9,
+      "regulator_taps_moved_by_attack": 36,
+      "independent_converged": true,
+      "independent_iters": [
+        51,
+        273
+      ],
+      "independent_final_dq": [
+        0.00097902,
+        0.00068671
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 69.901134,
+      "newton_rel_err": 0.657243,
+      "newton_max_dv_pu": 0.05541301,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "seed": 1013,
+      "balance": {
+        "p_source_kw": -15518.605,
+        "p_gen_kw": 20939.9893,
+        "p_load_kw": 3522.665,
+        "p_loss_kw": 1898.7968,
+        "residual_kw": -0.07753,
+        "residual_rel": 1.43005e-05
+      },
+      "rated_base_ambiguous_units": 4,
+      "n_units": 46,
+      "delta_j_invcontrol": 14.514768,
+      "delta_j_independent": 1.95659,
+      "delta_j_rel_err": 0.8652,
+      "delta_j_abs_err": 12.558178,
+      "j_leg_invcontrol": 0.05767,
+      "j_atk_invcontrol": 14.572437,
+      "j_leg_independent": 0.020243,
+      "j_atk_independent": 1.976832,
+      "j_leg_rel_offset": 0.64899,
+      "delta_j_frozen_taps": 14.77612,
+      "delta_j_frozen_rel_err": 0.018006,
+      "regulator_taps_differing": 7,
+      "regulator_taps_moved_by_attack": 36,
+      "independent_converged": false,
+      "independent_iters": [
+        83,
+        400
+      ],
+      "independent_final_dq": [
+        0.00099504,
+        0.00240565
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 8.454004,
+      "newton_rel_err": 0.417558,
+      "newton_max_dv_pu": 0.26708096,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "seed": 1019,
+      "balance": {
+        "p_source_kw": -15320.1728,
+        "p_gen_kw": 20940.0598,
+        "p_load_kw": 3579.7217,
+        "p_loss_kw": 2040.3009,
+        "residual_kw": -0.135525,
+        "residual_rel": 2.41146e-05
+      },
+      "rated_base_ambiguous_units": 5,
+      "n_units": 46,
+      "delta_j_invcontrol": 13.040538,
+      "delta_j_independent": 11.550431,
+      "delta_j_rel_err": 0.114267,
+      "delta_j_abs_err": 1.490106,
+      "j_leg_invcontrol": 0.97488,
+      "j_atk_invcontrol": 14.015418,
+      "j_leg_independent": 0.560558,
+      "j_atk_independent": 12.110989,
+      "j_leg_rel_offset": 0.424998,
+      "delta_j_frozen_taps": 2.322976,
+      "delta_j_frozen_rel_err": 0.821865,
+      "regulator_taps_differing": 4,
+      "regulator_taps_moved_by_attack": 58,
+      "independent_converged": false,
+      "independent_iters": [
+        86,
+        400
+      ],
+      "independent_final_dq": [
+        0.00094171,
+        0.00150726
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 9.577352,
+      "newton_rel_err": 0.265571,
+      "newton_max_dv_pu": 0.19509298,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "seed": 1021,
+      "balance": {
+        "p_source_kw": -15054.6098,
+        "p_gen_kw": 20950.979,
+        "p_load_kw": 3507.4074,
+        "p_loss_kw": 2389.0811,
+        "residual_kw": -0.119283,
+        "residual_rel": 2.02295e-05
+      },
+      "rated_base_ambiguous_units": 4,
+      "n_units": 46,
+      "delta_j_invcontrol": 13.052346,
+      "delta_j_independent": 16.184123,
+      "delta_j_rel_err": 0.23994,
+      "delta_j_abs_err": 3.131776,
+      "j_leg_invcontrol": 0.433201,
+      "j_atk_invcontrol": 13.485548,
+      "j_leg_independent": 0.371444,
+      "j_atk_independent": 16.555567,
+      "j_leg_rel_offset": 0.14256,
+      "delta_j_frozen_taps": 6.668141,
+      "delta_j_frozen_rel_err": 0.489123,
+      "regulator_taps_differing": 6,
+      "regulator_taps_moved_by_attack": 100,
+      "independent_converged": true,
+      "independent_iters": [
+        93,
+        363
+      ],
+      "independent_final_dq": [
+        0.00095962,
+        0.00062321
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 18.82953,
+      "newton_rel_err": 0.442616,
+      "newton_max_dv_pu": 0.29013445,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "seed": 1031,
+      "balance": {
+        "p_source_kw": -15092.1551,
+        "p_gen_kw": 20940.0624,
+        "p_load_kw": 3566.8924,
+        "p_loss_kw": 2281.0904,
+        "residual_kw": -0.075476,
+        "residual_rel": 1.29064e-05
+      },
+      "rated_base_ambiguous_units": 5,
+      "n_units": 46,
+      "delta_j_invcontrol": 9.756472,
+      "delta_j_independent": 11.139881,
+      "delta_j_rel_err": 0.141794,
+      "delta_j_abs_err": 1.383409,
+      "j_leg_invcontrol": 0.234081,
+      "j_atk_invcontrol": 9.990552,
+      "j_leg_independent": 0.130818,
+      "j_atk_independent": 11.270699,
+      "j_leg_rel_offset": 0.441143,
+      "delta_j_frozen_taps": 8.468126,
+      "delta_j_frozen_rel_err": 0.13205,
+      "regulator_taps_differing": 5,
+      "regulator_taps_moved_by_attack": 61,
+      "independent_converged": true,
+      "independent_iters": [
+        83,
+        292
+      ],
+      "independent_final_dq": [
+        0.00091004,
+        0.00098458
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 11.515901,
+      "newton_rel_err": 0.180335,
+      "newton_max_dv_pu": 0.16043437,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "seed": 1009,
+      "balance": {
+        "p_source_kw": -24524.1902,
+        "p_gen_kw": 35077.1775,
+        "p_load_kw": 3577.1641,
+        "p_loss_kw": 6975.3332,
+        "residual_kw": 0.490036,
+        "residual_rel": 4.64379e-05
+      },
+      "rated_base_ambiguous_units": 6,
+      "n_units": 46,
+      "delta_j_invcontrol": 20.422014,
+      "delta_j_independent": 34.600091,
+      "delta_j_rel_err": 0.694255,
+      "delta_j_abs_err": 14.178077,
+      "j_leg_invcontrol": 4.667995,
+      "j_atk_invcontrol": 25.090009,
+      "j_leg_independent": 2.283423,
+      "j_atk_independent": 36.883514,
+      "j_leg_rel_offset": 0.510834,
+      "delta_j_frozen_taps": 33.291726,
+      "delta_j_frozen_rel_err": 0.630188,
+      "regulator_taps_differing": 2,
+      "regulator_taps_moved_by_attack": 102,
+      "independent_converged": false,
+      "independent_iters": [
+        287,
+        400
+      ],
+      "independent_final_dq": [
+        0.00097884,
+        0.0040809
+      ],
+      "newton_converged": true,
+      "delta_j_newton": 20.440625,
+      "newton_rel_err": 0.000911,
+      "newton_max_dv_pu": 0.00030307,
+      "nonconverged_invcontrol": {
+        "n": 0,
+        "n_retried": 0
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "seed": 1013,
+      "balance": {
+        "p_source_kw": -25313.0105,
+        "p_gen_kw": 34899.8862,
+        "p_load_kw": 3520.3544,
+        "p_loss_kw": 6066.4032,
+        "residual_kw": 0.118065,
+        "residual_rel": 1.23154e-05
+      },
+      "rated_base_ambiguous_units": 4,
+      "n_units": 46,
+      "delta_j_invcontrol": 21.888797,
+      "delta_j_independent": 22.657912,
+      "delta_j_rel_err": 0.035137,
+      "delta_j_abs_err": 0.769115,
+      "j_leg_invcontrol": 0.583299,
+      "j_atk_invcontrol": 22.472096,
+      "j_leg_independent": 0.529295,
+      "j_atk_independent": 23.187207,
+      "j_leg_rel_offset": 0.092583,
+      "delta_j_frozen_taps": 4.525985,
+      "delta_j_frozen_rel_err": 0.793228,
+      "regulator_taps_differing": 3,
+      "regulator_taps_moved_by_attack": 109,
+      "independent_converged": true,
+      "independent_iters": [
+        104,
+        305
+      ],
+      "independent_final_dq": [
+        0.00083362,
+        0.00097259
+      ],
+      "newton_converged": true,
+      "delta_j_newton": 21.891966,
+      "newton_rel_err": 0.000145,
+      "newton_max_dv_pu": 0.00021401,
+      "nonconverged_invcontrol": {
+        "n": 1,
+        "n_retried": 2
+      },
+      "nonconverged_independent": {
+        "n": 0,
+        "n_retried": 0
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "seed": 1019,
+      "balance": {
+        "p_source_kw": -24384.6363,
+        "p_gen_kw": 35153.9956,
+        "p_load_kw": 3615.3532,
+        "p_loss_kw": 7153.7045,
+        "residual_kw": 0.301675,
+        "residual_rel": 2.80132e-05
+      },
+      "rated_base_ambiguous_units": 5,
+      "n_units": 46,
+      "delta_j_invcontrol": 83.423812,
+      "delta_j_independent": 68.198213,
+      "delta_j_rel_err": 0.182509,
+      "delta_j_abs_err": 15.225599,
+      "j_leg_invcontrol": 11.793568,
+      "j_atk_invcontrol": 95.21738,
+      "j_leg_independent": 3.260029,
+      "j_atk_independent": 71.458242,
+      "j_leg_rel_offset": 0.723576,
+      "delta_j_frozen_taps": 96.711156,
+      "delta_j_frozen_rel_err": 0.159275,
+      "regulator_taps_differing": 7,
+      "regulator_taps_moved_by_attack": 0,
+      "independent_converged": true,
+      "independent_iters": [
+        135,
+        191
+      ],
+      "independent_final_dq": [
+        0.00090659,
+        0.00098374
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 83.120863,
+      "newton_rel_err": 0.003631,
+      "newton_max_dv_pu": 0.16890072,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 1,
+        "n_retried": 2
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "seed": 1031,
+      "balance": {
+        "p_source_kw": -24513.9441,
+        "p_gen_kw": 35145.0338,
+        "p_load_kw": 3599.6451,
+        "p_loss_kw": 7031.5637,
+        "residual_kw": -0.118963,
+        "residual_rel": 1.119e-05
+      },
+      "rated_base_ambiguous_units": 5,
+      "n_units": 46,
+      "delta_j_invcontrol": 32.493381,
+      "delta_j_independent": 36.890674,
+      "delta_j_rel_err": 0.135329,
+      "delta_j_abs_err": 4.397293,
+      "j_leg_invcontrol": 2.134904,
+      "j_atk_invcontrol": 34.628285,
+      "j_leg_independent": 1.366017,
+      "j_atk_independent": 38.256691,
+      "j_leg_rel_offset": 0.360151,
+      "delta_j_frozen_taps": 32.811711,
+      "delta_j_frozen_rel_err": 0.009797,
+      "regulator_taps_differing": 3,
+      "regulator_taps_moved_by_attack": 92,
+      "independent_converged": false,
+      "independent_iters": [
+        400,
+        134
+      ],
+      "independent_final_dq": [
+        0.08514285,
+        0.00094141
+      ],
+      "newton_converged": true,
+      "delta_j_newton": 32.492394,
+      "newton_rel_err": 3e-05,
+      "newton_max_dv_pu": 0.00017348,
+      "nonconverged_invcontrol": {
+        "n": 1,
+        "n_retried": 2
+      },
+      "nonconverged_independent": {
+        "n": 11,
+        "n_retried": 22
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "seed": 1031,
+      "balance": {
+        "p_source_kw": -1947.4646,
+        "p_gen_kw": 8079.8787,
+        "p_load_kw": 5879.1555,
+        "p_loss_kw": 253.2526,
+        "residual_kw": 0.005906,
+        "residual_rel": 9.63e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 350.024452,
+      "delta_j_independent": 119.762134,
+      "delta_j_rel_err": 0.657846,
+      "delta_j_abs_err": 230.262319,
+      "j_leg_invcontrol": 28.562171,
+      "j_atk_invcontrol": 378.586623,
+      "j_leg_independent": 18.089353,
+      "j_atk_independent": 137.851487,
+      "j_leg_rel_offset": 0.366667,
+      "delta_j_frozen_taps": 351.054004,
+      "delta_j_frozen_rel_err": 0.002941,
+      "regulator_taps_differing": 12,
+      "regulator_taps_moved_by_attack": 60,
+      "independent_converged": true,
+      "independent_iters": [
+        57,
+        247
+      ],
+      "independent_final_dq": [
+        0.00092573,
+        0.00090296
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 163.084431,
+      "newton_rel_err": 0.534077,
+      "newton_max_dv_pu": 0.03998663,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 1,
+        "n_retried": 2
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "seed": 1021,
+      "balance": {
+        "p_source_kw": -1966.8497,
+        "p_gen_kw": 8079.8779,
+        "p_load_kw": 5871.4254,
+        "p_loss_kw": 241.6013,
+        "residual_kw": 0.001433,
+        "residual_rel": 2.345e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 159.917733,
+      "delta_j_independent": 120.928362,
+      "delta_j_rel_err": 0.243809,
+      "delta_j_abs_err": 38.989371,
+      "j_leg_invcontrol": 22.027705,
+      "j_atk_invcontrol": 181.945438,
+      "j_leg_independent": 19.885761,
+      "j_atk_independent": 140.814123,
+      "j_leg_rel_offset": 0.097239,
+      "delta_j_frozen_taps": 399.289549,
+      "delta_j_frozen_rel_err": 1.496843,
+      "regulator_taps_differing": 11,
+      "regulator_taps_moved_by_attack": 64,
+      "independent_converged": true,
+      "independent_iters": [
+        62,
+        285
+      ],
+      "independent_final_dq": [
+        0.0008988,
+        0.00093531
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 341.637595,
+      "newton_rel_err": 1.136333,
+      "newton_max_dv_pu": 0.23947382,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 2,
+        "n_retried": 4
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "seed": 1001,
+      "balance": {
+        "p_source_kw": -1955.5431,
+        "p_gen_kw": 8079.8776,
+        "p_load_kw": 5871.843,
+        "p_loss_kw": 252.491,
+        "residual_kw": 0.000374,
+        "residual_rel": 6.1e-08
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 346.990464,
+      "delta_j_independent": 113.003956,
+      "delta_j_rel_err": 0.674331,
+      "delta_j_abs_err": 233.986508,
+      "j_leg_invcontrol": 22.320218,
+      "j_atk_invcontrol": 369.310682,
+      "j_leg_independent": 19.317981,
+      "j_atk_independent": 132.321937,
+      "j_leg_rel_offset": 0.134508,
+      "delta_j_frozen_taps": 367.914111,
+      "delta_j_frozen_rel_err": 0.0603,
+      "regulator_taps_differing": 12,
+      "regulator_taps_moved_by_attack": 56,
+      "independent_converged": true,
+      "independent_iters": [
+        60,
+        400
+      ],
+      "independent_final_dq": [
+        0.00099154,
+        0.00076053
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 368.111459,
+      "newton_rel_err": 0.060869,
+      "newton_max_dv_pu": 0.25303753,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 4,
+        "n_retried": 8
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "seed": 1019,
+      "balance": {
+        "p_source_kw": -1966.3583,
+        "p_gen_kw": 8079.8789,
+        "p_load_kw": 5868.5658,
+        "p_loss_kw": 244.9531,
+        "residual_kw": 0.00165,
+        "residual_rel": 2.7e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 278.951051,
+      "delta_j_independent": 91.109266,
+      "delta_j_rel_err": 0.673386,
+      "delta_j_abs_err": 187.841785,
+      "j_leg_invcontrol": 19.3523,
+      "j_atk_invcontrol": 298.303352,
+      "j_leg_independent": 17.231201,
+      "j_atk_independent": 108.340467,
+      "j_leg_rel_offset": 0.109605,
+      "delta_j_frozen_taps": 287.112782,
+      "delta_j_frozen_rel_err": 0.029259,
+      "regulator_taps_differing": 11,
+      "regulator_taps_moved_by_attack": 63,
+      "independent_converged": true,
+      "independent_iters": [
+        61,
+        334
+      ],
+      "independent_final_dq": [
+        0.00095748,
+        0.00099966
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 305.442211,
+      "newton_rel_err": 0.094967,
+      "newton_max_dv_pu": 0.25330281,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 5,
+        "n_retried": 10
+      }
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "seed": 1013,
+      "balance": {
+        "p_source_kw": -1953.1599,
+        "p_gen_kw": 8079.8774,
+        "p_load_kw": 5871.7825,
+        "p_loss_kw": 254.9337,
+        "residual_kw": 0.001198,
+        "residual_rel": 1.956e-07
+      },
+      "rated_base_ambiguous_units": 0,
+      "n_units": 600,
+      "delta_j_invcontrol": 294.819396,
+      "delta_j_independent": 109.941063,
+      "delta_j_rel_err": 0.62709,
+      "delta_j_abs_err": 184.878333,
+      "j_leg_invcontrol": 23.072306,
+      "j_atk_invcontrol": 317.891703,
+      "j_leg_independent": 18.035622,
+      "j_atk_independent": 127.976685,
+      "j_leg_rel_offset": 0.2183,
+      "delta_j_frozen_taps": 324.649403,
+      "delta_j_frozen_rel_err": 0.101181,
+      "regulator_taps_differing": 12,
+      "regulator_taps_moved_by_attack": 62,
+      "independent_converged": true,
+      "independent_iters": [
+        62,
+        326
+      ],
+      "independent_final_dq": [
+        0.0009583,
+        0.00076849
+      ],
+      "newton_converged": false,
+      "delta_j_newton": 246.035512,
+      "newton_rel_err": 0.16547,
+      "newton_max_dv_pu": 0.09914238,
+      "nonconverged_invcontrol": {
+        "n": 3,
+        "n_retried": 6
+      },
+      "nonconverged_independent": {
+        "n": 6,
+        "n_retried": 12
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "seed": 1021,
+      "balance": {
+        "p_source_kw": -24708.9684,
+        "p_gen_kw": 35313.1014,
+        "p_load_kw": 3649.2013,
+        "p_loss_kw": 6954.2768,
+        "residual_kw": 0.654883,
+        "residual_rel": 6.17611e-05
+      },
+      "rated_base_ambiguous_units": 4,
+      "n_units": 46,
+      "delta_j_invcontrol": 59.665255,
+      "delta_j_independent": 54.096227,
+      "delta_j_rel_err": 0.093338,
+      "delta_j_abs_err": 5.569028,
+      "j_leg_invcontrol": 3.769248,
+      "j_atk_invcontrol": 63.434503,
+      "j_leg_independent": 10.284301,
+      "j_atk_independent": 64.380528,
+      "j_leg_rel_offset": 1.728475,
+      "delta_j_frozen_taps": 51.881404,
+      "delta_j_frozen_rel_err": 0.130459,
+      "regulator_taps_differing": 1,
+      "regulator_taps_moved_by_attack": 111,
+      "independent_converged": false,
+      "independent_iters": [
+        400,
+        135
+      ],
+      "independent_final_dq": [
+        0.16835978,
+        0.00097895
+      ],
+      "newton_converged": true,
+      "delta_j_newton": 59.672724,
+      "newton_rel_err": 0.000125,
+      "newton_max_dv_pu": 0.00019069,
+      "nonconverged_invcontrol": {
+        "n": 0,
+        "n_retried": 0
+      },
+      "nonconverged_independent": {
+        "n": 195,
+        "n_retried": 390
+      }
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "seed": 1001,
+      "balance": {
+        "p_source_kw": -25247.8237,
+        "p_gen_kw": 35159.7583,
+        "p_load_kw": 3605.012,
+        "p_loss_kw": 6306.6234,
+        "residual_kw": 0.299188,
+        "residual_rel": 3.01856e-05
+      },
+      "rated_base_ambiguous_units": 2,
+      "n_units": 46,
+      "delta_j_invcontrol": 73.174617,
+      "delta_j_independent": 73.88226,
+      "delta_j_rel_err": 0.009671,
+      "delta_j_abs_err": 0.707643,
+      "j_leg_invcontrol": 2.919371,
+      "j_atk_invcontrol": 76.093988,
+      "j_leg_independent": 2.353004,
+      "j_atk_independent": 76.235264,
+      "j_leg_rel_offset": 0.194003,
+      "delta_j_frozen_taps": 74.142242,
+      "delta_j_frozen_rel_err": 0.013224,
+      "regulator_taps_differing": 0,
+      "regulator_taps_moved_by_attack": 112,
+      "independent_converged": false,
+      "independent_iters": [
+        400,
+        293
+      ],
+      "independent_final_dq": [
+        0.03288882,
+        0.00097746
+      ],
+      "newton_converged": true,
+      "delta_j_newton": 73.186935,
+      "newton_rel_err": 0.000168,
+      "newton_max_dv_pu": 0.00032821,
+      "nonconverged_invcontrol": {
+        "n": 1,
+        "n_retried": 2
+      },
+      "nonconverged_independent": {
+        "n": 185,
+        "n_retried": 370
+      }
+    }
+  ],
+  "summary": [
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.0,
+      "n": 6,
+      "max_power_balance_residual_rel": 5.501e-07,
+      "rated_base_ambiguous_units": 0,
+      "n_independent_converged": 6,
+      "median_delta_j_invcontrol": 132.0986,
+      "median_delta_j_independent": 48.3255,
+      "median_delta_j_rel_err": 0.6645,
+      "max_delta_j_rel_err": 0.7836,
+      "median_delta_j_frozen_rel_err": 1.0345,
+      "median_regulator_taps_differing": 11.0,
+      "median_taps_moved_by_attack": 36.0,
+      "median_j_leg_rel_offset": 0.7617,
+      "n_newton_converged": 0,
+      "median_newton_rel_err": 0.2844,
+      "max_newton_max_dv_pu": 0.18429228
+    },
+    {
+      "feeder": "ieee8500",
+      "penetration": 1.5,
+      "n": 6,
+      "max_power_balance_residual_rel": 9.63e-07,
+      "rated_base_ambiguous_units": 0,
+      "n_independent_converged": 6,
+      "median_delta_j_invcontrol": 286.8852,
+      "median_delta_j_independent": 114.7104,
+      "median_delta_j_rel_err": 0.6425,
+      "max_delta_j_rel_err": 0.6743,
+      "median_delta_j_frozen_rel_err": 0.0807,
+      "median_regulator_taps_differing": 12.0,
+      "median_taps_moved_by_attack": 61.0,
+      "median_j_leg_rel_offset": 0.1764,
+      "n_newton_converged": 0,
+      "median_newton_rel_err": 0.3498,
+      "max_newton_max_dv_pu": 0.27282633
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 6.0,
+      "n": 6,
+      "max_power_balance_residual_rel": 2.43255e-05,
+      "rated_base_ambiguous_units": 6,
+      "n_independent_converged": 2,
+      "median_delta_j_invcontrol": 13.0464,
+      "median_delta_j_independent": 13.662,
+      "median_delta_j_rel_err": 0.1909,
+      "max_delta_j_rel_err": 0.2399,
+      "median_delta_j_frozen_rel_err": 0.2087,
+      "median_regulator_taps_differing": 5.0,
+      "median_taps_moved_by_attack": 60.5,
+      "median_j_leg_rel_offset": 0.2919,
+      "n_newton_converged": 0,
+      "median_newton_rel_err": 0.223,
+      "max_newton_max_dv_pu": 0.29013445
+    },
+    {
+      "feeder": "ieee123",
+      "penetration": 10.0,
+      "n": 6,
+      "max_power_balance_residual_rel": 6.17611e-05,
+      "rated_base_ambiguous_units": 6,
+      "n_independent_converged": 2,
+      "median_delta_j_invcontrol": 46.0793,
+      "median_delta_j_independent": 45.4281,
+      "median_delta_j_rel_err": 0.1088,
+      "max_delta_j_rel_err": 0.1825,
+      "median_delta_j_frozen_rel_err": 0.1449,
+      "median_regulator_taps_differing": 2.5,
+      "median_taps_moved_by_attack": 105.5,
+      "median_j_leg_rel_offset": 0.4081,
+      "n_newton_converged": 5,
+      "median_newton_rel_err": 0.0002,
+      "max_newton_max_dv_pu": 0.16890072
+    }
+  ]
+}

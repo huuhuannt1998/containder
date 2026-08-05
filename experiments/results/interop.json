@@ -5,13 +5,41 @@
   "connection_reused_across_requests": true,
   "established_session_survives_withdrawal": false,
   "new_session_survives_withdrawal": false,
+  "installed_control_survives_withdrawal": true,
+  "control_resources": {
+    "/derp": {
+      "before_status": 200,
+      "after_status": 200,
+      "body_identical": true
+    },
+    "/derp_0": {
+      "before_status": 500,
+      "after_status": 500,
+      "body_identical": true
+    },
+    "/derp_0_derc": {
+      "before_status": 200,
+      "after_status": 200,
+      "body_identical": true
+    },
+    "/derp_0_derca": {
+      "before_status": 200,
+      "after_status": 200,
+      "body_identical": true
+    },
+    "/derp_0_dderc": {
+      "before_status": 200,
+      "after_status": 200,
+      "body_identical": true
+    }
+  },
   "steps": [
     {
       "phase": "established_session",
       "path": "/dcap",
       "status": 200,
       "bytes": 290,
-      "ms": 9.0,
+      "ms": 7.28,
       "socket": null,
       "error": null,
       "snippet": "<DeviceCapability xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/dcap\" pollRate=\"60\">   <ResponseSetListLink href=\"/rsps\" all=\"0\""
@@ -20,8 +48,8 @@
       "phase": "established_session",
       "path": "/edev",
       "status": 200,
-      "bytes": 144,
-      "ms": 8.58,
+      "bytes": 572,
+      "ms": 9.75,
       "socket": null,
       "error": null,
       "snippet": "<EndDeviceList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/edev\" subscribable=\"0\" all=\"1\" results=\"1\" pollRate=\"900\">   <EndDe"
@@ -31,10 +59,60 @@
       "path": "/dcap",
       "status": 200,
       "bytes": 290,
-      "ms": 8.62,
+      "ms": 9.31,
       "socket": null,
       "error": null,
       "snippet": "<DeviceCapability xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/dcap\" pollRate=\"60\">   <ResponseSetListLink href=\"/rsps\" all=\"0\""
+    },
+    {
+      "phase": "control_before_withdrawal",
+      "path": "/derp",
+      "status": 200,
+      "bytes": 476,
+      "ms": 11.06,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERProgramList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp\" subscribable=\"0\" all=\"1\" results=\"1\" pollRate=\"900\">   <DERP"
+    },
+    {
+      "phase": "control_before_withdrawal",
+      "path": "/derp_0",
+      "status": 500,
+      "bytes": 265,
+      "ms": 13.63,
+      "socket": null,
+      "error": null,
+      "snippet": "<!doctype html> <html lang=en> <title>500 Internal Server Error</title> <h1>Internal Server Error</h1> <p>The server enc"
+    },
+    {
+      "phase": "control_before_withdrawal",
+      "path": "/derp_0_derc",
+      "status": 200,
+      "bytes": 557,
+      "ms": 13.66,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERControlList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp_0_derc\" subscribable=\"0\" all=\"1\" results=\"1\">   <DERControl h"
+    },
+    {
+      "phase": "control_before_withdrawal",
+      "path": "/derp_0_derca",
+      "status": 200,
+      "bytes": 107,
+      "ms": 13.29,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERControlList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp_0_derca\" subscribable=\"0\" all=\"0\" results=\"0\"/> "
+    },
+    {
+      "phase": "control_before_withdrawal",
+      "path": "/derp_0_dderc",
+      "status": 200,
+      "bytes": 244,
+      "ms": 13.19,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERControl xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/der_derc_1\" responseRequired=\"00\" subscribable=\"0\">   <description>con"
     },
     {
       "phase": "withdrawal",
@@ -50,7 +128,7 @@
       "path": "/dcap",
       "status": null,
       "bytes": 0,
-      "ms": 70.66,
+      "ms": 67.29,
       "socket": null,
       "error": "RemoteDisconnected: Remote end closed connection without response",
       "snippet": null
@@ -60,40 +138,60 @@
       "path": "/dcap",
       "status": null,
       "bytes": 0,
-      "ms": 38.24,
+      "ms": 34.97,
       "socket": null,
       "error": "RemoteDisconnected: Remote end closed connection without response",
       "snippet": null
     },
     {
-      "phase": "content_survival_other_identity",
-      "path": "/dcap",
-      "status": 200,
-      "bytes": 290,
-      "ms": 7.63,
-      "socket": null,
-      "error": null,
-      "snippet": "<DeviceCapability xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/dcap\" pollRate=\"60\">   <ResponseSetListLink href=\"/rsps\" all=\"0\""
-    },
-    {
-      "phase": "content_survival_other_identity",
-      "path": "/edev",
-      "status": 200,
-      "bytes": 144,
-      "ms": 12.65,
-      "socket": null,
-      "error": null,
-      "snippet": "<EndDeviceList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/edev\" subscribable=\"0\" all=\"1\" results=\"1\" pollRate=\"900\">   <EndDe"
-    },
-    {
-      "phase": "content_survival_other_identity",
+      "phase": "control_after_withdrawal",
       "path": "/derp",
       "status": 200,
-      "bytes": 114,
-      "ms": 19.3,
+      "bytes": 476,
+      "ms": 10.31,
       "socket": null,
       "error": null,
-      "snippet": "<DERProgramList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp\" subscribable=\"0\" all=\"0\" results=\"0\" pollRate=\"900\"/> "
+      "snippet": "<DERProgramList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp\" subscribable=\"0\" all=\"1\" results=\"1\" pollRate=\"900\">   <DERP"
+    },
+    {
+      "phase": "control_after_withdrawal",
+      "path": "/derp_0",
+      "status": 500,
+      "bytes": 265,
+      "ms": 9.02,
+      "socket": null,
+      "error": null,
+      "snippet": "<!doctype html> <html lang=en> <title>500 Internal Server Error</title> <h1>Internal Server Error</h1> <p>The server enc"
+    },
+    {
+      "phase": "control_after_withdrawal",
+      "path": "/derp_0_derc",
+      "status": 200,
+      "bytes": 557,
+      "ms": 8.71,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERControlList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp_0_derc\" subscribable=\"0\" all=\"1\" results=\"1\">   <DERControl h"
+    },
+    {
+      "phase": "control_after_withdrawal",
+      "path": "/derp_0_derca",
+      "status": 200,
+      "bytes": 107,
+      "ms": 8.4,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERControlList xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/derp_0_derca\" subscribable=\"0\" all=\"0\" results=\"0\"/> "
+    },
+    {
+      "phase": "control_after_withdrawal",
+      "path": "/derp_0_dderc",
+      "status": 200,
+      "bytes": 244,
+      "ms": 8.2,
+      "socket": null,
+      "error": null,
+      "snippet": "<DERControl xmlns=\"urn:ieee:std:2030.5:ns\" href=\"/der_derc_1\" responseRequired=\"00\" subscribable=\"0\">   <description>con"
     }
   ]
 }
