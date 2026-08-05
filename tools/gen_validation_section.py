@@ -237,8 +237,8 @@ difference and not sampling noise.
 Two things about its direction matter. It runs \emph{{towards}} the design: the independent
 implementation credits containment with more, not less, so the reported figures are conservative
 with respect to it. And it is smaller than the sensitivity of the absolute contrasts, which is the
-cancellation a ratio was expected to buy --- but it is not zero, and we no longer say the
-percentages might escape it. On IEEE~123 the re-implemented fixed point hit its per-step iteration
+cancellation a ratio was expected to buy --- but it is not zero: expressing a result as a ratio
+attenuates the model dependence rather than removing it. On IEEE~123 the re-implemented fixed point hit its per-step iteration
 cap at up to {cap1} of the sixty steps against {cap8} on IEEE~8500, so that feeder's comparison is
 under-converged and we report it as inconclusive rather than as a null. These runs use {n8} seeds
 against the twenty behind the confirmatory figures, so the \texttt{{InvControl}} column here is a
