@@ -76,10 +76,11 @@ independently-controlled contrast differs from the harness's by {f(errs[0])}\% t
 {f(errs[-1])}\%, with a median of {f(statistics.median(errs))}\%, and the disagreement is not
 spread evenly. It tracks how much
 discrete switching the feeder does: on IEEE~8500, where a median of {rng("ieee8500",
-"median_regulator_taps_differing")} regulator taps end up in different positions between the two
-implementations, the contrast differs by {rng("ieee8500", "median_delta_j_rel_err", 100)}\%,
-while on IEEE~123, where {rng("ieee123", "median_regulator_taps_differing", 1, 1)} taps differ, it
-differs by {rng("ieee123", "median_delta_j_rel_err", 100)}\%. The two implementations reach
+"median_regulator_taps_differing")} of that feeder's twelve regulators end up on different taps
+between the two implementations, the contrast differs by {rng("ieee8500",
+"median_delta_j_rel_err", 100)}\%, while on IEEE~123, where {rng("ieee123",
+"median_regulator_taps_differing", 1, 1)} regulators differ, it differs by {rng("ieee123",
+"median_delta_j_rel_err", 100)}\%. The two implementations reach
 nearly the same fleet reactive dispatch; what separates them is where the regulators land, and
 the band integral is an integral of voltage exceedance, so a tap step moves it directly.""")
     w("")
