@@ -105,20 +105,42 @@ prediction of what a particular feeder would suffer.""")
 
     if S:
         srows = [r for r in S["rows"] if "error" not in r]
+        m = len(srows)
         agree = sum(1 for r in srows if r["argmax_agrees"])
         sgn = sum(1 for r in srows if r["sign_agrees"])
-        dif = sorted(100 * r["max_rel_diff"] for r in srows if r["max_rel_diff"] is not None)
+        higher = sum(1 for r in srows
+                     if r["independent_max_dJ"] > r["sequential_max_dJ"])
+        dif = sorted(100 * r["max_rel_diff"] for r in srows
+                     if r["max_rel_diff"] is not None)
+        by = {}
+        for r in srows:
+            k = r["primitive"]
+            by.setdefault(k, [0, 0])
+            by[k][1] += 1
+            by[k][0] += 1 if r["argmax_agrees"] else 0
         w("")
-        w(r"\paragraph{Result: the sequential grid sweep does not change which point is selected}")
-        w(rf"""One consequence of tap state carrying across solves is a question about our own
-harness: it evaluates an authorized set by walking the grid inside one session, so each candidate
-inherits the tap state the previous candidate left, whereas the oracle-adversary framing is that
-an adversary plays \emph{{one}} point against the running feeder. Re-evaluating each candidate
-from a freshly established legitimate equilibrium selects the same worst admissible point in
-\textbf{{{agree} of {len(srows)}}} arms and agrees in sign in {sgn} of {len(srows)}, with the
-selected maximum differing by a median of {f(statistics.median(dif))}\%. The reported endpoint is
-therefore not an artefact of the sweep order, though it carries the same magnitude sensitivity as
-everything else in this subsection.""")
+        w(r"\paragraph{Result: the sweep order moves which point is selected, and can "
+          r"understate what the set is worth}")
+        w(rf"""Because tap state carries across solves, our own harness needs the same scrutiny:
+it evaluates an authorized set by walking the grid inside one session, so each candidate inherits
+the tap state the previous candidate left, whereas the oracle-adversary framing is that an
+adversary plays \emph{{one}} point against the running feeder. Re-evaluating every candidate from
+a freshly established legitimate equilibrium agrees in sign in {sgn} of {m} arms, but selects the
+same worst admissible point in only {agree} of {m}. The disagreement is almost entirely in the
+voltage-responsive primitive: the fixed setpoint agrees in {by['setpoint'][0]} of
+{by['setpoint'][1]} arms and the curve in {by['curve'][0]} of {by['curve'][1]}.""")
+        w("")
+        w(rf"""The selected \emph{{maximum}} moves less than its location does --- a median of
+{f(statistics.median(dif))}\% --- but not always by a little, and not always downward.
+Independent evaluation finds a \emph{{higher}} maximum in {higher} of {m} arms, and on IEEE~8500
+under the curve primitive two seeds understate by {f(dif[-2])}\% and {f(dif[-1])}\%. The
+consequence is that the reported harms are lower bounds by a wider margin than the grid-resolution
+study alone indicated, and the slack is sweep-order dependent rather than purely a matter of grid
+spacing. For a claim of the form ``this authorization set fails to contain'' the bias is
+conservative --- the attainable harm is larger than reported, not smaller. We did not re-evaluate
+every authorization set independently, so we do not claim the slack is uniform across sets, and
+any reading of \emph{{where}} in a set the worst point lies should be treated as
+sweep-order dependent.""")
 
     w("")
     w(r"\begin{table}[htbp]")
