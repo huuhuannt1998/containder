@@ -97,12 +97,6 @@ disagrees with the bus base OpenDSS assigns it for up to {amb} of {units} units 
 line-to-line connected single-phase ones --- so \texttt{{voltage\_curvex\_ref=rated}} admits two
 readings there. We report the count rather than resolving it silently.""")
     w("")
-    w(rf"""\textbf{{What this licenses.}} The direction of every contrast, and the safety
-conclusion that follows from it, survive an independent implementation of the control law. The
-magnitudes do not: they are specific to this model of these feeders. Every harm figure in this
-paper should be read as evidence of direction and order of magnitude, not as a calibrated
-prediction of what a particular feeder would suffer.""")
-
     if S:
         srows = [r for r in S["rows"] if "error" not in r]
         m = len(srows)
@@ -141,6 +135,22 @@ conservative --- the attainable harm is larger than reported, not smaller. We di
 every authorization set independently, so we do not claim the slack is uniform across sets, and
 any reading of \emph{{where}} in a set the worst point lies should be treated as
 sweep-order dependent.""")
+
+    w("")
+    w(rf"""\textbf{{What this licenses, and what it does not.}} The direction of every contrast,
+and the safety conclusion that follows from it, survive an independent implementation of the
+control law and an independent evaluation order. The magnitudes do not. Absolute harm figures are
+specific to this model of these feeders and should be read as evidence of direction and order of
+magnitude, not as calibrated predictions of what a particular feeder would suffer.
+
+One boundary deserves stating precisely, because it is easy to over-read this subsection in either
+direction. What was tested is the \emph{{absolute}} paired contrast, at one attacker point, on two
+rungs of each feeder. The paper's lifecycle results are reported as \emph{{ratios}} --- percentage
+reductions of one arm against another within a single model --- and a common-mode modelling error
+cancels from a ratio in a way it does not from a difference. We did not measure how much of it
+cancels, so we neither claim those percentages inherit the full sensitivity reported here nor claim
+they escape it. Establishing that would require re-running each lifecycle arm under the independent
+control, which we did not do.""")
 
     w("")
     w(r"\begin{table}[htbp]")
