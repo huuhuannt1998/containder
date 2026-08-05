@@ -90,6 +90,62 @@ def harvest_results():
     return seen
 
 
+def harvest_ci_pairs():
+    """Every (lo, hi) interval endpoint pair that appears as a unit in the result files.
+
+    The scalar gate asks only whether a numeral appears *somewhere* among the harvested literals.
+    With well over a hundred thousand of them almost any plausible value satisfies that, which is
+    exactly how seven stale confidence intervals survived in the H1 table: their point estimates
+    were current, their intervals had been computed before the bootstrap was changed to BCa, and
+    every endpoint happened to collide with some unrelated number. An interval is a *pair*, so it
+    has to be checked as a pair.
+    """
+    pairs = set()
+
+    def walk(o):
+        if isinstance(o, dict):
+            for lo, hi in (("ci_lo", "ci_hi"), ("rel_ci_lo", "rel_ci_hi")):
+                if o.get(lo) is not None and o.get(hi) is not None:
+                    try:
+                        pairs.add((float(o[lo]), float(o[hi])))
+                    except (TypeError, ValueError):
+                        pass
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+
+    for f in sorted(RESULTS.glob("*.json")):
+        try:
+            walk(json.loads(f.read_text()))
+        except json.JSONDecodeError:
+            pass
+    return pairs
+
+
+def check_intervals(targets, pairs):
+    """Every printed [lo, hi] must correspond to one released interval, at printed precision.
+
+    A reduction reported as a positive percentage is stored as a negative change, so a printed
+    pair also matches a released pair that is negated and reversed.
+    """
+    bad = []
+    rx = re.compile(r"\[\s*\$?(-?\d+\.?\d*)\s*,\s*\$?(-?\d+\.?\d*)\s*\]")
+    for tex in targets:
+        body = re.sub(r"(?m)^\s*%.*$", "", tex.read_text())
+        for m in rx.finditer(body):
+            lo, hi = float(m.group(1)), float(m.group(2))
+            nd = max((len(g.split(".")[-1]) if "." in g else 0) for g in (m.group(1), m.group(2)))
+            tol = 0.5 * 10 ** (-nd) + 1e-9
+            ok = any((abs(lo - a) <= tol and abs(hi - b) <= tol)
+                     or (abs(lo + b) <= tol and abs(hi + a) <= tol) for a, b in pairs)
+            if not ok:
+                ctx = body[max(0, m.start() - 70):m.end()].replace("\n", " ")
+                bad.append((tex.name, m.group(0), ctx[-78:]))
+    return bad
+
+
 def main():
     if not SECTIONS.is_dir():
         print(f"manuscript sources not found at {HERE}.\n"
@@ -141,10 +197,19 @@ def main():
         for f, n, why in sorted(set(escaped)):
             print(f"  [{f}] {n:>10}   {why}")
         print()
-    if not unmatched:
-        print("PASS: every non-whitelisted numeral in the manuscript body, abstract, Highlights "
-              "and supplementary material appears in results/*.json")
+    bad_ci = check_intervals(targets, harvest_ci_pairs())
+    if bad_ci:
+        print(f"FAIL: {len(bad_ci)} printed interval(s) match no released (ci_lo, ci_hi) pair:\n")
+        for f, iv, ctx in bad_ci:
+            print(f"  [{f}] {iv:>18}   ...{ctx}")
+        print()
+
+    if not unmatched and not bad_ci:
+        print("PASS: every non-whitelisted numeral appears in results/*.json, and every printed "
+              "interval matches a released (ci_lo, ci_hi) pair")
         return 0
+    if not unmatched:
+        return 1
     print(f"{len(unmatched)} numerals not located in results/*.json "
           f"(each needs a source, a whitelist entry, or removal):\n")
     for f, n, ctx in unmatched:
